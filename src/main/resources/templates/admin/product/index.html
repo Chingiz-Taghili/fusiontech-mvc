@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{dashboard/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Image</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products.data}">
+            <th th:text="${product.id}" scope="row">1</th>
+            <td th:text="${product.name}">Mark</td>
+            <td th:text="${product.price}">Mark</td>
+            <td >Mark</td>
+            <td th:text="${product.category.name}">Mark</td>
+            <td>
+                <a th:href="'/admin/product/update/' + ${product.id}">Update</a>
+                <a th:href="'/admin/product/delete/' + ${product.id}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{dashboard/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <form method="post">
+        <input type="text" name="name" th:value="${category.name}">
+        <input type="submit" value="Update">
+    </form>
+
+</section>
+
+</body>
+</html>

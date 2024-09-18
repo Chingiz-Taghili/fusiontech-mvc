@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}"
+        lang="en">
+
+<head>
+    <title>FusionTech - Mağaza</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Əsas</a>
+                    <a class="breadcrumb-item text-dark" href="/shop">Mağaza</a>
+                    <span class="breadcrumb-item active">Məhsul Siyahısı</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <div class="col-lg-3 col-md-4">
+                <form method="get" action="/shop/filter">
+                    <!-- Price Start -->
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Qiymətə görə filtrlə</span>
+                    </h5>
+                    <div class="bg-light p-4 mb-30">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="price" value="0" class="custom-control-input" id="price-all"
+                                   checked>
+                            <label class="custom-control-label" for="price-all">Hamısı</label>
+                            <span class="badge border font-weight-normal">1000</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="price" value="1" class="custom-control-input" id="price-1">
+                            <label class="custom-control-label" for="price-1">100 ₼-a qədər</label>
+                            <span class="badge border font-weight-normal">150</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="price" value="2" class="custom-control-input" id="price-2">
+                            <label class="custom-control-label" for="price-2">100 ₼ - 1000 ₼</label>
+                            <span class="badge border font-weight-normal">295</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="price" value="3" class="custom-control-input" id="price-3">
+                            <label class="custom-control-label" for="price-3">1000 ₼ - 2000 ₼</label>
+                            <span class="badge border font-weight-normal">246</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="price" value="4" class="custom-control-input" id="price-4">
+                            <label class="custom-control-label" for="price-4">2000 ₼ - 3000 ₼</label>
+                            <span class="badge border font-weight-normal">145</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                            <input type="radio" name="price" value="5" class="custom-control-input" id="price-5">
+                            <label class="custom-control-label" for="price-5">3000 ₼-dan yuxarı</label>
+                            <span class="badge border font-weight-normal">168</span>
+                        </div>
+                    </div>
+                    <!-- Price End -->
+
+                    <!-- Category Start -->
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Kateqoriyalar</span>
+                    </h5>
+                    <div class="bg-light p-4 mb-30">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="category" value="0" class="custom-control-input"
+                                   id="category-all" checked>
+                            <label class="custom-control-label" for="category-all">Hamısı</label>
+                            <span class="badge border font-weight-normal">1000</span>
+                        </div>
+                        <div th:each="category : ${categories}"
+                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="category" th:value="${category.id}"
+                                   class="custom-control-input" th:id="'category-' + ${category.id}">
+                            <label class="custom-control-label" th:for="'category-' + ${category.id}"
+                                   th:text="${category.name}">Notbuklar</label>
+                            <span class="badge border font-weight-normal">150</span>
+                        </div>
+                    </div>
+                    <!-- Category End -->
+
+                    <!-- Brand Start -->
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span
+                            class="bg-secondary pr-3">Markalar</span></h5>
+                    <div class="bg-light p-4 mb-30">
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="brand" value="0" class="custom-control-input" id="brand-all"
+                                   checked>
+                            <label class="custom-control-label" for="brand-all">Hamısı</label>
+                            <span class="badge border font-weight-normal">1000</span>
+                        </div>
+                        <div th:each="brand : ${brands}"
+                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" name="brand" th:value="${brand.id}" class="custom-control-input"
+                                   th:id="'brand-' + ${brand.id}">
+                            <label class="custom-control-label" th:for="'brand-' + ${brand.id}" th:text="${brand.name}">Apple</label>
+                            <span class="badge border font-weight-normal">150</span>
+                        </div>
+                    </div>
+                    <!-- Brand End -->
+                    <button type="submit">Filtrlə</button>
+                </form>
+            </div>
+            <!-- Shop Sidebar End -->
+
+
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-8">
+                <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div>
+                            </div>
+                            <div class="ml-2">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                            data-toggle="dropdown">Sorting
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">Latest</a>
+                                        <a class="dropdown-item" href="#">Popularity</a>
+                                        <a class="dropdown-item" href="#">Best Rating</a>
+                                    </div>
+                                </div>
+                                <div class="btn-group ml-2">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                            data-toggle="dropdown">Showing
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#">10</a>
+                                        <a class="dropdown-item" href="#">20</a>
+                                        <a class="dropdown-item" href="#">30</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:each="product : ${products}" class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" th:src="${product.image}" alt="">
+                                <div class="product-action">
+                                    <a th:href="'/cart/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
+                                            class="fa fa-shopping-cart"></i></a>
+                                    <a th:href="'/favorites/add/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
+                                            class="far fa-heart"></i></a>
+                                    <a th:href="'/detail/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
+                                            class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" th:href="'/detail/' + ${product.id}"
+                                   th:text="${product.name}">Product Name</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5 th:text="${product.discountPrice} + ' ₼'">$123.00</h5>
+                                    <h6 class="text-muted ml-2">
+                                        <del th:text="${product.price + ' ₼'}">$123.00</del>
+                                    </h6>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small>(99)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <!-- Shop End -->
+
+
+</section>
+
+</body>
+</html>

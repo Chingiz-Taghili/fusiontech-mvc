@@ -1,0 +1,27 @@
+.text-primary input {
+    display: none; /* Radio düymələrini gizlət */
+}
+
+.text-primary label {
+    font-size: 18px; /* Ulduzların ölçüsü */
+    color: gray; /* Adi halda gri rəng */
+    cursor: pointer;
+    margin: 0 0.5px;
+}
+
+.text-primary i {
+    color: gray; /* Adi halda gri rəng */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+/* Hover zamanı soldakı ulduzların içini doldurur */
+.text-primary label:hover i,
+.text-primary label:hover ~ label i {
+    color: gold;
+}
+
+/* Seçilmiş ulduzların içini doldurur */
+.text-primary input:checked ~ label i {
+    color: gold;
+}

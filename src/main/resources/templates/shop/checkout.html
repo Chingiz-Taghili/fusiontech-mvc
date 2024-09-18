@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}"
+        lang="en">
+
+<head>
+    <title>Sifarişi Tamamla</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Əsas</a>
+                    <a class="breadcrumb-item text-dark" href="/shop">Mağaza</a>
+                    <span class="breadcrumb-item active">Sifarişi Tamamla</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Checkout Start -->
+    <form method="post" action="/checkout">
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+                <div class="col-lg-8">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                    Çatdırılma Ünvanı</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Ad</label>
+                                <input name="name" type="text" placeholder="Adınız" th:value="${user.name}"
+                                       class="form-control" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Soyad</label>
+                                <input name="surname" type="text" placeholder="Soyadınız" th:value="${user.surname}"
+                                       class="form-control" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Nömrə</label>
+                                <input name="phoneNumber" type="text" placeholder="098 765 4321" class="form-control"
+                                       required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>E-mail</label>
+                                <input name="email" type="email" placeholder="ad.soyad@email.com"
+                                       th:value="${user.email}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Şəhər</label>
+                                <select name="city" class="custom-select" required>
+                                    <option selected>Bakı</option>
+                                    <option th:each="region : ${regions}" th:text="${region.name}">Gəncə</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Ünvan</label>
+                                <input name="address" class="form-control" type="text"
+                                       placeholder="Fusiontech r-nu, Texnologiya pr., 12A, mənzil 3" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>Əlavə Qeyd</label>
+                                <textarea name="message" class="form-control"
+                                          placeholder="Yük liftindən istifadə edə bilərsiniz"></textarea>
+                            </div>
+
+                            <div class="col-md-12 form-group"></div>
+                            <div class="col-md-12">
+                                <div class="custom-control custom-checkbox">
+                                    <input name="differBilling" type="checkbox" class="custom-control-input"
+                                           id="billto">
+                                    <label class="custom-control-label" for="billto" data-toggle="collapse"
+                                           data-target="#billing-address">Faktura ünvanı fərqlidir</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapse mb-5" id="billing-address">
+                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                        Faktura Ünvanı</span>
+                        </h5>
+                        <div class="bg-light p-30">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Ad</label>
+                                    <input name="billName" class="form-control" type="text" placeholder="Adınız">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Soyad</label>
+                                    <input name="billSurname" class="form-control" type="text" placeholder="Soyadınız">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Nömrə</label>
+                                    <input name="billPhoneNumber" class="form-control" type="text"
+                                           placeholder="123 456 7890">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>E-mail</label>
+                                    <input name="billEmail" class="form-control" type="email"
+                                           placeholder="ad.soyad@email.com">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Şəhər</label>
+                                    <select name="billCity" class="custom-select">
+                                        <option selected>Bakı</option>
+                                        <option th:each="region : ${regions}" th:text="${region.name}">Gəncə</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Ünvan</label>
+                                    <input name="billAddress" class="form-control" type="text"
+                                           placeholder="Fusiontech r-nu, Texnologiya pr., 12A, mənzil 3">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Əlavə Qeyd</label>
+                                    <textarea name="billMessage" class="form-control"
+                                              placeholder="Qapı bağlı olsa fakturanı mühafizəçiyə verərsiniz"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                    Sifarişin İcmalı</span></h5>
+                    <div class="bg-light p-30 mb-5">
+                        <div class="border-bottom">
+                            <h6 class="mb-3">Məhsullar</h6>
+                            <div th:each="product : ${cart.products}" class="d-flex justify-content-between">
+                                <p th:text="${product.name}">Product Name</p>
+                                <p th:text="${product.discountPrice} + ' ₼'">$150</p>
+                            </div>
+                        </div>
+                        <div class="border-bottom pt-3 pb-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h6>Məhsul Cəmi</h6>
+                                <h6 th:text="${cart.subtotal + ' ₼'}">$150</h6>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium">Çatdırılma</h6>
+                                <h6 th:text="${cart.shipping} + ' ₼'" class="font-weight-medium">$10</h6>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <div class="d-flex justify-content-between mt-2">
+                                <h5>Yekun Məbləğ</h5>
+                                <h5 th:text="${cart.total + ' ₼'}">$160</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">
+                        Ödəniş</span></h5>
+                        <div class="bg-light p-30">
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="paymentMethod" value="0" class="custom-control-input"
+                                           id="online" checked>
+                                    <label class="custom-control-label" for="online">Saytda onlayn ödəniş</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="paymentMethod" value="1" class="custom-control-input"
+                                           id="cash">
+                                    <label class="custom-control-label" for="cash">Qapıda nağd ödəniş</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Sifarişi
+                                Təsdiqlə
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- Checkout End -->
+
+
+</section>
+
+</body>
+</html>
