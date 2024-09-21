@@ -59,7 +59,8 @@
                             <small class="fas fa-star-half-alt"></small>
                             <small class="far fa-star"></small>
                         </div>
-                        <small class="pt-1">(99 Reviews)</small>
+                        <small th:text="${'(' + product.reviews.size + ' qiymətləndirmə)'}" class="pt-1">
+                            (99 Reviews)</small>
                     </div>
                     <h3 th:text="${product.discountPrice + ' ₼'}" class="font-weight-semi-bold mb-4">0 ₼</h3>
                     <p th:text="${product.description}" class="mb-4">Description</p>
@@ -115,7 +116,8 @@
                     <div class="nav nav-tabs mb-4">
                         <a class="nav-item nav-link text-dark active" data-toggle="tab"
                            href="#tab-pane-1">Xüsusiyyətlər</a>
-                        <a th:text="'İstifadəçi rəyləri (' + ${product.reviews.size} + ')'" class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">İstifadəçi rəyləri
+                        <a th:text="'İstifadəçi rəyləri (' + ${product.reviews.size} + ')'"
+                           class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2">İstifadəçi rəyləri
                             (0)</a>
                     </div>
                     <div class="tab-content">
@@ -203,16 +205,20 @@
                                                 <label for="star5"><i class="far fa-star"></i></label>
                                             </div>
                                             <!-- Xəbərdarlıq mesajı üçün yer -->
-                                            <small id="ratingWarning" style="color: red; display: none;">Zəhmət olmasa ulduz seçin!</small>
+                                            <small id="ratingWarning" style="color: red; display: none;">Zəhmət olmasa
+                                                ulduz seçin!</small>
                                         </div>
                                         <div class="form-group">
                                             <label for="message">Rəyiniz *</label>
-                                            <textarea name="comment" id="message" cols="30" rows="5" class="form-control"></textarea>
+                                            <textarea name="comment" id="message" cols="30" rows="5"
+                                                      class="form-control"></textarea>
                                             <!-- Xəbərdarlıq mesajı üçün yer -->
-                                            <small id="commentWarning" style="color: red; display: none;">Zəhmət olmasa rəy yazın!</small>
+                                            <small id="commentWarning" style="color: red; display: none;">Zəhmət olmasa
+                                                rəy yazın!</small>
                                         </div>
                                         <div class="form-group">
-                                            <input name="productId" type="hidden" th:value="${product.id}" class="form-control" id="name">
+                                            <input name="productId" type="hidden" th:value="${product.id}"
+                                                   class="form-control" id="name">
                                         </div>
                                         <div class="form-group mb-0">
                                             <input type="submit" value="Rəy yaz" class="btn btn-primary px-3">

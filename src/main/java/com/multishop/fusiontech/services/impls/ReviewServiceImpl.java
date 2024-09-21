@@ -7,6 +7,7 @@ import com.multishop.fusiontech.models.UserEntity;
 import com.multishop.fusiontech.repositories.ProductRepository;
 import com.multishop.fusiontech.repositories.ReviewRepository;
 import com.multishop.fusiontech.repositories.UserRepository;
+import com.multishop.fusiontech.services.ProductService;
 import com.multishop.fusiontech.services.ReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final ProductService productService;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, ProductRepository productRepository, ModelMapper modelMapper) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, ProductService productService, ProductRepository productRepository, ModelMapper modelMapper) {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
+        this.productService = productService;
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
     }
@@ -51,6 +54,8 @@ public class ReviewServiceImpl implements ReviewService {
         review.setProduct(productRepository.findById(reviewAddDto.getProductId()).orElseThrow());
 
         reviewRepository.save(review);
+
+        productService.updateProductRating(reviewAddDto.getProductId());
 
         return true;
     }

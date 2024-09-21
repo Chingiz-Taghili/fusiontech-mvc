@@ -24,4 +24,6 @@ public interface ProductService {
     List<ProductShopDto> getCatalogProducts(Long categoryId, Long subcategoryId);
 
     List<ProductShopDto> getSearchProducts(String keyword);
+
+    void updateProductRating(Long productId);
 }

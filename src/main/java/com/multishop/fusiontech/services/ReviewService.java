@@ -10,4 +10,5 @@ public interface ReviewService {
     List<ReviewShowDto> getReviews(Long productId);
 
     boolean writeReview(ReviewAddDto reviewAddDto, String userEmail);
+
 }

@@ -2,8 +2,10 @@ package com.multishop.fusiontech.services.impls;
 
 import com.multishop.fusiontech.dtos.product.*;
 import com.multishop.fusiontech.models.Product;
+import com.multishop.fusiontech.models.Review;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.ProductRepository;
+import com.multishop.fusiontech.repositories.ReviewRepository;
 import com.multishop.fusiontech.services.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -19,10 +21,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final ReviewRepository reviewRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper, ReviewRepository reviewRepository) {
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override
@@ -170,6 +174,17 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return searchProducts;
+    }
+
+    @Override
+    public void updateProductRating(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow();
+
+        List<Review> reviews = reviewRepository.findByProductId(productId);
+        double newRating = reviews.isEmpty() ? 0.0 : reviews.stream()
+                .mapToDouble(Review::getRating).average().orElse(0.0);
+        product.setRating(newRating);
+        productRepository.save(product);
     }
 
 }
