@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}"
+        lang="en">
+
+<head>
+    <title>Çatdırılma və Ödəmə</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="/">Əsas</a>
+                    <span class="breadcrumb-item active">Çatdırılma və Ödəmə</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Delivery Payment Start -->
+    <div class="container-fluid">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+            <span class="bg-secondary pr-3">Çatdırılma Və Ödəmə Şərtləri</span>
+        </h2>
+        <div class="row px-xl-5">
+            <div class="col-12 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div class="control-group">
+                        <p>Qeyd olunan ünvana çatdırılma saat 10:00 - 18:00 arasında yerinə yetirilir. Çatdırılma,
+                            razılaşdırılmış vaxtda göstərilən ünvanda olmağınızı məcbur edir. Kuryer yola
+                            düşməzdən təxminən bir və ya iki saat əvvəl sizinlə əlaqə saxlayacaq. Online qaydada məhsul
+                            əldə etmək istəyən müştərinin müraciəti rəsmiləşdirildikdən və sifariş təsdiqləndikdən
+                            sonra, məhsulun çatdırılma vaxtının dəqiqləşdirilməsi üçün müştəri ilə əlaqə
+                            saxlanılacaq. Əgər müştəri, çatdırılma üçün təklif edilən gündə məhsulu təhvil ala
+                            bilməyəcəksə müştərinin əldə etmək istədiyi məhsul sifarişin təsdiqləndiyi gündən 7 (yeddi)
+                            gün ərzində onun adına saxlanılacaqdır. Bu müddət bitdikdən sonra müştərinin sifarişi ləğv
+                            ediləcəkdir. Qeyd olunan qayda məhsul üçün ödəniş edilməyən sifarişlərə və bütün çatdırılma
+                            növərinə şamil edilir.</p>
+                    </div>
+                    <div class="control-group">
+                        <h4 style="color: #8B4513; margin-bottom: 5px;">Sifarişin təhvil verilməsi</h4>
+                        <p style="margin-top: 0;">Qeyd edilən ünvana çatdırılma dəhlizlərdə və keçidlərdə heç bir maneə
+                            olmamaq şərti ilə qeyd etdiyiniz yerlərə yerinə yetirilir. Keçidlərin, qapıların,
+                            dəhlizlərin, pilləkənlərin eni, hündürlüyü və uzunluğu qablaşdırmada olan məhsuldan ən azı 5
+                            santimetr böyük olmalıdır. Əgər qeyd etdiyiniz yerdəki şərtlər məhsulların çatdırılmasına
+                            mane edirsə və ya onları zədələyə bilərsə, məhsullar qeyd edilən ünvana ən yaxın olan yerə
+                            çatdırılacaq. Kuryer ərazini maneələrdən təmizləmir, otaqdakı obyektlərin yerini
+                            dəyişdirməklə məşğul olmur. Kuryerin vəzifələrinə məhsulların istismarı, xüsusiyyətləri,
+                            quraşdırılması və tənzimlənməsi üzrə məsləhətlər daxil deyil. Sifarişi qəbul edərkən
+                            sifarişi çatdıran şəxsin iştirakı ilə siz yoxlaya bilərsiniz: sifarişin xarici görünüşünü və
+                            qablaşdırılmasını sifarişdə olan məhsulların sayını komplektlik və müşayiət olunan
+                            sənədlərin mövcudluğunu çatdırılmanı həyata keçirən şəxsin iştirakı ilə məhsulların texniki
+                            xüsusiyyətlərini yoxlamaq hüququnuz var. Çatdırılma zamanı sifariş sizə və ya sifarişi alan
+                            kimi qeyd olunan şəxsə təhvil verilir. Nağd şəkildə verilən sifarişi təhvil almaq mümkün
+                            olmadıqda, sifariş onun haqqında məlumat verməyə (göndərmə nömrəsi və/və ya alıcının tam
+                            adı), habelə sifarişin dəyərini tam şəkildə ödəməyə hazır olan şəxsə təhvil verilir. Sifariş
+                            məhsulların təhvil verilməsi və çatdırılmanı təsdiq edən müşayiətedici sənədlərin
+                            imzalanması ilə sizə çatdırılmış hesab olunur. Müşayiət olunan sənədlər sizə elektron
+                            formada da təqdim edilə bilər. Azərbaycan Respublikasının hüdudlarından kənara çatdırılma
+                            (malların ixracı) həyata keçirilmir.</p>
+                    </div>
+                    <div class="control-group">
+                        <h4 style="color: #8B4513; margin-bottom: 5px;">Planlaşdırılmış çatdırılmanın qiyməti və
+                            müddəti</h4>
+                        <h6 style="color: #8B4513; margin-bottom: 5px;">Çatdırılma müddəti:</h6>
+                        <p style="margin-top: 0;">Planlaşdırılmış çatdırılmanın minimal müddəti. Sifariş kiçik
+                            ölçülüdürsə və iş günü saat 14:30-a qədər verilibsə, məhsullar Bakı şəhəri daxilində sifariş
+                            günü çatdırıla bilər. Aşağıdakı bölgələr istisna olmaqla, planlaşdırılmış çatdırılmanın
+                            müddəti 3 iş günüdür. Planlaşdırılmış çatdırılmanın qiyməti: Bir sifarişin məbləği 50 AZN-ə
+                            qədər olanda 3 AZN təşkil edir. Aşağıda göstərilən rayonlar istisna olmaqla, 50 AZN-dən
+                            yuxarı olan sifarişlər üçün planlaşdırılmış çatdırılma ödənişsizdir.</p>
+                        <h6 style="color: #8B4513; margin-bottom: 5px;">Çatdırılma qiyməti:</h6>
+                        <p style="margin-top: 0;">Rəqəmsal və kiçik məişət texnikasının Azərpoçt vasitəsilə çatdırılması
+                            pulsuzdur. Böyük məişət texnikasının (BMT) və mebelin kuryerlə çatdırılması 39.99 AZN təşkil
+                            edir. Kombinləşdirilmiş (kiçik məişət texnikası və böyük məişət texnikası) məhsulların
+                            çatdırılma qiyməti 39.99 AZN təşkil edir. Çatdırılma müddəti: Məhsullar Bakı şəhərindəki
+                            anbarlarda və ya Bakı, Sumqayıt, Xırdalan şəhərlərindəki mağazalarda olduqda çatdırılma
+                            müddəti 5 iş günü təşkil edir. Əgər məhsul başqa anbar və mağazalardadırsa, çatdırılma
+                            müddəti 14 gün təşkil edir. b) Şamaxı, Qobustan, Hacıqabul, Şirvan yaşayış məntəqələri üçün:
+                            Çatdırılma qiyməti: Rəqəmsal və kiçik məişət texnikasının Azərpoçt vasitəsilə çatdırılması
+                            pulsuzdur. Böyük məişət texnikasının və mebelin kuryer vasitəsilə çatdırılması 19.99 AZN
+                            təşkil edir. Kombinləşdirilmiş (kiçik məişət texnikası və böyük məişət texnikası)
+                            məhsulların çatdırılma qiyməti 19.99 AZN təşkil edir.</p>
+                        <h6 style="color: #8B4513; margin-bottom: 5px;">Ekspress çatdırılma</h6>
+                        <p style="margin-top: 0;">а) Rəqəmsal və kiçik məişət texnikası Areal: Bakı, Sumqayıt, Xırdalan,
+                            Quba*, Gəncə, Masallı, Mingəçevir*, Bərdə, Qəbələ. Ekspress çatdırılma qiyməti rəqəmsal və
+                            kiçik məişət texnikası (KMT) üçün 19.99 AZN təşkil edir. Çatdırılma müddəti: Bakı Sumqayıt,
+                            Xırdalan: 17:00-dək verilən sifarişlər həmin gün çatdırılır. 17:00-dan sonra verilən
+                            sifarişlər növbəti gün çatdırılır. Növbəti günə qalan sifarişlər 09:00 - 12:00 arası
+                            çatdırılır. Quba*, Gəncə, Masallı, Mingəçevir*, Bərdə, Qəbələ: Məhsullar növbəti gün
+                            çatdırılır. Qeyd olunan müddət ərzində məhsullar çatdırılmazsa, məbləğ geri qaytarılacaq. b)
+                            Böyük məişət texnikası Areal: Bakı, Sumqayıt, Xırdalan, Quba*, Gəncə, Masallı, Mingəçevir*,
+                            Bərdə, Qəbələ. Ekspress çatdırılma qiyməti böyük məişət texnikası (BMT) üçün 19.99 AZN
+                            təşkil edir. Çatdırılma müddəti: Sifariş qəbul edildikdən sonra məhsullar, sifarişlə
+                            hazırlanmalı olan mallar istisna olmaqla, 24 saat ərzində ünvana çatdırılır. Qeyd olunan
+                            müddət ərzində məhsullar çatdırılmazsa, məbləğ geri qaytarılacaq.</p>
+                    </div>
+                    <div class="control-group">
+                        <h4 style="color: #8B4513; margin-bottom: 5px;">Mümkün olan ödəniş üsulları</h4>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Bank kartları ilə onlayn ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Kontakt-dan hissə-hissə ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» KapitalBank kartı ilə onlayn ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda KapitalBank kartı ilə
+                            ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda Unibank kartı ilə
+                            ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda ABB kartı ilə ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda Bank of Baku kartı ilə
+                            ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda Yapı Kredi Bank kartı
+                            ilə ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda bank kartı ilə
+                            ödəniş</p>
+                        <p style="margin-top: 0; margin-bottom: 5px;">»» Sifarişi təhvil alanda nağd ödəniş</p>
+                        <p style="margin-top: 0;">»» Apple Pay, Google Pay vasitəsilə ödəniş</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delivery Payment End -->
+
+
+</section>
+
+</body>
+</html>
