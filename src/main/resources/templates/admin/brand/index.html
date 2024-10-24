@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kateqoriyalar</title>
+    <title>Brendlər</title>
 </head>
 <body>
 
@@ -21,18 +21,18 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="category : ${categories}">
-            <th th:text="${category.id}" scope="row">1</th>
-            <td th:text="${category.name}">Mark</td>
+        <tr th:each="brand : ${brands}">
+            <th th:text="${brand.id}" scope="row">1</th>
+            <td th:text="${brand.name}">Mark</td>
             <td>
-                <a th:href="'/admin/category/update/' + ${category.id}">Update</a>
-                <a th:href="'/admin/category/delete/' + ${category.id}">Delete</a>
+                <a th:href="'/admin/brand/update/' + ${brand.id}">Update</a>
+                <a th:href="'/admin/brand/delete/' + ${brand.id}">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a href="/admin/category/create">Create new category</a>
+    <a href="/admin/brand/create">Create new brand</a>
 
 </section>
 

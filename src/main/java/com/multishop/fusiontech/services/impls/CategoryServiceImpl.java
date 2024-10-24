@@ -2,6 +2,7 @@ package com.multishop.fusiontech.services.impls;
 
 import com.multishop.fusiontech.dtos.category.*;
 import com.multishop.fusiontech.models.Category;
+import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.CategoryRepository;
 import com.multishop.fusiontech.services.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -47,9 +48,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryAdminDto> getAdminCategories() {
-        List<Category> categories = categoryRepository.findAll();
-        List<CategoryAdminDto> result = categories.stream().map(category -> modelMapper.map(category, CategoryAdminDto.class)).toList();
-        return result;
+        List<Category> findCategories = categoryRepository.findAll();
+        List<CategoryAdminDto> adminCategories = findCategories.stream().map(category -> modelMapper.map(category, CategoryAdminDto.class)).toList();
+        return adminCategories;
     }
 
     @Override
@@ -69,12 +70,18 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category findCategory = categoryRepository.findById(id).orElseThrow();
             findCategory.setName(categoryUpdateDto.getName());
+            findCategory.setImage(categoryUpdateDto.getImage());
             categoryRepository.save(findCategory);
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
     }
 
     @Override

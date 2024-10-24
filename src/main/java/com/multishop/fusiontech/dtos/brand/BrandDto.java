@@ -1,4 +1,4 @@
-package com.multishop.fusiontech.dtos.singledtos;
+package com.multishop.fusiontech.dtos.brand;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,7 +3,7 @@ package com.multishop.fusiontech.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -18,13 +18,17 @@ public class Product {
     private String description;
     private String moreDetail;
     private Double discountPrice;
-    private Date discountDate;
+    private LocalDateTime discountDate;
     private Boolean featured;
     private Boolean offered;
     private Double rating;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
+    /* cascade = CascadeType.ALL: `Product` saxlanarkən, əlaqəli `Image` obyektləri də avtomatik
+       saxlanır; yeniləndikdə/silinəndə də bu əməliyyatlar onlara tətbiq olunur.
+       orphanRemoval = true: `Product`-dan bir `Image` silindikdə, həmin şəkil database-dən də
+       avtomatik silinir. */
 
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;

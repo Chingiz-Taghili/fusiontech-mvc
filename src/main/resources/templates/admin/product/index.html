@@ -2,11 +2,11 @@
 <html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{dashboard/layout}"
+        layout:decorate="~{admin/layout}"
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Məhsullar</title>
 </head>
 <body>
 
@@ -18,7 +18,9 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
-            <th scope="col">Image</th>
+            <th scope="col">Discount Price</th>
+            <th scope="col">Discount Date</th>
+            <th scope="col">Brand</th>
             <th scope="col">Category</th>
             <th scope="col">Actions</th>
         </tr>
@@ -26,10 +28,12 @@
         <tbody>
         <tr th:each="product : ${products.data}">
             <th th:text="${product.id}" scope="row">1</th>
-            <td th:text="${product.name}">Mark</td>
-            <td th:text="${product.price}">Mark</td>
-            <td >Mark</td>
-            <td th:text="${product.category.name}">Mark</td>
+            <td th:text="${product.name}">Name</td>
+            <td th:text="${product.price}">Price</td>
+            <td th:text="${product.discountPrice}">Discount Price</td>
+            <td th:text="${product.discountDate}">Discount Date</td>
+            <td th:text="${product.brand.name}">Brand</td>
+            <td th:text="${product.category.name}">Category</td>
             <td>
                 <a th:href="'/admin/product/update/' + ${product.id}">Update</a>
                 <a th:href="'/admin/product/delete/' + ${product.id}">Delete</a>
@@ -37,6 +41,37 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- Button for Pagination -->
+    <div class="pagination" style="display: flex; justify-content: center;">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${products.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/product(currentPage=${products.currentPage - 1})}">Previous</a>
+            </li>
+
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, products.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/product(currentPage=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   style="background-color: ${products.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${products.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px;
+                      border-radius: 5px;
+                      text-decoration: none;">
+                    1
+                </a>
+            </li>
+
+            <!-- Next düyməsi -->
+            <li th:if="${products.currentPage < products.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/product(currentPage=${products.currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <a href="/admin/product/create">Create new product</a>
 
 </section>
 

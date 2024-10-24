@@ -9,6 +9,8 @@ public interface ProductService {
 
     ProductDetailDto getProductDetail(Long id);
 
+    ProductUpdateDto getUpdatedProduct(Long id);
+
     List<ProductFeaturedDto> getFeaturedProducts();
 
     List<ProductRelatedDto> getRelatedProducts(Long categoryId, Long productId);
@@ -26,4 +28,10 @@ public interface ProductService {
     List<ProductShopDto> getSearchProducts(String keyword);
 
     void updateProductRating(Long productId);
+
+    boolean createProduct(ProductCreateDto productCreateDto);
+
+    boolean updateProduct(Long id, ProductUpdateDto productUpdateDto);
+
+    void deleteProduct(Long id);
 }

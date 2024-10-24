@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Məhsullar - Əlavə et</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <form method="post" onsubmit="return validateAndSubmitForm();" style="margin-left: 50px;">
+        <div style="margin: 10px 0;">
+            <input type="text" name="name" placeholder="Product name" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="number" name="price" placeholder="Price" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="description" placeholder="Description" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="moreDetail" placeholder="More detail" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="number" name="discountPrice" placeholder="Discount price" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <label for="discountDate" style="display: block; margin-bottom: 1px;">Discount Date:</label>
+            <input type="datetime-local" name="discountDate" id="discountDate" style="width: 350px;" required>
+        </div>
+
+        <!-- Dinamik şəkil URL inputları -->
+        <div id="imagesContainer" style="margin: 10px 0;">
+            <label for="images" style="display: block; margin-bottom: 1px;">Product Images:</label>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <input type="text" name="images" placeholder="Enter image URL" id="images" style="width: 350px;" required>
+                <button type="button" onclick="removeImage(this)" style="margin-left: 5px; display: none;">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addImage()" style="margin-bottom: 10px;">Add Another Image</button>
+
+
+
+        <div style="margin: 10px 0;">
+            <input type="checkbox" id="featured" name="featured">
+            <label for="featured">Is featured?</label>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="checkbox" id="offered" name="offered">
+            <label for="offered">Is offered?</label>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="brand" style="display: block; margin-bottom: 1px;">Brand:</label>
+            <select name="brand" id="brand" style="width: 350px;" required>
+                <option value="">Select brand</option>
+                <th:block th:each="brand : ${brands}">
+                    <option th:value="${brand.id}" th:text="${brand.name}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="category" style="display: block; margin-bottom: 1px;">Category:</label>
+            <select name="category" id="category" style="width: 350px;" required>
+                <option value="">Select category</option>
+                <th:block th:each="category : ${categories}">
+                    <option th:value="${category.id}" th:text="${category.name}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <label for="subcategory" style="display: block; margin-bottom: 1px;">Subcategory:</label>
+            <select name="subcategory" id="subcategory" style="width: 350px;" required>
+                <option value="">Select subcategory</option>
+                <th:block th:each="subcategory : ${subcategories}">
+                    <option th:value="${subcategory.id}" th:text="${subcategory.subcategoryName.name}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+
+
+</section>
+
+</body>
+</html>

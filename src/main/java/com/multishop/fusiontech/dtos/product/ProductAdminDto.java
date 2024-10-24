@@ -1,9 +1,12 @@
 package com.multishop.fusiontech.dtos.product;
 
-import com.multishop.fusiontech.dtos.category.CategoryHomeDto;
+import com.multishop.fusiontech.models.Brand;
+import com.multishop.fusiontech.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +15,8 @@ public class ProductAdminDto {
     private Long id;
     private String name;
     private double price;
-    private String image;
-    private CategoryHomeDto category;
+    private double discountPrice;
+    private LocalDateTime discountDate;
+    private Brand brand;
+    private Category category;
 }

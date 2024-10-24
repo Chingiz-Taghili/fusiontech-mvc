@@ -19,5 +19,7 @@ public interface CategoryService {
 
     boolean updateCategory(Long id, CategoryUpdateDto categoryUpdateDto);
 
+    void deleteCategory(Long id);
+
     Category getCategoryById(Long id);
 }

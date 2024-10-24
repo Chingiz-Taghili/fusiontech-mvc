@@ -2,6 +2,7 @@ package com.multishop.fusiontech.services.impls;
 
 import com.multishop.fusiontech.dtos.review.ReviewAddDto;
 import com.multishop.fusiontech.dtos.review.ReviewShowDto;
+import com.multishop.fusiontech.models.Product;
 import com.multishop.fusiontech.models.Review;
 import com.multishop.fusiontech.models.UserEntity;
 import com.multishop.fusiontech.repositories.ProductRepository;
@@ -43,6 +44,12 @@ public class ReviewServiceImpl implements ReviewService {
     public boolean writeReview(ReviewAddDto reviewAddDto, String userEmail) {
 
         UserEntity findUser = userRepository.findByEmail(userEmail);
+        if (findUser == null) {
+            throw new RuntimeException("User not found with email: " + userEmail);
+        }
+
+        Product findProduct = productRepository.findById(reviewAddDto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Review review = new Review();
         review.setUserName(findUser.getName());
@@ -51,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
         review.setComment(reviewAddDto.getComment());
         review.setRating(reviewAddDto.getRating());
         review.setWritingDate(new Date());
-        review.setProduct(productRepository.findById(reviewAddDto.getProductId()).orElseThrow());
+        review.setProduct(findProduct);
 
         reviewRepository.save(review);
 

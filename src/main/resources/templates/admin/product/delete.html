@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kateqoriyalar - Silinmə</title>
+    <title>Məhsullar - Silinmə</title>
 </head>
 <body>
 
@@ -16,11 +16,11 @@
 
     <div style="text-align: center; margin: 20px;">
         <button style="background-color: #007bff; color: white; border: none; border-radius: 4px; padding: 10px 15px; cursor: pointer; margin-right: 10px;">
-            <a href="/admin/category" style="color: white; text-decoration: none;">Cancel</a>
+            <a href="/admin/product" style="color: white; text-decoration: none;">Cancel</a>
         </button>
 
         <form method="post" style="display: inline;">
-            <input type="hidden" name="categoryId" th:value="${category.id}">
+            <input type="hidden" name="productId" th:value="${product.id}">
             <button type="submit" style="background-color: #dc3545; color: white; border: none; border-radius: 4px; padding: 10px 15px; cursor: pointer;">
                 Delete
             </button>

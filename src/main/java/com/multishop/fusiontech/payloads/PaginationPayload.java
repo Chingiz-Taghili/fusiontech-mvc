@@ -11,5 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PaginationPayload<TEntity> {
     private Integer totalPage;
+    private Integer currentPage;
     private List<TEntity> data;
 }
