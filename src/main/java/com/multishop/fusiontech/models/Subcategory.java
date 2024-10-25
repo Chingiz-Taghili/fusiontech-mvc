@@ -12,6 +12,6 @@ public class Subcategory {
     private Long id;
     @ManyToOne
     private Category category;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private SubcategoryName subcategoryName;
 }

@@ -12,15 +12,29 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
+    <form method="post" onsubmit="return validateAndSubmitFormUpdate()" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
             <input type="text" name="name" th:value="${category.name}" placeholder="Category name"
-                   style="width: 350px;">
+                   style="width: 350px;" required>
         </div>
         <div style="margin: 10px 0;">
             <input type="text" name="image" th:value="${category.image}" placeholder="Category image"
-                   style="width: 350px;">
+                   style="width: 350px;" required>
         </div>
+
+        <!-- Dinamik alt kateqoriya inputları -->
+        <div id="subcategoriesContainer" style="margin: 10px 0;">
+            <label for="subcategories" style="display: block; margin-bottom: 1px;">Subcategories:</label>
+            <div th:each="subcategory, iterStat : ${category.subcategories}"
+                 style="margin-bottom: 10px; display: flex; align-items: center;">
+                <input th:value="${subcategory.subcategoryName.name}" type="text" name="subcategoriesName"
+                       placeholder="Enter subcategory" style="width: 350px; display: block; margin-right: 5px;"
+                       id="subcategories" required>
+                <button type="button" onclick="removeSubcategoryUpdate(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" onclick="addSubcategoryUpdate()">Add Another Subcategory</button>
+
         <div style="margin: 10px 0;">
             <input type="submit" value="Update">
         </div>

@@ -2,12 +2,15 @@ package com.multishop.fusiontech.services.impls;
 
 import com.multishop.fusiontech.dtos.category.*;
 import com.multishop.fusiontech.models.Category;
+import com.multishop.fusiontech.models.Subcategory;
+import com.multishop.fusiontech.models.SubcategoryName;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.CategoryRepository;
 import com.multishop.fusiontech.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryShopDto> getShopCategories() {
-        List<Category> repoCategories  = categoryRepository.findAll();
+        List<Category> repoCategories = categoryRepository.findAll();
         List<CategoryShopDto> shopCategories = repoCategories.stream().map(category -> modelMapper.map(category, CategoryShopDto.class)).toList();
         return shopCategories;
     }
@@ -57,6 +60,16 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean createCategory(CategoryCreateDto categoryCreateDto) {
         try {
             Category category = modelMapper.map(categoryCreateDto, Category.class);
+            List<Subcategory> subcategories = new ArrayList<>();
+            for (String name : categoryCreateDto.getSubcategoryNames()) {
+                SubcategoryName subcategoryName = new SubcategoryName();
+                subcategoryName.setName(name);
+                Subcategory subcategory = new Subcategory();
+                subcategory.setCategory(category);
+                subcategory.setSubcategoryName(subcategoryName);
+                subcategories.add(subcategory);
+            }
+            category.setSubcategories(subcategories);
             categoryRepository.save(category);
             return true;
         } catch (Exception e) {
@@ -71,6 +84,20 @@ public class CategoryServiceImpl implements CategoryService {
             Category findCategory = categoryRepository.findById(id).orElseThrow();
             findCategory.setName(categoryUpdateDto.getName());
             findCategory.setImage(categoryUpdateDto.getImage());
+
+            List<Subcategory> newSubcategories = new ArrayList<>();
+            for (String name : categoryUpdateDto.getSubcategoriesName()) {
+                SubcategoryName subcategoryName = new SubcategoryName();
+                subcategoryName.setName(name);
+                Subcategory subcategory = new Subcategory();
+                subcategory.setSubcategoryName(subcategoryName);
+                subcategory.setCategory(findCategory);
+                newSubcategories.add(subcategory);
+            }
+            // Kolleksiyanı yeniləyir
+            findCategory.getSubcategories().clear(); // Köhnə alt kateqoriyaları silmək
+            findCategory.getSubcategories().addAll(newSubcategories); // Yeni alt kateqoriyaları əlavə etmək
+
             categoryRepository.save(findCategory);
             return true;
         } catch (Exception e) {

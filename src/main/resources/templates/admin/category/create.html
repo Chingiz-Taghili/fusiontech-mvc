@@ -12,13 +12,26 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
+    <form method="post" onsubmit="return validateAndSubmitFormCreate();" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" placeholder="Write category name.." style="width: 350px;">
+            <input type="text" name="name" placeholder="Write category name" style="width: 350px;" required>
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="image" placeholder="Enter image url.." style="width: 350px;">
+            <input type="text" name="image" placeholder="Enter image url" style="width: 350px;" required>
         </div>
+
+        <!-- Dinamik alt kateqoriya inputları -->
+        <div id="SubcategoriesContainer" style="margin: 10px 0;">
+            <label for="subcategories" style="display: block; margin-bottom: 1px;">Subcategories:</label>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <input type="text" name="subcategoryNames" placeholder="Enter Subcategory" id="subcategories"
+                       style="width: 350px;" required>
+                <button type="button" onclick="removeImage(this)" style="margin-left: 5px; display: none;">Remove
+                </button>
+            </div>
+        </div>
+        <button type="button" onclick="addSubcategoryCreate()" style="margin-bottom: 10px;">Add Another Subcategory</button>
+
         <div style="margin: 10px 0;">
             <button type="submit">Create</button>
         </div>
