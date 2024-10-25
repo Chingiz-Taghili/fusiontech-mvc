@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>İstifadəçilər</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <th th:text="${user.id}" scope="row">1</th>
+            <td th:text="${user.name}">Name</td>
+            <td th:text="${user.surname}">Surname</td>
+            <td th:text="${user.email}">Email</td>
+            <td th:text="${user.gender}">Gender</td>
+            <td>
+                <a th:href="'/admin/user/update/' + ${user.id}">Update</a>
+                <a th:href="'/admin/user/delete/' + ${user.id}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/admin/user/create">Create new user</a>
+
+</section>
+
+</body>
+</html>

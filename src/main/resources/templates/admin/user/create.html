@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>İstifadəçilər - Əlavə et</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <form method="post" style="margin-left: 50px;">
+        <div style="margin: 10px 0;">
+            <input type="text" name="name" placeholder="Write user name" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="surname" placeholder="Write user surname" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="email" name="email" placeholder="Enter email" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="radio" name="gender" value="0" id="genderMale" checked/>
+            <label class="form-label" for="genderMale">Male</label>
+            <input type="radio" name="gender" value="1" id="genderFemale"/>
+            <label class="form-label" for="genderFemale">Female</label>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="image" placeholder="Enter image url" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="password" placeholder="Enter password" style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <button type="submit">Create</button>
+        </div>
+    </form>
+
+</section>
+
+</body>
+</html>
