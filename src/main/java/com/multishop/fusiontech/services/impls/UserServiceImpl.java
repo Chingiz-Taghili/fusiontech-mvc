@@ -4,6 +4,10 @@ import com.multishop.fusiontech.dtos.auth.RegisterDto;
 import com.multishop.fusiontech.dtos.product.ProductBasketDto;
 import com.multishop.fusiontech.dtos.product.ProductShopDto;
 import com.multishop.fusiontech.dtos.singledtos.UserCartDto;
+import com.multishop.fusiontech.dtos.user.UserCreateDto;
+import com.multishop.fusiontech.dtos.user.UserDto;
+import com.multishop.fusiontech.dtos.user.UserUpdateDto;
+import com.multishop.fusiontech.enums.Gender;
 import com.multishop.fusiontech.models.Basket;
 import com.multishop.fusiontech.models.Product;
 import com.multishop.fusiontech.models.UserEntity;
@@ -36,6 +40,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getUserById(Long id) {
+        UserEntity repoUser = userRepository.findById(id).orElseThrow();
+        UserDto user = modelMapper.map(repoUser, UserDto.class);
+        return user;
+    }
+
+    @Override
     public boolean register(RegisterDto registerDto) {
         UserEntity findUser = userRepository.findByEmail(registerDto.getEmail());
         if (findUser != null) {
@@ -46,6 +57,52 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(password);
         userRepository.save(newUser);
         return true;
+    }
+
+    @Override
+    public boolean createUser(UserCreateDto userCreateDto) {
+        UserEntity findUser = userRepository.findByEmail(userCreateDto.getEmail());
+        if (findUser != null) {
+            return false;
+        }
+        UserEntity newUser = modelMapper.map(userCreateDto, UserEntity.class);
+        String password = encoder.encode(userCreateDto.getPassword());
+        newUser.setPassword(password);
+        userRepository.save(newUser);
+        return true;
+    }
+
+    @Override
+    public boolean updateUser(Long id, UserUpdateDto userUpdateDto) {
+        try {
+            UserEntity findUser = userRepository.findById(id).orElseThrow();
+            findUser.setName(userUpdateDto.getName());
+            findUser.setSurname(userUpdateDto.getSurname());
+            findUser.setEmail(userUpdateDto.getEmail());
+            findUser.setGender(userUpdateDto.getGender());
+            findUser.setImage(userUpdateDto.getImage());
+            if (userUpdateDto.getPassword() != null && !userUpdateDto.getPassword().isEmpty()) {
+                String password = encoder.encode(userUpdateDto.getPassword());
+                findUser.setPassword(password);
+            }
+            userRepository.save(findUser);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        List<UserEntity> repoUsers = userRepository.findAll();
+        List<UserDto> users = repoUsers.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
+        return users;
     }
 
     @Override

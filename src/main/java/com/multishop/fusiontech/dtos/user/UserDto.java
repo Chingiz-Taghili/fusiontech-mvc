@@ -1,5 +1,6 @@
 package com.multishop.fusiontech.dtos.user;
 
+import com.multishop.fusiontech.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ public class UserDto {
     private String name;
     private String surname;
     private String email;
-    private int gender;
-    private String imageUrl;
+    private Gender gender;
+    private String image;
     private String password;
 }

@@ -25,7 +25,7 @@
                         <li data-target="#header-carousel" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <div th:each="slider : ${sliders}" class="carousel-item position-relative active"
+                        <div th:each="slider : ${sliders}"  th:attr="class=${slider.id == 1 ? 'carousel-item position-relative active' : 'carousel-item position-relative active'}"
                              style="height: 430px;">
                             <img class="position-absolute w-100 h-100" th:src="${slider.image}"
                                  style="object-fit: cover;">

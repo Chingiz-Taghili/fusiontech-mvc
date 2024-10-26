@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Brendlər - Yenilə</title>
+    <title>İstifadəçilər - Yenilə</title>
 </head>
 <body>
 
@@ -14,8 +14,32 @@
 
     <form method="post" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" th:value="${brand.name}" placeholder="Brand name"
+            <input type="text" name="name" th:value="${user.name}" placeholder="User name"
                    style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="surname" th:value="${user.surname}" placeholder="User surname"
+                   style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="email" name="email" th:value="${user.email}" placeholder="User email"
+                   style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="radio" name="gender" value="MALE" id="genderMale"
+                   th:checked="${user.gender == T(com.multishop.fusiontech.enums.Gender).MALE}"/>
+            <label class="form-label" for="genderMale">Male</label>
+            <input type="radio" name="gender" value="FEMALE" id="genderFemale"
+                   th:checked="${user.gender == T(com.multishop.fusiontech.enums.Gender).FEMALE}"/>
+            <label class="form-label" for="genderFemale">Female</label>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="text" name="image" th:value="${user.image}" placeholder="User image url"
+                   style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
+            <input type="password" name="password" placeholder="Leave empty to keep current password"
+                   style="width: 350px;">
         </div>
         <div style="margin: 10px 0;">
             <input type="submit" value="Update">
