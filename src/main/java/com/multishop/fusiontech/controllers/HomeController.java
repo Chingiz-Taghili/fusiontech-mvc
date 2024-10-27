@@ -6,7 +6,7 @@ import com.multishop.fusiontech.dtos.product.ProductFeaturedDto;
 import com.multishop.fusiontech.dtos.product.ProductOfferedDto;
 import com.multishop.fusiontech.dtos.product.ProductShopDto;
 import com.multishop.fusiontech.dtos.singledtos.AppealDto;
-import com.multishop.fusiontech.dtos.singledtos.SliderHomeDto;
+import com.multishop.fusiontech.dtos.slider.SliderHomeDto;
 import com.multishop.fusiontech.dtos.singledtos.TestimonialDto;
 import com.multishop.fusiontech.services.*;
 import org.springframework.stereotype.Controller;

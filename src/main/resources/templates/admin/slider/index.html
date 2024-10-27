@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slaydlar</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Active</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="slider : ${sliders}">
+            <th th:text="${slider.id}" scope="row">1</th>
+            <td th:text="${slider.title}">Mark</td>
+            <td th:text="${slider.description}">Mark</td>
+            <td th:text="${slider.active}">Mark</td>
+            <td>
+                <a th:href="'/admin/slider/update/' + ${slider.id}">Update</a>
+                <a th:href="'/admin/slider/delete/' + ${slider.id}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/admin/slider/create">Create new slider</a>
+
+</section>
+
+</body>
+</html>
