@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface BrandService {
 
+    List<BrandDto> getSearchBrands(String keyword);
+
     List<BrandDto> getAllBrands();
 
     Brand getBrandById(Long id);

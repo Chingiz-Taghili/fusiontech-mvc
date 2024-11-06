@@ -19,10 +19,10 @@ public class UserEntity {
     private String email;
     private String password;
     private Gender gender;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorite> favorites;
-    @OneToMany(mappedBy = "user")
-    private List<Basket> baskets;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 }

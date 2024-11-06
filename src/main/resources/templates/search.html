@@ -62,14 +62,15 @@
                             </div>
                         </div>
                     </div>
-                    <div th:each="product : ${products}" class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div th:each="product : ${products.data}" class="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" th:src="${product.image}" alt="">
                                 <div class="product-action">
                                     <a th:href="'/cart/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
                                             class="fa fa-shopping-cart"></i></a>
-                                    <a th:href="'/favorites/add/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
+                                    <a th:href="'/favorites/add/' + ${product.id}"
+                                       class="btn btn-outline-dark btn-square"><i
                                             class="far fa-heart"></i></a>
                                     <a th:href="'/detail/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
                                             class="fa fa-search"></i></a>
@@ -85,12 +86,11 @@
                                     </h6>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small>(99)</small>
+                                    <small th:each="star : ${#numbers.sequence(1, 5)}"
+                                           th:classappend="${product.rating >= star} ? 'fas fa-star text-primary mr-1' :
+                                           (${product.rating >= star - 0.5} ? 'fas fa-star-half-alt text-primary mr-1' : 'far fa-star text-primary mr-1')">
+                                    </small>
+                                    <small th:text="${'(' + product.reviews.size + ')'}">(99)</small>
                                 </div>
                             </div>
                         </div>
@@ -98,11 +98,22 @@
                     <div class="col-12">
                         <nav>
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                <!-- Previous düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage > 1}">
+                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage - 1}, keyword=${keyword})}">&laquo;
+                                        Əvvəlki</span></a>
+                                </li>
+                                <!-- Dinamik səhifə nömrələri -->
+                                <li class="page-item" th:each="page : ${#numbers.sequence(1, products.totalPage)}"
+                                    th:classappend="${page == products.currentPage} ? 'active'">
+                                    <a class="page-link" th:href="@{/search(currentPage=${page}, keyword=${keyword})}"
+                                       th:text="${page}">1</a>
+                                </li>
+                                <!-- Next düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage < products.totalPage}">
+                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage + 1}, keyword=${keyword})}">Növbəti
+                                        &raquo;</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>

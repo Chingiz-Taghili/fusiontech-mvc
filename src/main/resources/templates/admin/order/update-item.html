@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sifariş Məhsulu - Yenilə</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <form method="post" style="margin-left: 50px;">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th th:text="${orderItem.id}" scope="row">Id</th>
+                <th th:text="${orderItem.product.name}">Product</th>
+                <!-- Editable Price input field -->
+                <th>
+                    <input type="number" name="price" th:value="${orderItem.price}" placeholder="Enter price"
+                           style="width: 95px;" step="0.01" required> Manat
+                </th>
+                <!-- Editable Quantity input field -->
+                <th>
+                    <input type="number" name="quantity" th:value="${orderItem.quantity}" placeholder="Enter quantity"
+                           style="width: 85px;" step="1" required> Ədəd
+                </th>
+            </tr>
+            </tbody>
+        </table>
+        <div style="margin: 10px 0;">
+            <input type="submit" value="Update">
+        </div>
+    </form>
+
+</section>
+
+</body>
+</html>

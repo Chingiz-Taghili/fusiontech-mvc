@@ -13,57 +13,65 @@
 
 <section layout:fragment="content">
 
+    <div style="display: flex; justify-content: center; margin-top: 35px;">
+        <form method="post" action="/register">
+            <div style="background-color: #FFD333; width: 435px; display: flex; flex-direction: column;
+        align-items: center; padding: 20px; border-radius: 15px;">
+                <h2 style="color: #3D464D; margin: 0;">Qeydiyyatdan keç</h2>
+                <p style="color: #3D464D; margin-top: 10px;">Zəhmət olmasa məlumatları tam doldurun!</p>
+                <!-- Ad və Soyad inputları yan-yana -->
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                    <div style="margin-right: 15px;">
+                        <input type="text" name="name" placeholder="Ad" required
+                               style="width: 195px; height: 40px; padding-left: 10px; outline: none;
+               box-shadow: none; border: 1px solid #ccc; border-radius: 5px;"/>
+                    </div>
+                    <div>
+                        <input type="text" name="surname" placeholder="Soyad" required
+                               style="width: 195px; height: 40px; padding-left: 10px; outline: none;
+               box-shadow: none; border: 1px solid #ccc; border-radius: 5px;"/>
+                    </div>
+                </div>
+                <!-- Gender Radio Buttons -->
+                <div style="margin-top: 20px; width: 400px; display: flex;
+                        align-items: center; justify-content: space-between;">
+                    <label style="color: #3D464D; margin-right: 10px; flex: 1;">Cins:</label>
+                    <div style="display: inline-block; margin-right: 15px; border: 1px solid #FFFFFF;
+                            padding: 10px; cursor: pointer; flex: 1; border-radius: 5px;">
+                        <input type="radio" id="genderMale" name="gender" value="MALE" checked/>
+                        <label for="genderMale" style="margin: 0; cursor: pointer; color: #3D464D;">Kişi</label>
+                    </div>
+                    <div style="display: inline-block; border: 1px solid #FFFFFF; padding: 10px;
+                            cursor: pointer; flex: 1; border-radius: 5px;">
+                        <input type="radio" id="genderFemale" name="gender" value="FEMALE"/>
+                        <label for="genderFemale" style="margin: 0; cursor: pointer; color: #3D464D;">Qadın</label>
+                    </div>
+                </div>
+                <!-- Email Input -->
+                <div style="margin-top: 20px; display: flex; justify-content: center;">
+                    <input type="email" name="email" placeholder="E-mail" required
+                           style="width: 405px; height: 40px; padding-left: 10px; outline: none;
+                                   box-shadow: none; border: 1px solid #ccc; border-radius: 5px;"/>
+                </div>
+                <!-- Şifrə Input -->
+                <div style="margin-top: 20px; display: flex; justify-content: center;">
+                    <input type="password" name="password" placeholder="Şifrə" required
+                           style="width: 405px; height: 40px; padding-left: 10px; outline: none;
+                                   box-shadow: none; border: 1px solid #ccc; border-radius: 5px;"/>
+                </div>
+                <!-- Submit Button -->
+                <button class="btn btn-outline-light btn-lg px-4" type="submit" style="margin-top: 20px;
+                border-color: #3D464D; color: #3D464D; border-radius: 5px;">
+                    Qeydiyyat
+                </button>
 
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
-
-                    <form method="post" action="/register" class="card-body p-5 text-center">
-
-                        <div class="mb-md-5 mt-md-4 pb-5">
-
-                            <h2 class="fw-bold mb-2 text-uppercase">Qeydiyyat</h2>
-                            <p class="text-white-50 mb-5">Zəhmət olmasa məlumatları tam doldurun!</p>
-
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="email" id="typeEmailX" class="form-control form-control-lg" name="email"/>
-                                <label class="form-label" for="typeEmailX">E-mail</label>
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="text" id="typeName" class="form-control form-control-lg" name="name"/>
-                                <label class="form-label" for="typeName">Ad</label>
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="text" id="typeSurname" class="form-control form-control-lg" name="surname"/>
-                                <label class="form-label" for="typeSurname">Soyad</label>
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="password" id="typePasswordX" class="form-control form-control-lg" name="password"/>
-                                <label class="form-label" for="typePasswordX">Şifrə</label>
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline form-white mb-4">
-                                <input type="radio" id="typeGender1" name="gender" value="0" checked/>
-                                <label class="form-label" for="typeGender1">Kişi</label>
-                                <input type="radio" id="typeGender2" name="gender" value="1"/>
-                                <label class="form-label" for="typeGender2">Qadın</label>
-                            </div>
-
-                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" type="submit">Qeydiyyat</button>
-
-                        </div>
-
-                    </form>
-
+                <div style="margin-top: 20px;">
+                    <p class="mb-0" style="color: #3D464D;">Artıq hesabın var? <a href="/login" style="color: #50666A;">Daxil OL</a>
+                    </p>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-
 
 </section>
 

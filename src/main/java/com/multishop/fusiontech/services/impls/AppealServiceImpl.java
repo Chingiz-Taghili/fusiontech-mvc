@@ -26,7 +26,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public boolean placeAppeal(AppealDto appealDto) {
+    public boolean createAppeal(AppealDto appealDto) {
         try {
             Appeal appeal = modelMapper.map(appealDto, Appeal.class);
             appealRepository.save(appeal);
@@ -37,19 +37,30 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public PaginationPayload<AppealDto> getAdminAppeals(Integer pageNumber) {
-
-        pageNumber = pageNumber == null ? 1 : pageNumber;
+    public PaginationPayload<AppealDto> getSearchAppeals(String keyword, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
         Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
-        Page<Appeal> appeals = appealRepository.findAll(pageable);
+        Page<Appeal> repoAppeals = appealRepository.findByKeywordInColumnsIgnoreCase(keyword, pageable);
 
-        List<AppealDto> result = appeals.getContent().stream().map(appeal -> modelMapper.map(appeal, AppealDto.class)).toList();
+        List<AppealDto> appeals = repoAppeals.getContent().stream().map(appeal -> modelMapper.map(appeal, AppealDto.class)).toList();
+        PaginationPayload<AppealDto> paginationAppeals = new PaginationPayload<>(
+                repoAppeals.getTotalPages(), pageNumber, appeals);
 
-        PaginationPayload<AppealDto> paginationPayload = new PaginationPayload<>();
-        paginationPayload.setTotalPage(appeals.getTotalPages());
-        paginationPayload.setCurrentPage(pageNumber);
-        paginationPayload.setData(result);
+        return paginationAppeals;
+    }
 
-        return paginationPayload;
+    @Override
+    public PaginationPayload<AppealDto> getAllAppeals(Integer pageNumber) {
+
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 15, Sort.by("id"));
+        Page<Appeal> repoAppeals = appealRepository.findAll(pageable);
+
+        List<AppealDto> appeals = repoAppeals.getContent().stream().map(appeal -> modelMapper.map(appeal, AppealDto.class)).toList();
+
+        PaginationPayload<AppealDto> paginationAppeals = new PaginationPayload<>
+                (repoAppeals.getTotalPages(), pageNumber, appeals);
+
+        return paginationAppeals;
     }
 }

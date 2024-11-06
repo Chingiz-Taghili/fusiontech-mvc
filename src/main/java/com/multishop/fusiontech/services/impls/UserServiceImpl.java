@@ -1,19 +1,22 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.auth.RegisterDto;
-import com.multishop.fusiontech.dtos.product.ProductBasketDto;
-import com.multishop.fusiontech.dtos.product.ProductShopDto;
-import com.multishop.fusiontech.dtos.singledtos.UserCartDto;
+import com.multishop.fusiontech.dtos.cart.CartDto;
+import com.multishop.fusiontech.dtos.cart.CartItemDto;
+import com.multishop.fusiontech.dtos.product.ProductDto;
 import com.multishop.fusiontech.dtos.user.UserCreateDto;
 import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.dtos.user.UserUpdateDto;
-import com.multishop.fusiontech.enums.Gender;
-import com.multishop.fusiontech.models.Basket;
+import com.multishop.fusiontech.models.CartItem;
 import com.multishop.fusiontech.models.Product;
 import com.multishop.fusiontech.models.UserEntity;
+import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.UserRepository;
 import com.multishop.fusiontech.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +37,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) {
+    public List<UserDto> getSearchUsers(String keyword) {
+        List<UserEntity> repoUsers = userRepository.findByKeywordInColumnsIgnoreCase(keyword);
+        List<UserDto> users = repoUsers.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
+        return users;
+    }
+
+    @Override
+    public UserDto getUserByEmail(String email) {
         UserEntity findUser = userRepository.findByEmail(email);
-        return findUser;
+        UserDto user = modelMapper.map(findUser, UserDto.class);
+        return user;
     }
 
     @Override
@@ -44,19 +55,6 @@ public class UserServiceImpl implements UserService {
         UserEntity repoUser = userRepository.findById(id).orElseThrow();
         UserDto user = modelMapper.map(repoUser, UserDto.class);
         return user;
-    }
-
-    @Override
-    public boolean register(RegisterDto registerDto) {
-        UserEntity findUser = userRepository.findByEmail(registerDto.getEmail());
-        if (findUser != null) {
-            return false;
-        }
-        UserEntity newUser = modelMapper.map(registerDto, UserEntity.class);
-        String password = encoder.encode(registerDto.getPassword());
-        newUser.setPassword(password);
-        userRepository.save(newUser);
-        return true;
     }
 
     @Override
@@ -99,33 +97,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        List<UserEntity> repoUsers = userRepository.findAll();
-        List<UserDto> users = repoUsers.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
-        return users;
+    public PaginationPayload<UserDto> getAllUsers(Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Page<UserEntity> repoUsers = userRepository.findAll(pageable);
+
+        List<UserDto> users = repoUsers.getContent().stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
+        PaginationPayload<UserDto> paginationUsers = new PaginationPayload<>(repoUsers.getTotalPages(), pageNumber, users);
+        return paginationUsers;
     }
 
     @Override
-    public UserCartDto getUserCart(String userEmail) {
+    public CartDto getUserCart(String userEmail) {
         UserEntity findUser = userRepository.findByEmail(userEmail);
-        List<Basket> findUserBaskets = findUser.getBaskets();
-        UserCartDto userCart = new UserCartDto();
-        List<ProductBasketDto> productList = new ArrayList<>();
-        for (Basket b : findUserBaskets) {
-            ProductBasketDto pb = new ProductBasketDto();
-            pb.setId(b.getProduct().getId());
-            pb.setName(b.getProduct().getName());
-            pb.setImage(b.getProduct().getImages().get(0).getUrl());
-            pb.setPrice(b.getProduct().getPrice());
-            pb.setDiscountPrice(b.getProduct().getDiscountPrice());
-            pb.setQuantity(b.getQuantity());
-            pb.setAmount((double) Math.round(b.getProduct().getDiscountPrice() * b.getQuantity() * 100) / 100);
-            productList.add(pb);
+        List<CartItem> findUserItems = findUser.getCartItems();
+        CartDto userCart = new CartDto();
+        List<CartItemDto> productList = new ArrayList<>();
+        for (CartItem item : findUserItems) {
+            CartItemDto itemDto = new CartItemDto();
+            itemDto.setId(item.getProduct().getId());
+            itemDto.setName(item.getProduct().getName());
+            itemDto.setImage(item.getProduct().getImages().get(0).getUrl());
+            itemDto.setPrice(item.getProduct().getPrice());
+            itemDto.setDiscountPrice(item.getProduct().getDiscountPrice());
+            itemDto.setQuantity(item.getQuantity());
+            itemDto.setAmount((double) Math.round(item.getProduct().getDiscountPrice() * item.getQuantity() * 100) / 100);
+            productList.add(itemDto);
         }
         double subtotal = (double) Math.round(productList.stream().mapToDouble(c -> c.getDiscountPrice() * c.getQuantity()).sum() * 100) / 100;
         double shipping = subtotal > 0 ? 19.99 : 0;
         double total = (double) Math.round((subtotal + shipping) * 100) / 100;
-        userCart.setProducts(productList);
+        userCart.setCartItems(productList);
         userCart.setSubtotal(subtotal);
         userCart.setShipping(shipping);
         userCart.setTotal(total);
@@ -137,20 +139,34 @@ public class UserServiceImpl implements UserService {
         if (userEmail == null) {
             return 0;
         }
-        return getUserByEmail(userEmail).getBaskets().size();
+        return getUserByEmail(userEmail).getCartItems().size();
     }
 
     @Override
-    public List<ProductShopDto> getUserFavoriteProducts(String userEmail) {
+    public PaginationPayload<ProductDto> getUserFavoriteProducts(String userEmail, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
 
-        List<Product> repoProducts = userRepository.findByEmail(userEmail).getFavorites().stream().map(favorite -> favorite.getProduct()).toList();
-        List<ProductShopDto> favoriteProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductShopDto.class)).toList();
+        List<Product> repoProducts = userRepository.findByEmail(userEmail)
+                .getFavorites().stream().map(favorite -> favorite.getProduct()).toList();
+
+        int totalItems = repoProducts.size();
+        int start = pageable.getPageNumber() * pageable.getPageSize();
+        int end = Math.min(start + pageable.getPageSize(), totalItems);
+
+        List<ProductDto> favoriteProducts = repoProducts.subList(start, end)
+                .stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
 
         for (int i = 0; i < favoriteProducts.size(); i++) {
-            favoriteProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
+            favoriteProducts.get(i).setImage(repoProducts.get(start + i).getImages().get(0).getUrl());
         }
 
-        return favoriteProducts;
+        int totalPages = (int) Math.ceil((double) totalItems / pageable.getPageSize());
+
+        PaginationPayload<ProductDto> paginationProducts =
+                new PaginationPayload<>(totalPages, pageNumber, favoriteProducts);
+
+        return paginationProducts;
     }
 
     @Override

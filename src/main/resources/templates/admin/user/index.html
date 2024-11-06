@@ -24,7 +24,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${users}">
+        <tr th:each="user : ${users.data}">
             <th th:text="${user.id}" scope="row">1</th>
             <td th:text="${user.name}">Name</td>
             <td th:text="${user.surname}">Surname</td>
@@ -37,6 +37,28 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- Button for Pagination -->
+    <div class="pagination" style="display: flex; justify-content: center;">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${users.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/user(currentPage=${users.currentPage - 1})}">Previous</a>
+            </li>
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, users.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/user(currentPage=${pageNumber})}" th:text="${pageNumber}"
+                   style="background-color: ${users.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${users.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px; border-radius: 5px; text-decoration: none;">1</a>
+            </li>
+            <!-- Next düyməsi -->
+            <li th:if="${users.currentPage < users.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/user(currentPage=${users.currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </div>
 
     <a href="/admin/user/create">Create new user</a>
 

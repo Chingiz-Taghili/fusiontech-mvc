@@ -28,8 +28,9 @@ public class SubcategoryServiceImpl implements SubcategoryService {
     }
 
     @Override
-    public Subcategory getById(Long id) {
-        Subcategory subcategory = subcategoryRepository.findById(id).orElseThrow();
+    public SubcategoryDto getSubcategoryById(Long id) {
+        Subcategory repoSubcategory = subcategoryRepository.findById(id).orElseThrow();
+        SubcategoryDto subcategory = modelMapper.map(repoSubcategory, SubcategoryDto.class);
         return subcategory;
     }
 }

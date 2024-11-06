@@ -1,6 +1,5 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.models.Basket;
 import com.multishop.fusiontech.models.Favorite;
 import com.multishop.fusiontech.models.Product;
 import com.multishop.fusiontech.models.UserEntity;
@@ -41,7 +40,7 @@ public class FavoritesServiceImpl implements FavoritesService {
     }
 
     @Override
-    public boolean removeFromFavorites(Long productId, String userEmail) {
+    public boolean deleteFavorite(Long productId, String userEmail) {
         UserEntity findUser = userRepository.findByEmail(userEmail);
         Product findProduct = productRepository.findById(productId).orElseThrow();
         Favorite findFavorite = favoritesRepository.findByUserIdAndProductId(findUser.getId(), findProduct.getId());

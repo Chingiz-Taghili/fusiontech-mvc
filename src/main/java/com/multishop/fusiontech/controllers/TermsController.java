@@ -1,6 +1,6 @@
 package com.multishop.fusiontech.controllers;
 
-import com.multishop.fusiontech.dtos.category.CategoryLayoutDto;
+import com.multishop.fusiontech.dtos.category.CategoryDto;
 import com.multishop.fusiontech.services.CategoryService;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class TermsController {
     @GetMapping("/site-rules")
     public String showSiteRulesPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -45,7 +45,7 @@ public class TermsController {
     @GetMapping("/privacy")
     public String showPrivacyPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -66,7 +66,7 @@ public class TermsController {
     @GetMapping("/corporate")
     public String showCorporatePage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -87,7 +87,7 @@ public class TermsController {
     @GetMapping("/price-policy")
     public String showPricePolicyPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -108,7 +108,7 @@ public class TermsController {
     @GetMapping("/refund")
     public String showRefundPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -129,7 +129,7 @@ public class TermsController {
     @GetMapping("/installment")
     public String showInstallmentPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -150,7 +150,7 @@ public class TermsController {
     @GetMapping("/delivery-payment")
     public String showDeliveryPaymentPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -171,7 +171,7 @@ public class TermsController {
     @GetMapping("/warranty")
     public String showWarrantyPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;

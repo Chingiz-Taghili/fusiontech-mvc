@@ -1,6 +1,8 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.product.*;
+import com.multishop.fusiontech.dtos.product.ProductCreateDto;
+import com.multishop.fusiontech.dtos.product.ProductDto;
+import com.multishop.fusiontech.dtos.product.ProductUpdateDto;
 import com.multishop.fusiontech.models.*;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.*;
@@ -13,8 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -33,186 +38,6 @@ public class ProductServiceImpl implements ProductService {
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
-    }
-
-    @Override
-    public ProductDetailDto getProductDetail(Long id) {
-        Product repoProduct = productRepository.findById(id).orElseThrow();
-        ProductDetailDto productDetail = modelMapper.map(repoProduct, ProductDetailDto.class);
-        return productDetail;
-    }
-
-    @Override
-    public ProductUpdateDto getUpdatedProduct(Long id) {
-
-        Product repoProduct = productRepository.findById(id).orElseThrow();
-        ProductUpdateDto updatedProduct = modelMapper.map(repoProduct, ProductUpdateDto.class);
-
-        List<String> images = new ArrayList<>();
-        for (Image image : repoProduct.getImages()) {
-            String imageUrl = image.getUrl();
-            images.add(imageUrl);
-        }
-        updatedProduct.setImagesUrl(images);
-        updatedProduct.setBrandId(repoProduct.getBrand().getId());
-        updatedProduct.setCategoryId(repoProduct.getCategory().getId());
-        updatedProduct.setSubcategoryId(repoProduct.getSubcategory().getId());
-
-        return updatedProduct;
-    }
-
-    @Override
-    public List<ProductRelatedDto> getRelatedProducts(Long categoryId, Long productId) {
-        List<Product> repoProducts = productRepository.findByCategoryId(categoryId).stream().filter(product -> product.getId() != productId).limit(5).toList();
-        List<ProductRelatedDto> relatedProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductRelatedDto.class)).toList();
-        for (int i = 0; i < relatedProducts.size(); i++) {
-            relatedProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-        return relatedProducts;
-    }
-
-    @Override
-    public List<ProductFeaturedDto> getFeaturedProducts() {
-        List<Product> repoProducts = productRepository.findByFeaturedTrue();
-        List<ProductFeaturedDto> featureProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductFeaturedDto.class)).toList();
-        for (int i = 0; i < featureProducts.size(); i++) {
-            featureProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-        return featureProducts;
-    }
-
-    @Override
-    public List<ProductOfferedDto> getOfferedProducts() {
-        List<Product> repoProducts = productRepository.findByOfferedTrue();
-        List<ProductOfferedDto> offerProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductOfferedDto.class)).toList();
-        for (int i = 0; i < offerProducts.size(); i++) {
-            double percent = (double) Math.round((repoProducts.get(i).getPrice() - repoProducts.get(i).getDiscountPrice()) / repoProducts.get(i).getPrice() * 100 * 100) / 100;
-            offerProducts.get(i).setDiscountPercent(percent);
-            offerProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-        return offerProducts;
-    }
-
-    @Override
-    public List<ProductShopDto> getShopProducts() {
-        List<Product> repoProducts = productRepository.findAll();
-        List<ProductShopDto> shopProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductShopDto.class)).toList();
-
-        for (int i = 0; i < shopProducts.size(); i++) {
-            shopProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-
-        return shopProducts;
-    }
-
-    @Override
-    public PaginationPayload<ProductAdminDto> getAdminProducts(Integer pageNumber) {
-
-        pageNumber = pageNumber == null ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
-        Page<Product> products = productRepository.findAll(pageable);
-
-        List<ProductAdminDto> result = products.getContent().stream().map(product -> modelMapper.map(product, ProductAdminDto.class)).toList();
-
-        PaginationPayload<ProductAdminDto> paginationPayload = new PaginationPayload<>();
-        paginationPayload.setTotalPage(products.getTotalPages());
-        paginationPayload.setCurrentPage(pageNumber);
-        paginationPayload.setData(result);
-
-        return paginationPayload;
-    }
-
-    @Override
-    public List<ProductShopDto> getFilteredProducts(int price, int category, int brand) {
-
-        List<Product> repoProducts;
-        int priceMin = 0;
-        int priceMax = Integer.MAX_VALUE;
-
-        switch (price) {
-            case 1:
-                priceMax = 100;
-                break;
-            case 2:
-                priceMin = 100;
-                priceMax = 1000;
-                break;
-            case 3:
-                priceMin = 1000;
-                priceMax = 2000;
-                break;
-            case 4:
-                priceMin = 2000;
-                priceMax = 3000;
-                break;
-            case 5:
-                priceMin = 3000;
-                break;
-        }
-
-        if (category == 0 && brand == 0) {
-            repoProducts = productRepository.findByPriceBetween(priceMin, priceMax);
-        } else if (category != 0 && brand == 0) {
-            repoProducts = productRepository.findByPriceBetweenAndCategoryId(priceMin, priceMax, (long) category);
-        } else if (category == 0 && brand != 0) {
-            repoProducts = productRepository.findByPriceBetweenAndBrandId(priceMin, priceMax, (long) brand);
-        } else {
-            repoProducts = productRepository.findByPriceBetweenAndCategoryIdAndBrandId(priceMin, priceMax, (long) category, (long) brand);
-        }
-
-        List<ProductShopDto> shopProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductShopDto.class)).toList();
-
-        for (int i = 0; i < shopProducts.size(); i++) {
-            shopProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-
-        return shopProducts;
-    }
-
-    @Override
-    public List<ProductShopDto> getCatalogProducts(Long categoryId, Long subcategoryId) {
-
-        List<Product> repoProducts;
-
-        if (categoryId != 0) {
-            repoProducts = productRepository.findByCategoryId(categoryId);
-        } else {
-            repoProducts = productRepository.findBySubcategoryId(subcategoryId);
-        }
-
-        List<ProductShopDto> shopProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductShopDto.class)).toList();
-
-        for (int i = 0; i < shopProducts.size(); i++) {
-            shopProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-
-        return shopProducts;
-    }
-
-    @Override
-    public List<ProductShopDto> getSearchProducts(String keyword) {
-
-        List<Product> repoProducts = productRepository.findByNameContainingIgnoreCase(keyword);
-
-        List<ProductShopDto> searchProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductShopDto.class)).toList();
-
-        for (int i = 0; i < searchProducts.size(); i++) {
-            searchProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
-        }
-
-        return searchProducts;
-    }
-
-    @Override
-    public void updateProductRating(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() ->
-                new EntityNotFoundException("Product not found with ID: " + productId));
-
-        List<Review> reviews = reviewRepository.findByProductId(productId);
-        Double newRating = reviews.isEmpty() ? null : reviews.stream()
-                .mapToDouble(Review::getRating).average().orElse(0.0);
-        product.setRating(newRating);
-        productRepository.save(product);
     }
 
     @Override
@@ -281,5 +106,201 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductDto getProductById(Long id) {
+        Product repoProduct = productRepository.findById(id).orElseThrow();
+        ProductDto product = modelMapper.map(repoProduct, ProductDto.class);
+        product.setImage(repoProduct.getImages().get(0).getUrl());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        if (repoProduct.getDiscountDate() != null) {
+            product.setFormattedDiscountDate(repoProduct.getDiscountDate().format(formatter));
+        }
+        return product;
+    }
+
+    @Override
+    public PaginationPayload<ProductDto> getAllProducts(Integer pageNumber) {
+
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Page<Product> repoProducts = productRepository.findAll(pageable);
+
+        List<ProductDto> products = repoProducts.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        for (int i = 0; i < products.size(); i++) {
+            if (repoProducts.getContent().get(i).getDiscountDate() != null) {
+                products.get(i).setFormattedDiscountDate(repoProducts.getContent().get(i)
+                        .getDiscountDate().format(formatter));
+            }
+            products.get(i).setImage(repoProducts.getContent().get(i).getImages().get(0).getUrl());
+        }
+
+        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>();
+        paginationProducts.setTotalPage(repoProducts.getTotalPages());
+        paginationProducts.setCurrentPage(pageNumber);
+        paginationProducts.setData(products);
+
+        return paginationProducts;
+    }
+
+    @Override
+    public PaginationPayload<ProductDto> getFilteredProducts(int price, int category, int brand, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+
+        Page<Product> repoProducts;
+        int priceMin = 0;
+        int priceMax = Integer.MAX_VALUE;
+
+        switch (price) {
+            case 1:
+                priceMax = 100;
+                break;
+            case 2:
+                priceMin = 100;
+                priceMax = 1000;
+                break;
+            case 3:
+                priceMin = 1000;
+                priceMax = 2000;
+                break;
+            case 4:
+                priceMin = 2000;
+                priceMax = 3000;
+                break;
+            case 5:
+                priceMin = 3000;
+                break;
+        }
+
+        if (category == 0 && brand == 0) {
+            repoProducts = productRepository.findByPriceBetween(priceMin, priceMax, pageable);
+        } else if (category != 0 && brand == 0) {
+            repoProducts = productRepository.findByPriceBetweenAndCategoryId(priceMin, priceMax, (long) category, pageable);
+        } else if (category == 0 && brand != 0) {
+            repoProducts = productRepository.findByPriceBetweenAndBrandId(priceMin, priceMax, (long) brand, pageable);
+        } else {
+            repoProducts = productRepository.findByPriceBetweenAndCategoryIdAndBrandId(priceMin, priceMax, (long) category, (long) brand, pageable);
+        }
+
+        List<ProductDto> shopProducts = repoProducts.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+
+        for (int i = 0; i < shopProducts.size(); i++) {
+            shopProducts.get(i).setImage(repoProducts.getContent().get(i).getImages().get(0).getUrl());
+        }
+
+        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>
+                (repoProducts.getTotalPages(), pageNumber, shopProducts);
+
+        return paginationProducts;
+    }
+
+    @Override
+    public PaginationPayload<ProductDto> getCatalogProducts(Long categoryId, Long subcategoryId, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+
+        Page<Product> repoProducts;
+
+        if (categoryId != 0) {
+            repoProducts = productRepository.findByCategoryId(categoryId, pageable);
+        } else {
+            repoProducts = productRepository.findBySubcategoryId(subcategoryId, pageable);
+        }
+
+        List<ProductDto> products = repoProducts.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+
+        for (int i = 0; i < products.size(); i++) {
+            products.get(i).setImage(repoProducts.getContent().get(i).getImages().get(0).getUrl());
+        }
+
+        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>(repoProducts.getTotalPages(), pageNumber, products);
+
+        return paginationProducts;
+    }
+
+    @Override
+    public PaginationPayload<ProductDto> getSearchProducts(String keyword, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+
+        Page<Product> repoProducts = productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+
+        List<ProductDto> searchProducts = repoProducts.getContent()
+                .stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+
+        for (int i = 0; i < searchProducts.size(); i++) {
+            searchProducts.get(i).setImage(repoProducts.getContent().get(i).getImages().get(0).getUrl());
+        }
+
+        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>
+                (repoProducts.getTotalPages(), pageNumber, searchProducts);
+
+        return paginationProducts;
+    }
+
+    @Override
+    public List<ProductDto> getRelatedProducts(Long categoryId, Long productId) {
+        List<Product> repoProducts = productRepository.findByCategoryId(categoryId).stream().filter(product -> product.getId() != productId).limit(5).toList();
+        List<ProductDto> relatedProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+        for (int i = 0; i < relatedProducts.size(); i++) {
+            relatedProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
+        }
+        return relatedProducts;
+    }
+
+    @Override
+    public List<ProductDto> getFeaturedProducts() {
+        List<Product> repoProducts = productRepository.findByFeaturedTrue();
+        List<ProductDto> featureProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+        for (int i = 0; i < featureProducts.size(); i++) {
+            featureProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
+        }
+        return featureProducts;
+    }
+
+    @Override
+    public List<ProductDto> getOfferedProducts() {
+        List<Product> repoProducts = productRepository.findByOfferedTrue();
+        List<ProductDto> offerProducts = repoProducts.stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
+        for (int i = 0; i < offerProducts.size(); i++) {
+            double percent = (double) Math.round((repoProducts.get(i).getPrice() - repoProducts.get(i).getDiscountPrice()) / repoProducts.get(i).getPrice() * 100 * 100) / 100;
+            offerProducts.get(i).setDiscountPercent(percent);
+            offerProducts.get(i).setImage(repoProducts.get(i).getImages().get(0).getUrl());
+        }
+        return offerProducts;
+    }
+
+    @Override
+    public Long getTotalProductCount() {
+        return productRepository.count();
+    }
+
+    @Override
+    public Map<Integer, Long> getCountByPriceRanges() {
+        Map<Integer, Long> countByPriceMap = new HashMap<>();
+        countByPriceMap.put(1, productRepository.countByPriceLessThanEqual(100));
+        countByPriceMap.put(2, productRepository.countByPriceBetween(100, 1000));
+        countByPriceMap.put(3, productRepository.countByPriceBetween(1000, 2000));
+        countByPriceMap.put(4, productRepository.countByPriceBetween(2000, 3000));
+        countByPriceMap.put(5, productRepository.countByPriceGreaterThan(3000));
+
+        return countByPriceMap;
+    }
+
+    @Override
+    public void updateProductRating(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new EntityNotFoundException("Product not found with ID: " + productId));
+
+        List<Review> reviews = reviewRepository.findByProductId(productId);
+        Double newRating = reviews.isEmpty() ? null : reviews.stream()
+                .mapToDouble(Review::getRating).average().orElse(0.0);
+        product.setRating(newRating);
+        productRepository.save(product);
     }
 }

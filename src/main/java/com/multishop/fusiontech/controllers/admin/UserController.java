@@ -3,6 +3,7 @@ package com.multishop.fusiontech.controllers.admin;
 import com.multishop.fusiontech.dtos.user.UserCreateDto;
 import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.dtos.user.UserUpdateDto;
+import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,14 +25,22 @@ public class UserController {
     }
 
     @GetMapping("/admin/user")
-    public String showIndexPage(Model model) {
-        List<UserDto> users = userService.getAllUsers();
+    public String showIndexPage(Model model, Principal principal, Integer currentPage) {
+        PaginationPayload<UserDto> users = userService.getAllUsers(currentPage);
         model.addAttribute("users", users);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("searchUrl", "/admin/search/user");
+
+        UserDto user = userService.getUserByEmail(principal.getName());
+        model.addAttribute("user", user);
+
         return "/admin/user/index";
     }
 
     @GetMapping("admin/user/create")
-    public String showCreatePage() {
+    public String showCreatePage(Principal principal, Model model) {
+        UserDto user = userService.getUserByEmail(principal.getName());
+        model.addAttribute("user", user);
         return "/admin/user/create";
     }
 
@@ -46,8 +56,11 @@ public class UserController {
     }
 
     @GetMapping("/admin/user/update/{id}")
-    public String showUpdatePage(@PathVariable Long id, Model model) {
-        UserDto user = userService.getUserById(id);
+    public String showUpdatePage(@PathVariable Long id, Model model, Principal principal) {
+        UserDto userById = userService.getUserById(id);
+        model.addAttribute("userById", userById);
+
+        UserDto user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
         return "/admin/user/update";
     }
@@ -64,9 +77,13 @@ public class UserController {
     }
 
     @GetMapping("/admin/user/delete/{id}")
-    public String showDeletePage(@PathVariable Long id, Model model) {
-        UserDto user = userService.getUserById(id);
+    public String showDeletePage(@PathVariable Long id, Model model, Principal principal) {
+        UserDto userById = userService.getUserById(id);
+        model.addAttribute("userById", userById);
+
+        UserDto user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
+
         return "/admin/user/delete";
     }
 

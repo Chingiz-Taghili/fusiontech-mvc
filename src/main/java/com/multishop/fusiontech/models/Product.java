@@ -30,15 +30,12 @@ public class Product {
        orphanRemoval = true: `Product`-dan bir `Image` silindikdə, həmin şəkil database-dən də
        avtomatik silinir. */
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
-
     @ManyToOne
     private Brand brand;
-
     @ManyToOne
     private Category category;
-
     @ManyToOne
     private Subcategory subcategory;
 }

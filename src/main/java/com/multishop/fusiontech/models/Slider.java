@@ -13,5 +13,6 @@ public class Slider {
     private String title;
     private String description;
     private String image;
+    private String url;
     private Boolean active;
 }

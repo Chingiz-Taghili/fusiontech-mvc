@@ -1,9 +1,25 @@
 package com.multishop.fusiontech.services;
 
-import com.multishop.fusiontech.dtos.order.OrderPlaceDto;
+import com.multishop.fusiontech.dtos.order.OrderCreateDto;
+import com.multishop.fusiontech.dtos.order.OrderDto;
+import com.multishop.fusiontech.dtos.order.OrderUpdateDto;
+import com.multishop.fusiontech.payloads.PaginationPayload;
+
+import java.util.List;
 
 public interface OrderService {
 
-    boolean checkout(String userEmail, OrderPlaceDto placeOrderDto);
+    boolean createOrder(String userEmail, OrderCreateDto orderCreateDto);
 
+    boolean updateOrder(Long id, OrderUpdateDto orderUpdateDto);
+
+    void deleteOrder(Long id);
+
+    OrderDto getOrderById(Long id);
+
+    OrderDto getOrderByOrderItemId(Long itemId);
+
+    PaginationPayload<OrderDto> getAllOrders(Integer pageNumber);
+
+    List<OrderDto> getSearchOrders(String keyword);
 }

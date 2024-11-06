@@ -1,7 +1,7 @@
 package com.multishop.fusiontech.controllers;
 
-import com.multishop.fusiontech.dtos.auth.RegisterDto;
-import com.multishop.fusiontech.dtos.category.CategoryLayoutDto;
+import com.multishop.fusiontech.dtos.category.CategoryDto;
+import com.multishop.fusiontech.dtos.user.UserCreateDto;
 import com.multishop.fusiontech.services.CategoryService;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ public class AuthController {
     @GetMapping("/login")
     public String showLoginPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -47,7 +47,7 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegisterPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -66,11 +66,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String createAccount(RegisterDto registerDto) {
-        boolean result = userService.register(registerDto);
+    public String createAccount(UserCreateDto userCreateDto) {
+        boolean result = userService.createUser(userCreateDto);
         if (result) {
-            return "redirect:login";
+            return "redirect:/login";
         }
-        return "redirect:register";
+        return "redirect:/register";
     }
 }

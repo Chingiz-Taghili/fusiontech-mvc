@@ -1,37 +1,41 @@
 package com.multishop.fusiontech.services;
 
-import com.multishop.fusiontech.dtos.product.*;
+import com.multishop.fusiontech.dtos.product.ProductCreateDto;
+import com.multishop.fusiontech.dtos.product.ProductDto;
+import com.multishop.fusiontech.dtos.product.ProductUpdateDto;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
-
-    ProductDetailDto getProductDetail(Long id);
-
-    ProductUpdateDto getUpdatedProduct(Long id);
-
-    List<ProductFeaturedDto> getFeaturedProducts();
-
-    List<ProductRelatedDto> getRelatedProducts(Long categoryId, Long productId);
-
-    List<ProductOfferedDto> getOfferedProducts();
-
-    List<ProductShopDto> getShopProducts();
-
-    PaginationPayload<ProductAdminDto> getAdminProducts(Integer pageNumber);
-
-    List<ProductShopDto> getFilteredProducts(int price, int category, int brand);
-
-    List<ProductShopDto> getCatalogProducts(Long categoryId, Long subcategoryId);
-
-    List<ProductShopDto> getSearchProducts(String keyword);
-
-    void updateProductRating(Long productId);
 
     boolean createProduct(ProductCreateDto productCreateDto);
 
     boolean updateProduct(Long id, ProductUpdateDto productUpdateDto);
 
     void deleteProduct(Long id);
+
+    ProductDto getProductById(Long id);
+
+    PaginationPayload<ProductDto> getAllProducts(Integer pageNumber);
+
+    PaginationPayload<ProductDto> getFilteredProducts(int price, int category, int brand, Integer pageNumber);
+
+    PaginationPayload<ProductDto> getCatalogProducts(Long categoryId, Long subcategoryId, Integer pageNumber);
+
+    PaginationPayload<ProductDto> getSearchProducts(String keyword, Integer pageNumber);
+
+    List<ProductDto> getFeaturedProducts();
+
+    List<ProductDto> getRelatedProducts(Long categoryId, Long productId);
+
+    List<ProductDto> getOfferedProducts();
+
+    Long getTotalProductCount();
+
+    Map<Integer, Long> getCountByPriceRanges();
+
+    void updateProductRating(Long productId);
+
 }

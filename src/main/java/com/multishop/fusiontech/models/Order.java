@@ -1,11 +1,12 @@
 package com.multishop.fusiontech.models;
 
 import com.multishop.fusiontech.enums.OrderStatus;
+import com.multishop.fusiontech.enums.PaymentMethod;
 import com.multishop.fusiontech.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class Order {
     private Long id;
     @ManyToOne
     private UserEntity user;
-    private Date orderDate;
+    private LocalDateTime orderDate;
     private String name;
     private String surname;
     private String phoneNumber;
@@ -35,9 +36,9 @@ public class Order {
     private String billAddress;
     private String billMessage;
 
-    private Integer paymentMethod;
+    private PaymentMethod paymentMethod;
     private OrderStatus orderStatus;
     private PaymentStatus paymentStatus;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 }

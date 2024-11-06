@@ -21,11 +21,11 @@
                 <div id="header-carousel" class="carousel slide carousel-fade mb-30 mb-lg-0" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#header-carousel" data-slide-to="1"></li>
+                        <li data-target="#header-carousel" data-slide-to="1" ></li>
                         <li data-target="#header-carousel" data-slide-to="2"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <div th:each="slider : ${sliders}"  th:attr="class=${slider.id == 1 ? 'carousel-item position-relative active' : 'carousel-item position-relative active'}"
+                        <div th:each="slider : ${sliders}"  th:attr="class=${slider.id == 1 ? 'carousel-item position-relative active' : 'carousel-item position-relative '}"
                              style="height: 430px;">
                             <img class="position-absolute w-100 h-100" th:src="${slider.image}"
                                  style="object-fit: cover;">
@@ -36,7 +36,7 @@
                                     <p th:text="${slider.description}"
                                        class="mx-md-5 px-5 animate__animated animate__bounceIn"></p>
                                     <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp"
-                                       href="/shop">İndi Al</a>
+                                       th:href="${slider.url}">İndi Al</a>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="offer-text">
                         <h6 th:text="'Xüsusi endirim: ' + ${offerProduct.discountPercent + '%'}"
                             class="text-white text-uppercase"></h6>
-                        <h3 th:text="${offerProduct.name}" class="text-white mb-3"></h3>
+                        <h4 th:text="${offerProduct.name}" class="text-white mb-3"></h4>
                         <a th:href="'/detail/' + ${offerProduct.id}" class="btn btn-primary">Ətraflı bax</a>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
         </h2>
         <div class="row px-xl-5 pb-3">
             <div th:each="category : ${categories}" class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                <a class="text-decoration-none" href="">
+                <a class="text-decoration-none" th:href="'/shop/' + ${category.id} + '/0'">
                     <div class="cat-item d-flex align-items-center mb-4">
                         <div class="overflow-hidden" style="width: 100px; height: 100px;">
                             <img class="img-fluid" th:src="${category.image}" alt="">
@@ -196,13 +196,13 @@
                                 <del th:text="${featureProduct.price + ' ₼'}">$123</del>
                             </h6>
                         </div>
+                        <!-- Products Rating -->
                         <div class="d-flex align-items-center justify-content-center mb-1">
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small class="fa fa-star text-primary mr-1"></small>
-                            <small>(99)</small>
+                            <small th:each="star : ${#numbers.sequence(1, 5)}"
+                                   th:classappend="${featureProduct.rating >= star} ? 'fas fa-star text-primary mr-1' :
+                                   (${featureProduct.rating >= star - 0.5} ? 'fas fa-star-half-alt text-primary mr-1' : 'far fa-star text-primary mr-1')">
+                            </small>
+                            <small th:text="${'(' + featureProduct.reviews.size + ')'}">(99)</small>
                         </div>
                     </div>
                 </div>

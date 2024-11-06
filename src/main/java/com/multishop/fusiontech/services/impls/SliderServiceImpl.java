@@ -1,7 +1,7 @@
 package com.multishop.fusiontech.services.impls;
 
 import com.multishop.fusiontech.dtos.slider.SliderCreateDto;
-import com.multishop.fusiontech.dtos.slider.SliderHomeDto;
+import com.multishop.fusiontech.dtos.slider.SliderDto;
 import com.multishop.fusiontech.dtos.slider.SliderUpdateDto;
 import com.multishop.fusiontech.models.Slider;
 import com.multishop.fusiontech.repositories.SliderRepository;
@@ -24,16 +24,23 @@ public class SliderServiceImpl implements SliderService {
 
 
     @Override
-    public List<SliderHomeDto> getHomeSliders() {
-        List<Slider> repoSliders = sliderRepository.findAll();
-        List<SliderHomeDto> homeSliders = repoSliders.stream().map(slider -> modelMapper.map(slider, SliderHomeDto.class)).toList();
-        return homeSliders;
+    public List<SliderDto> getSearchSliders(String keyword) {
+        List<Slider> repoSliders = sliderRepository.findByKeywordInColumnsIgnoreCase(keyword);
+        List<SliderDto> sliders = repoSliders.stream().map(slider -> modelMapper.map(slider, SliderDto.class)).toList();
+        return sliders;
     }
 
     @Override
-    public SliderHomeDto getSliderById(Long id) {
+    public List<SliderDto> getAllSliders() {
+        List<Slider> repoSliders = sliderRepository.findAll();
+        List<SliderDto> sliders = repoSliders.stream().map(slider -> modelMapper.map(slider, SliderDto.class)).toList();
+        return sliders;
+    }
+
+    @Override
+    public SliderDto getSliderById(Long id) {
         Slider repoSlider = sliderRepository.findById(id).orElseThrow();
-        SliderHomeDto slider = modelMapper.map(repoSlider, SliderHomeDto.class);
+        SliderDto slider = modelMapper.map(repoSlider, SliderDto.class);
         return slider;
     }
 
@@ -56,6 +63,7 @@ public class SliderServiceImpl implements SliderService {
             findSlider.setTitle(sliderUpdateDto.getTitle());
             findSlider.setDescription(sliderUpdateDto.getDescription());
             findSlider.setImage(sliderUpdateDto.getImage());
+            findSlider.setUrl(sliderUpdateDto.getUrl());
             findSlider.setActive(sliderUpdateDto.isActive());
             sliderRepository.save(findSlider);
             return true;

@@ -42,9 +42,9 @@
         <!-- Dinamik şəkil URL inputları -->
         <div id="imagesContainer" style="margin: 10px 0;">
             <label for="images" style="display: block; margin-bottom: 1px;">Product Images:</label>
-            <div th:each="image, iterStat : ${product.imagesUrl}"
+            <div th:each="image, iterStat : ${product.images}"
                  style="margin-bottom: 10px; display: flex; align-items: center;">
-                <input th:value="${image}" type="text" name="imagesUrl" placeholder="Enter image URL"
+                <input th:value="${image.url}" type="text" name="imagesUrl" placeholder="Enter image URL"
                        id="images" style="width: 350px; display: block; margin-right: 5px;" required>
                 <button type="button" th:if="${!iterStat.first}" onclick="removeImage(this)">Remove</button>
             </div>
@@ -67,7 +67,7 @@
                 <option value="">Select brand</option>
                 <th:block th:each="brand : ${brands}">
                     <option th:value="${brand.id}" th:text="${brand.name}"
-                            th:selected="${brand.id} == ${product.brandId}"></option>
+                            th:selected="${brand.id} == ${product.brand.id}"></option>
                 </th:block>
             </select>
         </div>
@@ -78,7 +78,7 @@
                 <option value="">Select category</option>
                 <th:block th:each="category : ${categories}">
                     <option th:value="${category.id}" th:text="${category.name}"
-                            th:selected="${category.id} == ${product.categoryId}"></option>
+                            th:selected="${category.id} == ${product.category.id}"></option>
                 </th:block>
             </select>
         </div>
@@ -89,7 +89,7 @@
                 <option value="">Select subcategory</option>
                 <th:block th:each="subcategory : ${subcategories}">
                     <option th:value="${subcategory.id}" th:text="${subcategory.subcategoryName.name}"
-                            th:selected="${subcategory.id} == ${product.subcategoryId}"></option>
+                            th:selected="${subcategory.id} == ${product.subcategory.id}"></option>
                 </th:block>
             </select>
         </div>

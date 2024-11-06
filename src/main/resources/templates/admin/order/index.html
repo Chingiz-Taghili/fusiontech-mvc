@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sifarişlər</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">City</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders.data}">
+            <td th:text="${order.formattedOrderDate}" scope="row">Order Date</td>
+            <td th:text="${order.name}">Name</td>
+            <td th:text="${order.surname}">Surname</td>
+            <td th:text="${order.city}">City</td>
+            <td th:text="${order.paymentMethod}">Payment Method</td>
+            <td th:text="${order.orderStatus}">Order Status</td>
+            <td th:text="${order.paymentStatus}">Payment Status</td>
+            <td>
+                <a th:href="'/admin/order/update/' + ${order.id}">Update</a>
+                <a th:href="'/admin/order/delete/' + ${order.id}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Button for Pagination -->
+    <div class="pagination" style="display: flex; justify-content: center;">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${orders.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/order(currentPage=${orders.currentPage - 1})}">Previous</a>
+            </li>
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, orders.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/order(currentPage=${pageNumber})}" th:text="${pageNumber}"
+                   style="background-color: ${orders.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${orders.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px; border-radius: 5px; text-decoration: none;">1</a>
+            </li>
+            <!-- Next düyməsi -->
+            <li th:if="${orders.currentPage < orders.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/order(currentPage=${orders.currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+</section>
+
+</body>
+</html>

@@ -21,9 +21,9 @@ public class TestimonialServiceImpl implements TestimonialService {
     }
 
     @Override
-    public List<TestimonialDto> getTestimonials() {
+    public List<TestimonialDto> getAllTestimonials() {
         List<Testimonial> repoTestimonials = testimonialRepository.findAll();
-        List<TestimonialDto> homeTestimonials = repoTestimonials.stream().map(t -> modelMapper.map(t, TestimonialDto.class)).toList();
-        return homeTestimonials;
+        List<TestimonialDto> testimonials = repoTestimonials.stream().map(t -> modelMapper.map(t, TestimonialDto.class)).toList();
+        return testimonials;
     }
 }

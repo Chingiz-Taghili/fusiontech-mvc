@@ -1,18 +1,18 @@
 package com.multishop.fusiontech.controllers;
 
-import com.multishop.fusiontech.dtos.category.CategoryLayoutDto;
-import com.multishop.fusiontech.dtos.category.CategoryShopDto;
-import com.multishop.fusiontech.dtos.product.ProductShopDto;
-import com.multishop.fusiontech.dtos.review.ReviewAddDto;
-import com.multishop.fusiontech.dtos.singledtos.BasketAddDto;
-import com.multishop.fusiontech.dtos.order.OrderPlaceDto;
-import com.multishop.fusiontech.dtos.product.ProductDetailDto;
-import com.multishop.fusiontech.dtos.product.ProductRelatedDto;
 import com.multishop.fusiontech.dtos.brand.BrandDto;
-import com.multishop.fusiontech.dtos.singledtos.ShopFilteredDto;
-import com.multishop.fusiontech.dtos.singledtos.UserCartDto;
+import com.multishop.fusiontech.dtos.cart.CartDto;
+import com.multishop.fusiontech.dtos.cart.CartItemCreateDto;
+import com.multishop.fusiontech.dtos.category.CategoryDto;
+import com.multishop.fusiontech.dtos.order.OrderCreateDto;
+import com.multishop.fusiontech.dtos.product.ProductDto;
+import com.multishop.fusiontech.dtos.review.ReviewCreateDto;
+import com.multishop.fusiontech.dtos.review.ReviewDto;
+import com.multishop.fusiontech.dtos.singledtos.ShopFilterDto;
+import com.multishop.fusiontech.dtos.user.UserDto;
+import com.multishop.fusiontech.enums.PaymentMethod;
 import com.multishop.fusiontech.models.Region;
-import com.multishop.fusiontech.models.UserEntity;
+import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,18 +30,18 @@ public class ShopController {
     private final ProductService productService;
     private final ReviewService reviewService;
     private final BrandService brandService;
-    private final BasketService basketService;
+    private final CartItemService cartItemService;
     private final FavoritesService favoritesService;
     private final UserService userService;
     private final OrderService orderService;
     private final RegionService regionService;
 
-    public ShopController(CategoryService categoryService, ProductService productService, ReviewService reviewService, BrandService brandService, BasketService basketService, FavoritesService favoritesService, UserService userService, OrderService orderService, RegionService regionService) {
+    public ShopController(CategoryService categoryService, ProductService productService, ReviewService reviewService, BrandService brandService, CartItemService cartItemService, FavoritesService favoritesService, UserService userService, OrderService orderService, RegionService regionService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
         this.brandService = brandService;
-        this.basketService = basketService;
+        this.cartItemService = cartItemService;
         this.favoritesService = favoritesService;
         this.userService = userService;
         this.orderService = orderService;
@@ -49,16 +49,16 @@ public class ShopController {
     }
 
     @GetMapping("/shop")
-    public String showShopPage(Model model, Principal principal) {
+    public String showShopPage(Integer currentPage, Model model, Principal principal) {
 
-        List<CategoryShopDto> categories = categoryService.getShopCategories();
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("totalCount", productService.getTotalProductCount());
+        model.addAttribute("countByPrice", productService.getCountByPriceRanges());
 
-        List<BrandDto> brands = brandService.getAllBrands();
-        model.addAttribute("brands", brands);
-
-        List<ProductShopDto> products = productService.getShopProducts();
-        model.addAttribute("products", products);
+        model.addAttribute("products", productService.getAllProducts(currentPage));
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("urlType", "main");
 
         int cartSize;
         int favoriteSize;
@@ -76,20 +76,23 @@ public class ShopController {
     }
 
     @GetMapping("/shop/filter")
-    public String filterShopProducts(ShopFilteredDto shopFilteredDto, Model model, Principal principal) {
+    public String filterShopProducts(ShopFilterDto shopFilterDto, Model model, Principal principal, Integer currentPage) {
 
-        if (shopFilteredDto.getPrice() == 0 && shopFilteredDto.getCategory() == 0 && shopFilteredDto.getBrand() == 0) {
+        if (shopFilterDto.getPrice() == 0 && shopFilterDto.getCategory() == 0 && shopFilterDto.getBrand() == 0) {
             return "redirect:/shop";
         }
 
-        List<ProductShopDto> products = productService.getFilteredProducts(shopFilteredDto.getPrice(), shopFilteredDto.getCategory(), shopFilteredDto.getBrand());
+        PaginationPayload<ProductDto> products = productService.getFilteredProducts(
+                shopFilterDto.getPrice(), shopFilterDto.getCategory(), shopFilterDto.getBrand(), currentPage);
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("filterDto", shopFilterDto);
+        model.addAttribute("urlType", "filter");
 
-        List<CategoryShopDto> categories = categoryService.getShopCategories();
-        model.addAttribute("categories", categories);
-
-        List<BrandDto> brands = brandService.getAllBrands();
-        model.addAttribute("brands", brands);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("totalCount", productService.getTotalProductCount());
+        model.addAttribute("countByPrice", productService.getCountByPriceRanges());
 
         int cartSize;
         int favoriteSize;
@@ -107,16 +110,19 @@ public class ShopController {
     }
 
     @GetMapping("/shop/{categoryId}/{subcategoryId}")
-    public String filterFromCategory(@PathVariable Long categoryId, @PathVariable Long subcategoryId, Model model, Principal principal) {
+    public String filterFromCategory(@PathVariable Long categoryId, @PathVariable Long subcategoryId, Model model, Principal principal, Integer currentPage) {
 
-        List<ProductShopDto> products = productService.getCatalogProducts(categoryId, subcategoryId);
+        PaginationPayload<ProductDto> products = productService.getCatalogProducts(categoryId, subcategoryId, currentPage);
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("subcategoryId", subcategoryId);
+        model.addAttribute("urlType", "catalog");
 
-        List<CategoryShopDto> categories = categoryService.getShopCategories();
-        model.addAttribute("categories", categories);
-
-        List<BrandDto> brands = brandService.getAllBrands();
-        model.addAttribute("brands", brands);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("brands", brandService.getAllBrands());
+        model.addAttribute("totalCount", productService.getTotalProductCount());
+        model.addAttribute("countByPrice", productService.getCountByPriceRanges());
 
         int cartSize;
         int favoriteSize;
@@ -136,14 +142,17 @@ public class ShopController {
     @GetMapping("/detail/{id}")
     public String showDetailPage(@PathVariable Long id, Model model, Principal principal) {
 
-        ProductDetailDto product = productService.getProductDetail(id);
+        ProductDto product = productService.getProductById(id);
         model.addAttribute("product", product);
 
-        List<ProductRelatedDto> relatedProducts =
+        List<ReviewDto> reviews = reviewService.getReviewsByProductId(id);
+        model.addAttribute("reviews", reviews);
+
+        List<ProductDto> relatedProducts =
                 productService.getRelatedProducts(product.getCategory().getId(), product.getId());
         model.addAttribute("relatedProducts", relatedProducts);
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -162,16 +171,16 @@ public class ShopController {
     }
 
     @PostMapping("/review")
-    public String writeReview(ReviewAddDto reviewAddDto, Principal principal) {
+    public String writeReview(ReviewCreateDto reviewCreateDto, Principal principal) {
 
-        reviewService.writeReview(reviewAddDto, principal.getName());
+        reviewService.createReview(reviewCreateDto, principal.getName());
 
         return "redirect:/";
     }
 
     @GetMapping("/cart")
     public String showCartPage(Model model, Principal principal) {
-        UserCartDto userCart = userService.getUserCart(principal.getName());
+        CartDto userCart = userService.getUserCart(principal.getName());
         model.addAttribute("cart", userCart);
 
         boolean active = true;
@@ -180,7 +189,7 @@ public class ShopController {
         }
         model.addAttribute("active", active);
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -200,38 +209,38 @@ public class ShopController {
 
     @GetMapping("/cart/{productId}")
     public String addOneToCart(@PathVariable Long productId, Principal principal) {
-        BasketAddDto basketAddDto = new BasketAddDto(productId, 1L);
-        basketService.addToCart(basketAddDto, principal.getName());
+        CartItemCreateDto cartItemCreateDto = new CartItemCreateDto(productId, 1);
+        cartItemService.addToCart(cartItemCreateDto, principal.getName());
         return "redirect:/cart";
     }
 
     @PostMapping("/cart/add")
-    public String addToCart(BasketAddDto basketAddDto, Principal principal) {
-        basketService.addToCart(basketAddDto, principal.getName());
+    public String addToCart(CartItemCreateDto cartItemCreateDto, Principal principal) {
+        cartItemService.addToCart(cartItemCreateDto, principal.getName());
         return "redirect:/cart";
     }
 
     @PostMapping("/cart/remove")
-    public String removeBasket(Long productId, Principal principal) {
-        basketService.removeBasket(productId, principal.getName());
+    public String removeCartItem(Long productId, Principal principal) {
+        cartItemService.deleteCartItem(productId, principal.getName());
         return "redirect:/cart";
     }
 
     @GetMapping("/checkout")
     public String showCheckoutPage(Model model, Principal principal) {
-        UserCartDto userCart = userService.getUserCart(principal.getName());
+        CartDto userCart = userService.getUserCart(principal.getName());
         if (userCart.getTotal() == 0) {
             return "redirect:/cart";
         }
         model.addAttribute("cart", userCart);
 
-        UserEntity user = userService.getUserByEmail(principal.getName());
+        UserDto user = userService.getUserByEmail(principal.getName());
         model.addAttribute("user", user);
 
         List<Region> regions = regionService.getRegions();
         model.addAttribute("regions", regions);
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -250,20 +259,20 @@ public class ShopController {
     }
 
     @PostMapping("/checkout")
-    public String placeOrder(OrderPlaceDto orderPlaceDto, Principal principal) {
-        UserCartDto userCart = userService.getUserCart(principal.getName());
+    public String createOrder(OrderCreateDto orderCreateDto, Principal principal) {
+        CartDto userCart = userService.getUserCart(principal.getName());
         if (userCart.getTotal() == 0) {
             return "redirect:/cart";
         }
 
-        boolean result = orderService.checkout(principal.getName(), orderPlaceDto);
+        boolean result = orderService.createOrder(principal.getName(), orderCreateDto);
         if (!result) {
             return "redirect:/checkout";
         }
 
-        if (orderPlaceDto.getPaymentMethod() == 0) {
+        if (orderCreateDto.getPaymentMethod() == PaymentMethod.ONLINE) {
             return "redirect:/cart";
-        } else if (orderPlaceDto.getPaymentMethod() == 1) {
+        } else if (orderCreateDto.getPaymentMethod() == PaymentMethod.CASH) {
             return "redirect:/";
 
         }
@@ -271,12 +280,13 @@ public class ShopController {
     }
 
     @GetMapping("/favorites")
-    public String showFavoritesPage(Model model, Principal principal) {
+    public String showFavoritesPage(Model model, Principal principal, Integer currentPage) {
 
-        List<ProductShopDto> products = userService.getUserFavoriteProducts(principal.getName());
+        PaginationPayload<ProductDto> products = userService.getUserFavoriteProducts(principal.getName(), currentPage);
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", currentPage);
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -302,7 +312,7 @@ public class ShopController {
 
     @GetMapping("/favorites/remove/{productId}")
     public String removeFromFavorites(@PathVariable Long productId, Principal principal) {
-        favoritesService.removeFromFavorites(productId, principal.getName());
+        favoritesService.deleteFavorite(productId, principal.getName());
         return "redirect:/favorites";
     }
 }

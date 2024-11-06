@@ -3,8 +3,7 @@ package com.multishop.fusiontech.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -19,15 +18,7 @@ public class Review {
     @Column(length = 600)
     private String comment;
     private Integer rating;
-    private Date writingDate;
+    private LocalDateTime writingDate;
     @ManyToOne
     private Product product;
-
-    public String getFormattedWritingDate() {
-        if (writingDate != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-            return sdf.format(writingDate);
-        }
-        return null;
-    }
 }

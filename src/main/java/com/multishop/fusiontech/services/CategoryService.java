@@ -7,13 +7,9 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<CategoryLayoutDto> getLayoutCategories();
+    List<CategoryDto> getSearchCategories(String keyword);
 
-    List<CategoryHomeDto> getHomeCategories();
-
-    List<CategoryShopDto> getShopCategories();
-
-    List<CategoryAdminDto> getAdminCategories();
+    List<CategoryDto> getAllCategories();
 
     boolean createCategory(CategoryCreateDto categoryCreateDto);
 

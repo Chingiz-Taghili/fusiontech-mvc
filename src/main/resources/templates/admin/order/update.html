@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout}"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sifarişlər - Yenilə</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+
+    <form method="post" style="margin-left: 50px;">
+        <div style="display: flex;">
+            <!-- Sol tərəfdəki input sahələri -->
+            <div style="flex: 1; margin-right: 20px;">
+                <div style="margin-top: 5px; margin-bottom: 0px;">
+                    <label>Order Address:</label>
+                </div>
+                <div style="margin: 2px 0;">
+                    <input type="text" name="name" th:value="${order.name}" placeholder="Order name" style="width: 80%;"
+                           required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="surname" th:value="${order.surname}" placeholder="Order surname"
+                           style="width: 80%;" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="phoneNumber" th:value="${order.phoneNumber}"
+                           placeholder="Order phone number" style="width: 80%;" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="email" th:value="${order.email}" placeholder="Order email"
+                           style="width: 80%;" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="city" th:value="${order.city}" placeholder="Order city" style="width: 80%;"
+                           required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="address" th:value="${order.address}" placeholder="Order address"
+                           style="width: 80%;" required>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="message" th:value="${order.message}" placeholder="Order message"
+                           style="width: 80%;">
+                </div>
+            </div>
+            <!-- Sağ tərəfdəki input sahələri -->
+            <div style="flex: 1;">
+                <div style="margin-top: 5px; margin-bottom: 0px;">
+                    <input type="checkbox" id="differBilling" name="differBilling" th:checked="${order.differBilling}">
+                    <label for="differBilling">Different billing address</label>
+                </div>
+                <div style="margin: 1px 0;">
+                    <input type="text" name="billName" th:value="${order.billName}" placeholder="Order bill name"
+                           style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billSurname" th:value="${order.billSurname}"
+                           placeholder="Order bill surname" style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billPhoneNumber" th:value="${order.billPhoneNumber}"
+                           placeholder="Order bill phone number" style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billEmail" th:value="${order.billEmail}" placeholder="Order bill email"
+                           style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billCity" th:value="${order.billCity}" placeholder="Order bill city"
+                           style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billAddress" th:value="${order.billAddress}"
+                           placeholder="Order bill address" style="width: 80%;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="billMessage" th:value="${order.billMessage}"
+                           placeholder="Order bill message" style="width: 80%;">
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <!-- Payment Method seçimi -->
+            <div style="margin: 10px 0;">
+                <label for="paymentMethod" style="display: block; margin-bottom: 1px;">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod" style="width: 200px; height: 30px;">
+                    <option th:each="method : ${paymentMethods}"
+                            th:value="${method}"
+                            th:text="${method}"
+                            th:selected="${method == order.paymentMethod}">
+                    </option>
+                </select>
+            </div>
+            <!-- Order Status seçimi -->
+            <div style="margin: 10px 0;">
+                <label for="orderStatus" style="display: block; margin-bottom: 1px;">Order Status:</label>
+                <select id="orderStatus" name="orderStatus" style="width: 200px; height: 30px;">
+                    <option th:each="status : ${orderStatuses}"
+                            th:value="${status}"
+                            th:text="${status}"
+                            th:selected="${status == order.orderStatus}">
+                    </option>
+                </select>
+            </div>
+            <!-- Payment Status seçimi -->
+            <div style="margin: 10px 0;">
+                <label for="paymentStatus" style="display: block; margin-bottom: 1px;">Payment Status:</label>
+                <select id="paymentStatus" name="paymentStatus" style="width: 200px; height: 30px;">
+                    <option th:each="status : ${paymentStatuses}"
+                            th:value="${status}"
+                            th:text="${status}"
+                            th:selected="${status == order.paymentStatus}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <!-- OrderItems siyahısı -->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderItem : ${order.orderItems}">
+                <td th:text="${orderItem.id}" scope="row">Id</td>
+                <td th:text="${orderItem.product.name}">Product</td>
+                <td th:text="${orderItem.price}">Price</td>
+                <td th:text="${orderItem.quantity}">Quantity</td>
+                <td>
+                    <a th:href="'/admin/order/update-item/' + ${orderItem.id}">Update</a>
+                    <a th:href="'/admin/order/delete-item/' + ${orderItem.id}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="margin: 10px 0;">
+            <input type="submit" value="Update">
+        </div>
+    </form>
+
+</section>
+
+</body>
+</html>

@@ -43,32 +43,32 @@
                             <input type="radio" name="price" value="0" class="custom-control-input" id="price-all"
                                    checked>
                             <label class="custom-control-label" for="price-all">Hamısı</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                            <span class="badge border font-weight-normal" th:text="${totalCount}">1000</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="radio" name="price" value="1" class="custom-control-input" id="price-1">
                             <label class="custom-control-label" for="price-1">100 ₼-a qədər</label>
-                            <span class="badge border font-weight-normal">150</span>
+                            <span class="badge border font-weight-normal" th:text="${countByPrice[1]}">150</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="radio" name="price" value="2" class="custom-control-input" id="price-2">
                             <label class="custom-control-label" for="price-2">100 ₼ - 1000 ₼</label>
-                            <span class="badge border font-weight-normal">295</span>
+                            <span class="badge border font-weight-normal" th:text="${countByPrice[2]}">295</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="radio" name="price" value="3" class="custom-control-input" id="price-3">
                             <label class="custom-control-label" for="price-3">1000 ₼ - 2000 ₼</label>
-                            <span class="badge border font-weight-normal">246</span>
+                            <span class="badge border font-weight-normal" th:text="${countByPrice[3]}">246</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="radio" name="price" value="4" class="custom-control-input" id="price-4">
                             <label class="custom-control-label" for="price-4">2000 ₼ - 3000 ₼</label>
-                            <span class="badge border font-weight-normal">145</span>
+                            <span class="badge border font-weight-normal" th:text="${countByPrice[4]}">145</span>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                             <input type="radio" name="price" value="5" class="custom-control-input" id="price-5">
                             <label class="custom-control-label" for="price-5">3000 ₼-dan yuxarı</label>
-                            <span class="badge border font-weight-normal">168</span>
+                            <span class="badge border font-weight-normal" th:text="${countByPrice[5]}">168</span>
                         </div>
                     </div>
                     <!-- Price End -->
@@ -81,7 +81,7 @@
                             <input type="radio" name="category" value="0" class="custom-control-input"
                                    id="category-all" checked>
                             <label class="custom-control-label" for="category-all">Hamısı</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                            <span class="badge border font-weight-normal" th:text="${totalCount}">1000</span>
                         </div>
                         <div th:each="category : ${categories}"
                              class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -89,7 +89,7 @@
                                    class="custom-control-input" th:id="'category-' + ${category.id}">
                             <label class="custom-control-label" th:for="'category-' + ${category.id}"
                                    th:text="${category.name}">Notbuklar</label>
-                            <span class="badge border font-weight-normal">150</span>
+                            <span class="badge border font-weight-normal" th:text="${category.products.size}">150</span>
                         </div>
                     </div>
                     <!-- Category End -->
@@ -102,14 +102,14 @@
                             <input type="radio" name="brand" value="0" class="custom-control-input" id="brand-all"
                                    checked>
                             <label class="custom-control-label" for="brand-all">Hamısı</label>
-                            <span class="badge border font-weight-normal">1000</span>
+                            <span class="badge border font-weight-normal" th:text="${totalCount}">1000</span>
                         </div>
                         <div th:each="brand : ${brands}"
                              class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                             <input type="radio" name="brand" th:value="${brand.id}" class="custom-control-input"
                                    th:id="'brand-' + ${brand.id}">
                             <label class="custom-control-label" th:for="'brand-' + ${brand.id}" th:text="${brand.name}">Apple</label>
-                            <span class="badge border font-weight-normal">150</span>
+                            <span class="badge border font-weight-normal" th:text="${brand.products.size}">150</span>
                         </div>
                     </div>
                     <!-- Brand End -->
@@ -150,14 +150,17 @@
                             </div>
                         </div>
                     </div>
-                    <div th:each="product : ${products}" class="col-lg-4 col-md-6 col-sm-6 pb-1">
+
+                    <!-- Product List Start -->
+                    <div th:each="product : ${products.data}" class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" th:src="${product.image}" alt="">
                                 <div class="product-action">
                                     <a th:href="'/cart/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
                                             class="fa fa-shopping-cart"></i></a>
-                                    <a th:href="'/favorites/add/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
+                                    <a th:href="'/favorites/add/' + ${product.id}"
+                                       class="btn btn-outline-dark btn-square"><i
                                             class="far fa-heart"></i></a>
                                     <a th:href="'/detail/' + ${product.id}" class="btn btn-outline-dark btn-square"><i
                                             class="fa fa-search"></i></a>
@@ -173,27 +176,92 @@
                                     </h6>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small>(99)</small>
+                                    <small th:each="star : ${#numbers.sequence(1, 5)}"
+                                           th:classappend="${product.rating >= star} ? 'fas fa-star text-primary mr-1' :
+                                           (${product.rating >= star - 0.5} ? 'fas fa-star-half-alt text-primary mr-1' : 'far fa-star text-primary mr-1')">
+                                    </small>
+                                    <small th:text="${'(' + product.reviews.size + ')'}">(99)</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <!-- Product List End -->
+
+                    <!-- Əsas shop URL-i üçün səhifələmə düymələri-->
+                    <div class="col-12" th:if="${urlType == 'main'}">
                         <nav>
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                <!-- Previous düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage > 1}">
+                                    <a class="page-link" th:href="@{/shop(currentPage=${products.currentPage - 1})}">&laquo;
+                                        Əvvəlki</a>
+                                </li>
+                                <!-- Dinamik səhifə nömrələri -->
+                                <li class="page-item" th:each="page : ${#numbers.sequence(1, products.totalPage)}"
+                                    th:classappend="${page == products.currentPage} ? 'active'">
+                                    <a class="page-link" th:href="@{/shop(currentPage=${page})}" th:text="${page}">1</a>
+                                </li>
+                                <!-- Next düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage < products.totalPage}">
+                                    <a class="page-link" th:href="@{/shop(currentPage=${products.currentPage + 1})}">Növbəti
+                                        &raquo;</a>
+                                </li>
                             </ul>
                         </nav>
                     </div>
+
+                    <!-- Filter URL-i üçün səhifələmə düymələri-->
+                    <div class="col-12" th:if="${urlType == 'filter'}">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage > 1}">
+                                    <a class="page-link" th:href="@{/shop/filter(currentPage=${products.currentPage - 1},
+                                         price=${filterDto.price}, category=${filterDto.category}, brand=${filterDto.brand})}">
+                                        &laquo; Əvvəlki</a>
+                                </li>
+                                <!-- Dinamik səhifə nömrələri -->
+                                <li class="page-item" th:each="page : ${#numbers.sequence(1, products.totalPage)}"
+                                    th:classappend="${page == products.currentPage} ? 'active'">
+                                    <a class="page-link" th:text="${page}"
+                                       th:href="@{/shop/filter(currentPage=${page}, price=${filterDto.price},
+                                         category=${filterDto.category}, brand=${filterDto.brand})}">1</a>
+                                </li>
+                                <!-- Next düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage < products.totalPage}">
+                                    <a class="page-link" th:href="@{/shop/filter(currentPage=${products.currentPage + 1},
+                                         price=${filterDto.price}, category=${filterDto.category}, brand=${filterDto.brand})}">
+                                        Növbəti &raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Kataloq URL-i üçün səhifələmə düymələri-->
+                    <div class="col-12" th:if="${urlType == 'catalog'}">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage > 1}">
+                                    <a class="page-link" th:href="@{/shop/{categoryId}/{subcategoryId}(currentPage=${products.currentPage - 1},
+                                         categoryId=${categoryId}, subcategoryId=${subcategoryId})}">&laquo; Əvvəlki</a>
+                                </li>
+                                <!-- Dinamik səhifə nömrələri -->
+                                <li class="page-item" th:each="page : ${#numbers.sequence(1, products.totalPage)}"
+                                    th:classappend="${page == products.currentPage} ? 'active'">
+                                    <a class="page-link" th:text="${page}"
+                                       th:href="@{/shop/{categoryId}/{subcategoryId}(currentPage=${page},
+                                       categoryId=${categoryId}, subcategoryId=${subcategoryId})}"></a>
+                                </li>
+                                <!-- Next düyməsi -->
+                                <li class="page-item" th:if="${products.currentPage < products.totalPage}">
+                                    <a class="page-link" th:href="@{/shop/{categoryId}/{subcategoryId}(currentPage=${products.currentPage + 1},
+                                       categoryId=${categoryId}, subcategoryId=${subcategoryId})}">Növbəti &raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
                 </div>
             </div>
             <!-- Shop Product End -->

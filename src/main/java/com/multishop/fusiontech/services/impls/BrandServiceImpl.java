@@ -23,6 +23,13 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public List<BrandDto> getSearchBrands(String keyword) {
+        List<Brand> repoBrands = brandRepository.findByNameContainingIgnoreCase(keyword);
+        List<BrandDto> brands = repoBrands.stream().map(brand -> modelMapper.map(brand, BrandDto.class)).toList();
+        return brands;
+    }
+
+    @Override
     public List<BrandDto> getAllBrands() {
         List<Brand> repoBrands = brandRepository.findAll();
         List<BrandDto> brands = repoBrands.stream().map(brand -> modelMapper.map(brand, BrandDto.class)).toList();

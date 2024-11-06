@@ -1,95 +1,193 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.order.OrderPlaceDto;
+import com.multishop.fusiontech.dtos.order.OrderCreateDto;
+import com.multishop.fusiontech.dtos.order.OrderDto;
+import com.multishop.fusiontech.dtos.order.OrderUpdateDto;
 import com.multishop.fusiontech.enums.OrderStatus;
 import com.multishop.fusiontech.enums.PaymentStatus;
-import com.multishop.fusiontech.models.Basket;
+import com.multishop.fusiontech.models.CartItem;
 import com.multishop.fusiontech.models.Order;
 import com.multishop.fusiontech.models.OrderItem;
 import com.multishop.fusiontech.models.UserEntity;
-import com.multishop.fusiontech.repositories.BasketRepository;
+import com.multishop.fusiontech.payloads.PaginationPayload;
+import com.multishop.fusiontech.repositories.CartItemRepository;
 import com.multishop.fusiontech.repositories.OrderItemRepository;
 import com.multishop.fusiontech.repositories.OrderRepository;
 import com.multishop.fusiontech.repositories.UserRepository;
 import com.multishop.fusiontech.services.OrderService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private final UserRepository userRepository;
-    private final BasketRepository basketRepository;
+    private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper;
 
-    public OrderServiceImpl(UserRepository userRepository, BasketRepository basketRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ModelMapper modelMapper) {
+    public OrderServiceImpl(UserRepository userRepository, CartItemRepository cartItemRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
-        this.basketRepository = basketRepository;
+        this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public boolean checkout(String userEmail, OrderPlaceDto orderPlaceDto) {
+    public boolean createOrder(String userEmail, OrderCreateDto orderCreateDto) {
         try {
             UserEntity findUser = userRepository.findByEmail(userEmail);
-            List<Basket> findUserBaskets = findUser.getBaskets();
 
             Order order = new Order();
             order.setUser(findUser);
-            order.setOrderDate(new Date());
+            order.setOrderDate(LocalDateTime.now());
 
-            order.setName(orderPlaceDto.getName());
-            order.setSurname(orderPlaceDto.getSurname());
-            order.setPhoneNumber(orderPlaceDto.getPhoneNumber());
-            order.setEmail(orderPlaceDto.getEmail());
-            order.setCity(orderPlaceDto.getCity());
-            order.setAddress(orderPlaceDto.getAddress());
-            order.setMessage(orderPlaceDto.getMessage());
-            order.setDifferBilling(orderPlaceDto.isDifferBilling());
+            order.setName(orderCreateDto.getName());
+            order.setSurname(orderCreateDto.getSurname());
+            order.setPhoneNumber(orderCreateDto.getPhoneNumber());
+            order.setEmail(orderCreateDto.getEmail());
+            order.setCity(orderCreateDto.getCity());
+            order.setAddress(orderCreateDto.getAddress());
+            order.setMessage(orderCreateDto.getMessage());
+            order.setDifferBilling(orderCreateDto.isDifferBilling());
 
-            if (!orderPlaceDto.isDifferBilling()) {
-                order.setBillName(orderPlaceDto.getName());
-                order.setBillSurname(orderPlaceDto.getSurname());
-                order.setBillPhoneNumber(orderPlaceDto.getPhoneNumber());
-                order.setBillEmail(orderPlaceDto.getEmail());
-                order.setBillCity(orderPlaceDto.getCity());
-                order.setBillAddress(orderPlaceDto.getAddress());
-                order.setBillMessage(orderPlaceDto.getMessage());
+            if (!orderCreateDto.isDifferBilling()) {
+                order.setBillName(orderCreateDto.getName());
+                order.setBillSurname(orderCreateDto.getSurname());
+                order.setBillPhoneNumber(orderCreateDto.getPhoneNumber());
+                order.setBillEmail(orderCreateDto.getEmail());
+                order.setBillCity(orderCreateDto.getCity());
+                order.setBillAddress(orderCreateDto.getAddress());
+                order.setBillMessage(orderCreateDto.getMessage());
             } else {
-                order.setBillName(orderPlaceDto.getBillName());
-                order.setBillSurname(orderPlaceDto.getBillSurname());
-                order.setBillPhoneNumber(orderPlaceDto.getBillPhoneNumber());
-                order.setBillEmail(orderPlaceDto.getBillEmail());
-                order.setBillCity(orderPlaceDto.getBillCity());
-                order.setBillAddress(orderPlaceDto.getBillAddress());
-                order.setBillMessage(orderPlaceDto.getBillMessage());
+                order.setBillName(orderCreateDto.getBillName());
+                order.setBillSurname(orderCreateDto.getBillSurname());
+                order.setBillPhoneNumber(orderCreateDto.getBillPhoneNumber());
+                order.setBillEmail(orderCreateDto.getBillEmail());
+                order.setBillCity(orderCreateDto.getBillCity());
+                order.setBillAddress(orderCreateDto.getBillAddress());
+                order.setBillMessage(orderCreateDto.getBillMessage());
             }
 
-            order.setPaymentMethod(orderPlaceDto.getPaymentMethod());
+            order.setPaymentMethod(orderCreateDto.getPaymentMethod());
             order.setOrderStatus(OrderStatus.PENDING);
             order.setPaymentStatus(PaymentStatus.PENDING);
             orderRepository.save(order);
 
-            for (Basket findBasket : findUserBaskets) {
+            List<CartItem> findUserItems = findUser.getCartItems();
+            for (CartItem findItem : findUserItems) {
                 OrderItem orderItem = new OrderItem();
-                orderItem.setProduct(findBasket.getProduct());
-                orderItem.setPrice(findBasket.getProduct().getPrice());
-                orderItem.setQuantity(findBasket.getQuantity());
+                orderItem.setProduct(findItem.getProduct());
+                orderItem.setPrice(findItem.getProduct().getDiscountPrice());
+                orderItem.setQuantity(findItem.getQuantity());
                 orderItem.setOrder(order);
                 orderItemRepository.save(orderItem);
             }
 
-            basketRepository.deleteAll(findUserBaskets);
+            cartItemRepository.deleteAll(findUserItems);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean updateOrder(Long id, OrderUpdateDto orderUpdateDto) {
+        try {
+            Order findOrder = orderRepository.findById(id).orElseThrow();
+
+            findOrder.setName(orderUpdateDto.getName());
+            findOrder.setSurname(orderUpdateDto.getSurname());
+            findOrder.setPhoneNumber(orderUpdateDto.getPhoneNumber());
+            findOrder.setEmail(orderUpdateDto.getEmail());
+            findOrder.setCity(orderUpdateDto.getCity());
+            findOrder.setAddress(orderUpdateDto.getAddress());
+            findOrder.setMessage(orderUpdateDto.getMessage());
+            findOrder.setDifferBilling(orderUpdateDto.isDifferBilling());
+
+            if (!orderUpdateDto.isDifferBilling()) {
+                findOrder.setBillName(orderUpdateDto.getName());
+                findOrder.setBillSurname(orderUpdateDto.getSurname());
+                findOrder.setBillPhoneNumber(orderUpdateDto.getPhoneNumber());
+                findOrder.setBillEmail(orderUpdateDto.getEmail());
+                findOrder.setBillCity(orderUpdateDto.getCity());
+                findOrder.setBillAddress(orderUpdateDto.getAddress());
+                findOrder.setBillMessage(orderUpdateDto.getMessage());
+            } else {
+                findOrder.setBillName(orderUpdateDto.getBillName());
+                findOrder.setBillSurname(orderUpdateDto.getBillSurname());
+                findOrder.setBillPhoneNumber(orderUpdateDto.getBillPhoneNumber());
+                findOrder.setBillEmail(orderUpdateDto.getBillEmail());
+                findOrder.setBillCity(orderUpdateDto.getBillCity());
+                findOrder.setBillAddress(orderUpdateDto.getBillAddress());
+                findOrder.setBillMessage(orderUpdateDto.getBillMessage());
+            }
+
+            findOrder.setPaymentMethod(orderUpdateDto.getPaymentMethod());
+            findOrder.setOrderStatus(orderUpdateDto.getOrderStatus());
+            findOrder.setPaymentStatus(orderUpdateDto.getPaymentStatus());
+
+            orderRepository.save(findOrder);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
+    }
+
+    @Override
+    public OrderDto getOrderById(Long id) {
+        Order repoOrder = orderRepository.findById(id).orElseThrow();
+        OrderDto order = modelMapper.map(repoOrder, OrderDto.class);
+        return order;
+    }
+
+    @Override
+    public OrderDto getOrderByOrderItemId(Long itemId) {
+        OrderItem item = orderItemRepository.findById(itemId).orElseThrow();
+        Order repoOrder = orderRepository.findById(item.getOrder().getId()).orElseThrow();
+        OrderDto order = modelMapper.map(repoOrder, OrderDto.class);
+        return order;
+    }
+
+    @Override
+    public PaginationPayload<OrderDto> getAllOrders(Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber -1, 10, Sort.by("id"));
+        Page<Order> repoOrders = orderRepository.findAll(pageable);
+
+        List<OrderDto> orders = repoOrders.getContent().stream().map(order -> modelMapper.map(order, OrderDto.class)).toList();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        for (int i = 0; i < orders.size(); i++) {
+            if (repoOrders.getContent().get(i).getOrderDate() != null) {
+                orders.get(i).setFormattedOrderDate(repoOrders.getContent().get(i).getOrderDate().format(formatter));
+            }
+        }
+
+        PaginationPayload<OrderDto> paginationOrders = new PaginationPayload<>(repoOrders.getTotalPages(), pageNumber, orders);
+        return paginationOrders;
+    }
+
+    @Override
+    public List<OrderDto> getSearchOrders(String keyword) {
+        List<Order> repoOrders = orderRepository.findByKeywordInColumnsIgnoreCase(keyword);
+        List<OrderDto> orders = repoOrders.stream().map(order -> modelMapper.map(order, OrderDto.class)).toList();
+        return orders;
     }
 }

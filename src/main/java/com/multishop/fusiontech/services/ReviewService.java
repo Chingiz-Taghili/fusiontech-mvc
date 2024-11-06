@@ -1,14 +1,14 @@
 package com.multishop.fusiontech.services;
 
-import com.multishop.fusiontech.dtos.review.ReviewAddDto;
-import com.multishop.fusiontech.dtos.review.ReviewShowDto;
+import com.multishop.fusiontech.dtos.review.ReviewCreateDto;
+import com.multishop.fusiontech.dtos.review.ReviewDto;
 
 import java.util.List;
 
 public interface ReviewService {
 
-    List<ReviewShowDto> getReviews(Long productId);
+    List<ReviewDto> getReviewsByProductId(Long productId);
 
-    boolean writeReview(ReviewAddDto reviewAddDto, String userEmail);
+    boolean createReview(ReviewCreateDto reviewCreateDto, String userEmail);
 
 }

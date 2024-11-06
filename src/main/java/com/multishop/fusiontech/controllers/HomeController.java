@@ -1,13 +1,11 @@
 package com.multishop.fusiontech.controllers;
 
-import com.multishop.fusiontech.dtos.category.CategoryHomeDto;
-import com.multishop.fusiontech.dtos.category.CategoryLayoutDto;
-import com.multishop.fusiontech.dtos.product.ProductFeaturedDto;
-import com.multishop.fusiontech.dtos.product.ProductOfferedDto;
-import com.multishop.fusiontech.dtos.product.ProductShopDto;
+import com.multishop.fusiontech.dtos.category.CategoryDto;
+import com.multishop.fusiontech.dtos.product.ProductDto;
 import com.multishop.fusiontech.dtos.singledtos.AppealDto;
-import com.multishop.fusiontech.dtos.slider.SliderHomeDto;
 import com.multishop.fusiontech.dtos.singledtos.TestimonialDto;
+import com.multishop.fusiontech.dtos.slider.SliderDto;
+import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,19 +38,19 @@ public class HomeController {
     @GetMapping("/")
     public String showHomePage(Model model, Principal principal) {
 
-        List<SliderHomeDto> sliders = sliderService.getHomeSliders();
+        List<SliderDto> sliders = sliderService.getAllSliders();
         model.addAttribute("sliders", sliders);
 
-        List<CategoryHomeDto> categories = categoryService.getHomeCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
-        List<ProductFeaturedDto> featuredProducts = productService.getFeaturedProducts().stream().limit(8).toList();
+        List<ProductDto> featuredProducts = productService.getFeaturedProducts().stream().limit(8).toList();
         model.addAttribute("featuredProducts", featuredProducts);
 
-        List<ProductOfferedDto> offeredProducts = productService.getOfferedProducts().stream().limit(2).toList();
+        List<ProductDto> offeredProducts = productService.getOfferedProducts().stream().limit(2).toList();
         model.addAttribute("offeredProducts", offeredProducts);
 
-        List<TestimonialDto> testimonials = testimonialService.getTestimonials();
+        List<TestimonialDto> testimonials = testimonialService.getAllTestimonials();
         model.addAttribute("testimonials", testimonials);
 
         int cartSize;
@@ -73,7 +71,7 @@ public class HomeController {
     @GetMapping("/about")
     public String showAboutPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -94,7 +92,7 @@ public class HomeController {
     @GetMapping("/contact")
     public String showContactPage(Model model, Principal principal) {
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;
@@ -114,7 +112,7 @@ public class HomeController {
 
     @PostMapping("/contact")
     public String createAppeal(AppealDto appealDto) {
-        boolean result = appealService.placeAppeal(appealDto);
+        boolean result = appealService.createAppeal(appealDto);
         if (!result) {
             return "redirect:/contact";
         }
@@ -122,12 +120,14 @@ public class HomeController {
     }
 
     @GetMapping("/search")
-    public String searchProduct(@RequestParam("keyword") String keyword, Model model, Principal principal) {
+    public String searchProduct(String keyword, Model model, Principal principal, Integer currentPage) {
 
-        List<ProductShopDto> products = productService.getSearchProducts(keyword);
+        PaginationPayload<ProductDto> products = productService.getSearchProducts(keyword, currentPage);
         model.addAttribute("products", products);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("keyword", keyword);
 
-        List<CategoryLayoutDto> categories = categoryService.getLayoutCategories();
+        List<CategoryDto> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
 
         int cartSize;

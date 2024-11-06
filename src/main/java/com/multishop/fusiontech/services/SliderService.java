@@ -1,16 +1,18 @@
 package com.multishop.fusiontech.services;
 
 import com.multishop.fusiontech.dtos.slider.SliderCreateDto;
-import com.multishop.fusiontech.dtos.slider.SliderHomeDto;
+import com.multishop.fusiontech.dtos.slider.SliderDto;
 import com.multishop.fusiontech.dtos.slider.SliderUpdateDto;
 
 import java.util.List;
 
 public interface SliderService {
 
-    List<SliderHomeDto> getHomeSliders();
+    List<SliderDto> getSearchSliders(String keyword);
 
-    SliderHomeDto getSliderById(Long id);
+    List<SliderDto> getAllSliders();
+
+    SliderDto getSliderById(Long id);
 
     boolean createSlider(SliderCreateDto sliderCreateDto);
 

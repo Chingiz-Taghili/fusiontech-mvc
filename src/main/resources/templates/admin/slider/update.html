@@ -26,6 +26,10 @@
                    style="width: 350px;" required>
         </div>
         <div style="margin: 10px 0;">
+            <input type="text" name="url" th:value="${slider.url}" placeholder="Url to click"
+                   style="width: 350px;" required>
+        </div>
+        <div style="margin: 10px 0;">
             <input type="checkbox" id="active" name="active" th:checked="${slider.active}">
             <label for="active">Is active?</label>
         </div>

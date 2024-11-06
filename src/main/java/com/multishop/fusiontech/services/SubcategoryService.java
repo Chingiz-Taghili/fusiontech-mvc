@@ -9,5 +9,5 @@ public interface SubcategoryService {
 
     List<SubcategoryDto> getAllSubcategories();
 
-    Subcategory getById(Long id);
+    SubcategoryDto getSubcategoryById(Long id);
 }
