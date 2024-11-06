@@ -3,13 +3,10 @@ package com.multishop.fusiontech.controllers.admin;
 import com.multishop.fusiontech.dtos.order.OrderCreateDto;
 import com.multishop.fusiontech.dtos.order.OrderDto;
 import com.multishop.fusiontech.dtos.order.OrderUpdateDto;
-import com.multishop.fusiontech.dtos.orderItem.OrderItemDto;
 import com.multishop.fusiontech.dtos.orderItem.OrderItemUpdateDto;
-import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.enums.OrderStatus;
 import com.multishop.fusiontech.enums.PaymentMethod;
 import com.multishop.fusiontech.enums.PaymentStatus;
-import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.OrderItemService;
 import com.multishop.fusiontech.services.OrderService;
 import com.multishop.fusiontech.services.UserService;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class OrderController {
@@ -38,21 +34,32 @@ public class OrderController {
 
     @GetMapping("/admin/order")
     public String showIndexPage(Model model, Principal principal, Integer currentPage) {
-        PaginationPayload<OrderDto> orders = orderService.getAllOrders(currentPage);
-        model.addAttribute("orders", orders);
+        model.addAttribute("orders", orderService.getAllOrders(currentPage));
         model.addAttribute("currentPage", currentPage);
+        model.addAttribute("urlType", "index");
         model.addAttribute("searchUrl", "/admin/search/order");
 
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+
+        return "/admin/order/index";
+    }
+
+    @GetMapping("/admin/search/order")
+    public String showSearchPage(String keyword, Model model, Principal principal, Integer currentPage) {
+        model.addAttribute("orders", orderService.getSearchOrders(keyword, currentPage));
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("urlType", "search");
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/order/index";
     }
 
     @GetMapping("/admin/order/create")
     public String showCreatePage(Principal principal, Model model) {
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         return "/admin/order/create";
     }
 
@@ -67,14 +74,12 @@ public class OrderController {
 
     @GetMapping("/admin/order/update/{id}")
     public String showUpdatePage(@PathVariable Long id, Model model, Principal principal) {
-        OrderDto order = orderService.getOrderById(id);
-        model.addAttribute("order", order);
+        model.addAttribute("order", orderService.getOrderById(id));
         model.addAttribute("paymentMethods", PaymentMethod.values());
         model.addAttribute("orderStatuses", OrderStatus.values());
         model.addAttribute("paymentStatuses", PaymentStatus.values());
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/order/update";
     }
@@ -91,11 +96,9 @@ public class OrderController {
 
     @GetMapping("/admin/order/update-item/{id}")
     public String showUpdateItemPage(@PathVariable Long id, Model model, Principal principal) {
-        OrderItemDto orderItem = orderItemService.getOrderItemById(id);
-        model.addAttribute("orderItem", orderItem);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("orderItem", orderItemService.getOrderItemById(id));
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/order/update-item";
     }
@@ -113,11 +116,9 @@ public class OrderController {
 
     @GetMapping("/admin/order/delete/{id}")
     public String showDeletePage(@PathVariable Long id, Model model, Principal principal) {
-        OrderDto order = orderService.getOrderById(id);
-        model.addAttribute("order", order);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/order/delete";
     }
@@ -130,11 +131,9 @@ public class OrderController {
 
     @GetMapping("/admin/order/delete-item/{id}")
     public String showItemDeletePage(@PathVariable Long id, Model model, Principal principal) {
-        OrderItemDto orderItem = orderItemService.getOrderItemById(id);
-        model.addAttribute("orderItem", orderItem);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("orderItem", orderItemService.getOrderItemById(id));
+        model.addAttribute("searchUrl", "/admin/search/order");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/order/delete-item";
     }

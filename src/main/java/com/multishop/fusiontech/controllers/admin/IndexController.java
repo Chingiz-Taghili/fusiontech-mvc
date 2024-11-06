@@ -20,8 +20,7 @@ public class IndexController {
     @GetMapping("/admin")
     public String showIndexPage(Principal principal, Model model) {
         model.addAttribute("searchUrl", "/admin/search/product");
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         return "/admin/index";
     }
 }

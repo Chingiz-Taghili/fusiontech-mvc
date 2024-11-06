@@ -21,5 +21,5 @@ public interface OrderService {
 
     PaginationPayload<OrderDto> getAllOrders(Integer pageNumber);
 
-    List<OrderDto> getSearchOrders(String keyword);
+    PaginationPayload<OrderDto> getSearchOrders(String keyword, Integer pageNumber);
 }

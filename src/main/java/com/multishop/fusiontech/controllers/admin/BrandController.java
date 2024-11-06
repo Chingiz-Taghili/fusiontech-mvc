@@ -30,20 +30,27 @@ public class BrandController {
 
     @GetMapping("/admin/brand")
     public String showIndexPage(Model model, Principal principal) {
-        List<BrandDto> brands = brandService.getAllBrands();
-        model.addAttribute("brands", brands);
+        model.addAttribute("brands", brandService.getAllBrands());
         model.addAttribute("searchUrl", "/admin/search/brand");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        return "/admin/brand/index";
+    }
+
+    @GetMapping("/admin/search/brand")
+    public String showSearchPage(String keyword, Model model, Principal principal) {
+        model.addAttribute("brands", brandService.getSearchBrands(keyword));
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchUrl", "/admin/search/brand");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/brand/index";
     }
 
     @GetMapping("/admin/brand/create")
     public String showCreatePage(Principal principal, Model model) {
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("searchUrl", "/admin/search/brand");
         return "/admin/brand/create";
     }
 
@@ -58,11 +65,9 @@ public class BrandController {
 
     @GetMapping("/admin/brand/update/{id}")
     public String showUpdatePage(@PathVariable Long id, Model model, Principal principal) {
-        Brand brand = brandService.getBrandById(id);
-        model.addAttribute("brand", brand);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("brand", brandService.getBrandById(id));
+        model.addAttribute("searchUrl", "/admin/search/brand");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/brand/update";
     }
@@ -73,16 +78,14 @@ public class BrandController {
         if (result) {
             return "redirect:/admin/brand";
         }
-        return "redirect:/admin/brand/update";
+        return "redirect:/admin/brand/update/" + id;
     }
 
     @GetMapping("admin/brand/delete/{id}")
     public String showDeletePage(@PathVariable Long id, Model model, Principal principal) {
-        Brand brand = brandService.getBrandById(id);
-        model.addAttribute("brand", brand);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("brand", brandService.getBrandById(id));
+        model.addAttribute("searchUrl", "/admin/search/brand");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/brand/delete";
     }

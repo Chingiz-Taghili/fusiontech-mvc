@@ -185,9 +185,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getSearchOrders(String keyword) {
-        List<Order> repoOrders = orderRepository.findByKeywordInColumnsIgnoreCase(keyword);
-        List<OrderDto> orders = repoOrders.stream().map(order -> modelMapper.map(order, OrderDto.class)).toList();
-        return orders;
+    public PaginationPayload<OrderDto> getSearchOrders(String keyword, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Page<Order> repoOrders = orderRepository.findByKeywordInColumnsIgnoreCase(keyword, pageable);
+
+        List<OrderDto> orders = repoOrders.getContent().stream().map(order -> modelMapper.map(order, OrderDto.class)).toList();
+        PaginationPayload<OrderDto> paginationOrders = new PaginationPayload<>(
+                repoOrders.getTotalPages(), pageNumber, orders);
+        return paginationOrders;
     }
 }

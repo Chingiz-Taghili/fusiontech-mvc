@@ -1,6 +1,8 @@
 package com.multishop.fusiontech.repositories;
 
 import com.multishop.fusiontech.models.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +21,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "OR LOWER(o.billMessage) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(o.billName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(o.billSurname) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    List<Order> findByKeywordInColumnsIgnoreCase(@Param("keyword") String keyword);
+    Page<Order> findByKeywordInColumnsIgnoreCase(@Param("keyword") String keyword, Pageable pageable);
 }

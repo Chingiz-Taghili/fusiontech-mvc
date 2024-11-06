@@ -42,8 +42,8 @@
         </tbody>
     </table>
 
-    <!-- Button for Pagination -->
-    <div class="pagination" style="display: flex; justify-content: center;">
+    <!-- Pagination Buttons for Index -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${orders.currentPage > 1}" style="margin-right: 10px;">
@@ -60,6 +60,28 @@
             <!-- Next düyməsi -->
             <li th:if="${orders.currentPage < orders.totalPage}" style="margin-right: 10px;">
                 <a th:href="@{/admin/order(currentPage=${orders.currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Pagination Buttons for Search -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'search'}">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${orders.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage - 1}, keyword=${keyword})}">Previous</a>
+            </li>
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, orders.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/search/order(currentPage=${pageNumber}, keyword=${keyword})}" th:text="${pageNumber}"
+                   style="background-color: ${orders.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${orders.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px; border-radius: 5px; text-decoration: none;">1</a>
+            </li>
+            <!-- Next düyməsi -->
+            <li th:if="${orders.currentPage < orders.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage + 1}, keyword=${keyword})}">Next</a>
             </li>
         </ul>
     </div>

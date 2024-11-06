@@ -25,14 +25,11 @@ public class AppealController {
 
     @GetMapping("/admin/appeal")
     public String showIndexPage(Integer currentPage, Model model, Principal principal) {
-        PaginationPayload<AppealDto> appeals = appealService.getAllAppeals(currentPage);
-        model.addAttribute("appeals", appeals);
+        model.addAttribute("appeals", appealService.getAllAppeals(currentPage));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("urlType", "index");
         model.addAttribute("searchUrl", "/admin/search/appeal");
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/appeal/index";
     }
@@ -44,9 +41,7 @@ public class AppealController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("urlType", "search");
         model.addAttribute("searchUrl", "/admin/search/appeal");
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/appeal/index";
     }
