@@ -32,6 +32,9 @@
     <!-- Custom styles for this template-->
     <link href="/admin/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- Dynamic inputs for adding images -->
+    <link href="/admin/css/addImagesCreate.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -44,10 +47,10 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
-            <div class="sidebar-brand-icon rotate-n-0">
+            <div class="sidebar-brand-icon rotate-n-0" style="color: #FFD333;">
                 <i class="fa-solid fa-gears"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Admin<sup>Panel</sup></div>
+            <div class="sidebar-brand-text mx-3" style="color: #FFD333;">Admin<sup>Panel</sup></div>
         </a>
 
         <!-- Divider -->
@@ -163,8 +166,10 @@
                         <input type="text" name="keyword" class="form-control bg-light border-0 small"
                                placeholder="Axtarın..." aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search fa-sm"></i>
+                            <button class="btn btn-primary" type="submit" style="background-color: #FFD333; border-color: #FFD333;"
+                                    onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">
+                                <i class="fas fa-search fa-sm" style="color: #3D464D;"></i>
                             </button>
                         </div>
                     </div>
@@ -197,13 +202,24 @@
                         </div>
                     </li>
 
+                    <!-- Back to Site Button -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" style="color: #3D464D;"
+                           onmouseover="this.style.color='#A0A7AD';"
+                           onmouseout="this.style.color='#3D464D';">
+                            <i class="fas fa-arrow-left fa-sm fa-fw mr-2" style="color: inherit;"></i>
+                            <span>Sayta Qayıt</span>
+                        </a>
+                    </li>
+
                     <div class="topbar-divider d-none d-sm-block"></div>
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span th:text="${user.name + ' ' + user.surname}" class="mr-2 d-none d-lg-inline text-gray-600 small">
+                            <span th:text="${user.name + ' ' + user.surname}" style="font-size: 1rem;"
+                                  class="mr-2 d-none d-lg-inline text-gray-600 small">
                                 Douglas McGee</span>
                             <img class="img-profile rounded-circle"
                                  th:src="${user.image}">
@@ -269,8 +285,12 @@
             </div>
             <div class="modal-body">Cari sessiyanı bitirməyə hazırsansa, aşağıda "Çıxış" seç</div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="/logout">Çıxış</a>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">İmtina</button>
+                <a class="btn btn-primary" href="/logout" style="background-color: #FF4D4D; border-color: #FF4D4D; min-width: 70px;"
+                   onmouseover="this.style.backgroundColor='#FF2929';" onmouseout="this.style.backgroundColor='#FF4D4D';">
+                    Çıxış
+                </a>
+
             </div>
         </div>
     </div>

@@ -53,9 +53,9 @@ public class ProductServiceImpl implements ProductService {
         newProduct.setSubcategory(subcategory);
 
         List<Image> images = new ArrayList<>();
-        for (String imageUrl : productCreateDto.getImages()) {
+        for (String url : productCreateDto.getImageUrls()) {
             Image image = new Image();
-            image.setUrl(imageUrl);
+            image.setUrl(url);
             image.setProduct(newProduct);
             images.add(image);
         }
@@ -228,17 +228,22 @@ public class ProductServiceImpl implements ProductService {
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
         Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
 
-        Page<Product> repoProducts = productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        Page<Product> repoProducts = productRepository.findByKeywordInColumnsIgnoreCase(keyword, pageable);
 
         List<ProductDto> searchProducts = repoProducts.getContent()
                 .stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         for (int i = 0; i < searchProducts.size(); i++) {
+            if (repoProducts.getContent().get(i).getDiscountDate() != null) {
+                searchProducts.get(i).setFormattedDiscountDate(
+                        repoProducts.getContent().get(i).getDiscountDate().format(formatter));
+            }
             searchProducts.get(i).setImage(repoProducts.getContent().get(i).getImages().get(0).getUrl());
         }
 
-        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>
-                (repoProducts.getTotalPages(), pageNumber, searchProducts);
+        PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>(
+                        repoProducts.getTotalPages(), pageNumber, searchProducts);
 
         return paginationProducts;
     }

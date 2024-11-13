@@ -16,23 +16,25 @@
         <thead>
         <tr>
             <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Kateqoriya adı</th>
+            <th scope="col">Seçimlər</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="category : ${categories}">
-            <th th:text="${category.id}" scope="row">1</th>
-            <td th:text="${category.name}">Mark</td>
-            <td>
-                <a th:href="'/admin/category/update/' + ${category.id}">Update</a>
-                <a th:href="'/admin/category/delete/' + ${category.id}">Delete</a>
+            <td th:text="${category.id}" scope="row" style="vertical-align: middle;">1</td>
+            <td th:text="${category.name}" style="vertical-align: middle;">Name</td>
+            <td style="vertical-align: middle;">
+                <a th:href="'/admin/category/update/' + ${category.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                <a th:href="'/admin/category/delete/' + ${category.id}" class="btn btn-primary py-1 px-2">Sil</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a href="/admin/category/create">Create new category</a>
+    <a style="color: #228B22; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; margin-left: 40px; margin-top: 25px; transition: color 0.3s ease; font-size: 18px;"
+       href="/admin/category/create" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#228B22'">
+        <i class="fa fa-plus" style="margin-right: 5px; font-size: 19px;"></i> Kateqoriya əlavə et</a>
 
 </section>
 

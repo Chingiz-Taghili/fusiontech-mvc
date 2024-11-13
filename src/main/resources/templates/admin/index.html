@@ -12,7 +12,71 @@
 
 <section layout:fragment="content">
 
-    <h1>hello from dashboard</h1>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 30px; padding: 30px;">
+
+        <!-- Slayderlər -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${sliderCount} + ' Slayder'">Slayder sayı</h2>
+            <a href="/admin/slider" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Sifarişlər -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${orderCount} + ' Sifariş'">Sifariş sayı</h2>
+            <a href="/admin/order" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Kateqoriyalar -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${categoryCount} + ' Kateqoriya'">Kateqoriya sayı</h2>
+            <a href="/admin/category" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Məhsullar -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${productCount} + ' Məhsul'">Məhsul sayı</h2>
+            <a href="/admin/product" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Brendlər -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${brandCount} + ' Brend'">Brend sayı</h2>
+            <a href="/admin/brand" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- İstifadəçilər -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${userCount} + ' İstifadəçi'">İstifadəçi sayı</h2>
+            <a href="/admin/user" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Müraciətlər -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+            <h2 th:text="${appealCount} + ' Müraciət'">Müraciət sayı</h2>
+            <a href="/admin/appeal" style="color: #3D464D; font-weight: bold;">Ətraflı</a>
+        </div>
+
+        <!-- Boş qutu -->
+        <div style="flex: 1 1 calc(25% - 30px); background-color: #FFFFFF; padding: 20px; text-align: center; box-shadow: -5px 0 0 #FFD333, 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid rgba(0, 0, 0, 0.05); border-radius: 10px; transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;"
+             onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#FFD333'; this.style.color='#3D464D'; this.style.borderColor='#FFD333';"
+             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#FFFFFF'; this.style.color='inherit'; this.style.borderColor='rgba(0, 0, 0, 0.05)';">
+        </div>
+
+    </div>
 
 </section>
 

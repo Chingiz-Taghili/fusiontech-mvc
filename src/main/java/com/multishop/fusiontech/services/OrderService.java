@@ -22,4 +22,6 @@ public interface OrderService {
     PaginationPayload<OrderDto> getAllOrders(Integer pageNumber);
 
     PaginationPayload<OrderDto> getSearchOrders(String keyword, Integer pageNumber);
+
+    Long getTotalCount();
 }

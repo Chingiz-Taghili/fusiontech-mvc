@@ -6,96 +6,124 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Məhsullar - Yenilə</title>
+    <title>Məhsulu Yenilə</title>
 </head>
 <body>
 
 <section layout:fragment="content">
 
     <form method="post" onsubmit="return validateAndSubmitForm()" style="margin-left: 50px;">
-        <div style="margin: 10px 0;">
-            <input type="text" name="name" placeholder="Product name" th:value="${product.name}" style="width: 350px;"
-                   required>
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="number" name="price" placeholder="Price" th:value="${product.price}" style="width: 350px;"
-                   required>
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="description" placeholder="Description" th:value="${product.description}"
-                   style="width: 350px;" required>
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="moreDetail" placeholder="More detail" th:value="${product.moreDetail}"
-                   style="width: 350px;" required>
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="number" name="discountPrice" placeholder="Discount price" th:value="${product.discountPrice}"
-                   style="width: 350px;" required>
-        </div>
-        <div style="margin: 10px 0;">
-            <label for="discountDate" style="display: block; margin-bottom: 1px;">Discount Date:</label>
-            <input type="datetime-local" name="discountDate" th:value="${product.discountDate}" id="discountDate"
-                   style="width: 350px;" required>
-        </div>
-
-        <!-- Dinamik şəkil URL inputları -->
-        <div id="imagesContainer" style="margin: 10px 0;">
-            <label for="images" style="display: block; margin-bottom: 1px;">Product Images:</label>
-            <div th:each="image, iterStat : ${product.images}"
-                 style="margin-bottom: 10px; display: flex; align-items: center;">
-                <input th:value="${image.url}" type="text" name="imagesUrl" placeholder="Enter image URL"
-                       id="images" style="width: 350px; display: block; margin-right: 5px;" required>
-                <button type="button" th:if="${!iterStat.first}" onclick="removeImage(this)">Remove</button>
+        <div style="display: flex; justify-content: space-between;">
+            <!-- Sol tərəfdəki inputlar -->
+            <div style="flex: 1; margin-right: 20px;">
+                <div style="margin: 10px 0;">
+                    <input type="text" name="name" placeholder="Məhsulun adı" th:value="${product.name}" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="number" name="price" placeholder="Qiymət" th:value="${product.price}" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="description" placeholder="Haqqında" th:value="${product.description}" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="moreDetail" placeholder="Ətraflı məlumat" th:value="${product.moreDetail}" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="number" name="discountPrice" placeholder="Endirim qiyməti"
+                           th:value="${product.discountPrice}" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 10px 0;">
+                    <label for="discountDate" style="display: block; margin-bottom: 1px;">Endirim Tarixi:</label>
+                    <input type="datetime-local" name="discountDate" th:value="${product.discountDate}"
+                           id="discountDate" required
+                           style="width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <!-- Dinamik şəkil URL inputları -->
+                <div id="imagesContainer" style="margin: 10px 0;">
+                    <label for="images" style="display: block; margin-bottom: 1px;">Məhsulun Şəkilləri:</label>
+                    <div th:each="image, iterStat : ${product.images}"
+                         style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <input th:value="${image.url}" type="text" name="imagesUrl" placeholder="Şəkil URL-i daxil edin"
+                               id="images" required
+                               style="display: block; margin-right: 5px; width: 400px; height: 40px; padding: 10px; outline: none;
+                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                        <button type="button" th:if="${!iterStat.first}" onclick="removeImage(this)" class="btn btn-primary py-1 px-2">Ləğv et</button>
+                    </div>
+                </div>
+                <button type="button" onclick="addImageUrl()" class="btn btn-primary py-1 px-2"
+                        style="margin-bottom: 10px;">+ Əlavə et</button>
+            </div>
+            <!-- Sağ tərəfdəki checkbox-lar və select-lər -->
+            <div style="flex: 1;">
+                <div style="margin: 10px 0;">
+                    <input type="checkbox" id="featured" name="featured" th:checked="${product.featured}"
+                           style="width: 16px; height: 16px; margin-right: 10px;">
+                    <label for="featured" style="cursor: pointer;">Önə Çıxarılsın?</label>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="checkbox" id="offered" name="offered" th:checked="${product.offered}"
+                           style="width: 16px; height: 16px; margin-right: 10px;">
+                    <label for="offered" style="cursor: pointer;">Təklif Edilsin?</label>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label for="brand" style="display: block; margin-bottom: 2px; font-size: 16px;">Brend:</label>
+                    <select name="brandId" id="brand" required
+                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
+                        <option value="">Brend seç</option>
+                        <th:block th:each="brand : ${brands}">
+                            <option th:value="${brand.id}" th:text="${brand.name}"
+                                    th:selected="${brand.id} == ${product.brand.id}"></option>
+                        </th:block>
+                    </select>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label for="category" style="display: block; margin-bottom: 2px; font-size: 16px;">Kateqoriya:</label>
+                    <select name="categoryId" id="category" required
+                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
+                        <option value="">Kateqoriya seç</option>
+                        <th:block th:each="category : ${categories}">
+                            <option th:value="${category.id}" th:text="${category.name}"
+                                    th:selected="${category.id} == ${product.category.id}"></option>
+                        </th:block>
+                    </select>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label for="subcategory" style="display: block; margin-bottom: 2px; font-size: 16px;">Alt Kateqoriya:</label>
+                    <select name="subcategoryId" id="subcategory" required
+                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
+                        <option value="">Alt kateqoriya seç</option>
+                        <th:block th:each="subcategory : ${subcategories}">
+                            <option th:value="${subcategory.id}" th:text="${subcategory.subcategoryName.name}"
+                                    th:selected="${subcategory.id} == ${product.subcategory.id}"></option>
+                        </th:block>
+                    </select>
+                </div>
             </div>
         </div>
-        <button type="button" onclick="addImageUrl()">Add Another Image</button>
 
-
-        <div style="margin: 10px 0;">
-            <input type="checkbox" id="featured" name="featured" th:checked="${product.featured}">
-            <label for="featured">Is featured?</label>
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="checkbox" id="offered" name="offered" th:checked="${product.offered}">
-            <label for="offered">Is offered?</label>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="brand" style="display: block; margin-bottom: 1px;">Brand:</label>
-            <select name="brandId" id="brand" style="width: 350px;" required>
-                <option value="">Select brand</option>
-                <th:block th:each="brand : ${brands}">
-                    <option th:value="${brand.id}" th:text="${brand.name}"
-                            th:selected="${brand.id} == ${product.brand.id}"></option>
-                </th:block>
-            </select>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="category" style="display: block; margin-bottom: 1px;">Category:</label>
-            <select name="categoryId" id="category" style="width: 350px;" required>
-                <option value="">Select category</option>
-                <th:block th:each="category : ${categories}">
-                    <option th:value="${category.id}" th:text="${category.name}"
-                            th:selected="${category.id} == ${product.category.id}"></option>
-                </th:block>
-            </select>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <label for="subcategory" style="display: block; margin-bottom: 1px;">Subcategory:</label>
-            <select name="subcategoryId" id="subcategory" style="width: 350px;" required>
-                <option value="">Select subcategory</option>
-                <th:block th:each="subcategory : ${subcategories}">
-                    <option th:value="${subcategory.id}" th:text="${subcategory.subcategoryName.name}"
-                            th:selected="${subcategory.id} == ${product.subcategory.id}"></option>
-                </th:block>
-            </select>
-        </div>
-
-        <div style="margin: 10px 0;">
-            <button type="submit">Update</button>
+        <!-- Saxla düyməsi -->
+        <div style="margin: 10px 0; margin-top: 40px;">
+            <button type="submit" class="btn btn-primary py-2 px-4"
+                    style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                    onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
         </div>
     </form>
 

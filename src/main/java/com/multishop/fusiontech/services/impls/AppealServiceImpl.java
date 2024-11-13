@@ -32,7 +32,7 @@ public class AppealServiceImpl implements AppealService {
             appealRepository.save(appeal);
             return true;
         } catch (Exception e) {
-         return false;
+            return false;
         }
     }
 
@@ -62,5 +62,10 @@ public class AppealServiceImpl implements AppealService {
                 (repoAppeals.getTotalPages(), pageNumber, appeals);
 
         return paginationAppeals;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return appealRepository.count();
     }
 }

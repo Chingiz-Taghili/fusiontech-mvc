@@ -15,4 +15,5 @@ public class UserCreateDto {
     private Gender gender;
     private String image;
     private String password;
+    private Long roleId;
 }

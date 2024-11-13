@@ -15,39 +15,37 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Discount Price</th>
-            <th scope="col">Discount Date</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Category</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Id</th>
+            <th scope="col">Məhsulun Adı</th>
+            <th scope="col">Qiymət</th>
+            <th scope="col">Endirim Qiyməti</th>
+            <th scope="col">Endirim Tarixi</th>
+            <th scope="col">Kateqoriya</th>
+            <th scope="col">Seçimlər</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="product : ${products.data}">
-            <th th:text="${product.id}" scope="row">1</th>
-            <td th:text="${product.name}">Name</td>
-            <td th:text="${product.price}">Price</td>
-            <td th:text="${product.discountPrice}">Discount Price</td>
-            <td th:text="${product.formattedDiscountDate}">Discount Date</td>
-            <td th:text="${product.brand.name}">Brand</td>
-            <td th:text="${product.category.name}">Category</td>
-            <td>
-                <a th:href="'/admin/product/update/' + ${product.id}">Update</a>
-                <a th:href="'/admin/product/delete/' + ${product.id}">Delete</a>
+            <td th:text="${product.id}" scope="row" style="vertical-align: middle;">1</td>
+            <td th:text="${product.name}" style="vertical-align: middle;">Name</td>
+            <td th:text="${product.price} + ' ₼'" style="vertical-align: middle;">Price</td>
+            <td th:text="${product.discountPrice} + ' ₼'" style="vertical-align: middle;">Discount Price</td>
+            <td th:text="${product.formattedDiscountDate}" style="vertical-align: middle;">Discount Date</td>
+            <td th:text="${product.category.name}" style="vertical-align: middle;">Category</td>
+            <td style="vertical-align: middle;">
+                <a th:href="'/admin/product/update/' + ${product.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                <a th:href="'/admin/product/delete/' + ${product.id}" class="btn btn-primary py-1 px-2">Sil</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Button for Pagination -->
-    <div class="pagination" style="display: flex; justify-content: center;">
+    <!-- Pagination Buttons for Index -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${products.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/product(currentPage=${products.currentPage - 1})}">Previous</a>
+                <a th:href="@{/admin/product(currentPage=${products.currentPage - 1})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, products.totalPage)}"
@@ -59,12 +57,36 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${products.currentPage < products.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/product(currentPage=${products.currentPage + 1})}">Next</a>
+                <a th:href="@{/admin/product(currentPage=${products.currentPage + 1})}">Növbəti</a>
             </li>
         </ul>
     </div>
 
-    <a href="/admin/product/create">Create new product</a>
+    <!-- Pagination Buttons for Search -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'search'}">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${products.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/product(currentPage=${products.currentPage - 1}, keyword=${keyword})}">Əvvəlki</a>
+            </li>
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, products.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/search/product(currentPage=${pageNumber}, keyword=${keyword})}" th:text="${pageNumber}"
+                   style="background-color: ${products.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${products.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px; border-radius: 5px; text-decoration: none;">1</a>
+            </li>
+            <!-- Next düyməsi -->
+            <li th:if="${products.currentPage < products.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/product(currentPage=${products.currentPage + 1}, keyword=${keyword})}">Növbəti</a>
+            </li>
+        </ul>
+    </div>
+
+    <a style="color: #228B22; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; margin-left: 40px; margin-top: 25px; transition: color 0.3s ease; font-size: 18px;"
+       href="/admin/product/create" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#228B22'">
+        <i class="fa fa-plus" style="margin-right: 5px; font-size: 19px;"></i> Məhsul əlavə et</a>
 
 </section>
 

@@ -16,24 +16,24 @@
         <thead>
         <tr>
             <th scope="col">Id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Email</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Message</th>
-            <th scope="col">Action</th>
+            <th scope="col">Ad</th>
+            <th scope="col">Soyad</th>
+            <th scope="col">E-poçt</th>
+            <th scope="col">Mövzu</th>
+            <th scope="col">Mesaj</th>
+            <th scope="col">Seçim</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="appeal : ${appeals.data}">
-            <th th:text="${appeal.id}" scope="row">1</th>
-            <td th:text="${appeal.name}">Name</td>
-            <td th:text="${appeal.surname}">Surname</td>
-            <td th:text="${appeal.email}">Email</td>
-            <td th:text="${appeal.subject}">Subject</td>
-            <td th:text="${appeal.message}">Message</td>
-            <td>
-                <a href="https://mail.google.com/">Reply</a>
+            <td th:text="${appeal.id}" scope="row" style="vertical-align: middle;">1</td>
+            <td th:text="${appeal.name}" style="vertical-align: middle;">Name</td>
+            <td th:text="${appeal.surname}" style="vertical-align: middle;">Surname</td>
+            <td th:text="${appeal.email}" style="vertical-align: middle;">Email</td>
+            <td th:text="${appeal.subject}" style="vertical-align: middle;">Subject</td>
+            <td th:text="${appeal.message}" style="vertical-align: middle;">Message</td>
+            <td style="vertical-align: middle;">
+                <a href="https://mail.google.com/" class="btn btn-primary py-1 px-2">Cavabla</a>
             </td>
         </tr>
         </tbody>
@@ -44,7 +44,7 @@
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${appeals.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/appeal(currentPage=${appeals.currentPage - 1})}">Previous</a>
+                <a th:href="@{/admin/appeal(currentPage=${appeals.currentPage - 1})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, appeals.totalPage)}"
@@ -56,7 +56,7 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${appeals.currentPage < appeals.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/appeal(currentPage=${appeals.currentPage + 1})}">Next</a>
+                <a th:href="@{/admin/appeal(currentPage=${appeals.currentPage + 1})}">Növbəti</a>
             </li>
         </ul>
     </div>
@@ -66,7 +66,7 @@
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${appeals.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/search/appeal(currentPage=${appeals.currentPage - 1}, keyword=${keyword})}">Previous</a>
+                <a th:href="@{/admin/search/appeal(currentPage=${appeals.currentPage - 1}, keyword=${keyword})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, appeals.totalPage)}"
@@ -78,7 +78,7 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${appeals.currentPage < appeals.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/search/appeal(currentPage=${appeals.currentPage + 1}, keyword=${keyword})}">Next</a>
+                <a th:href="@{/admin/search/appeal(currentPage=${appeals.currentPage + 1}, keyword=${keyword})}">Növbəti</a>
             </li>
         </ul>
     </div>

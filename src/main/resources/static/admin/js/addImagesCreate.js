@@ -1,60 +1,78 @@
-// Dinamik şəkildə şəkil URL-i əlavə edən funksiya
-function addImage() {
-    const container = document.getElementById('imagesContainer');
+document.getElementById("imageUpload").onchange = function() {
+    const imageContainer = document.getElementById("imagePreviewContainer");
+    const noImageText = document.getElementById("noImageText");
+    noImageText.style.display = 'none';
 
-    const inputWrapper = document.createElement('div');
-    inputWrapper.style.display = 'flex';
-    inputWrapper.style.alignItems = 'center';
-    inputWrapper.style.marginBottom = '10px';
+    Array.from(this.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgContainer = document.createElement("div");
+            imgContainer.style.position = "relative";
+            imgContainer.style.display = "inline-block";
+            imgContainer.style.flex = "0 0 19%";
 
-    const newInput = document.createElement('input');
-    newInput.type = 'text';
-    newInput.name = 'images'; // Eyni adla siyahı kimi qəbul edilir
-    newInput.placeholder = 'Additional image';
-    newInput.style.width = '350px';
-    newInput.style.marginRight = '5px';
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.borderRadius = "5px";
+            img.style.objectFit = "cover";
+            img.style.aspectRatio = "1";
+            img.onclick = function() { openModal(e.target.result); }; // Modal açmaq üçün
 
-    // Sil düyməsi əlavə etmək
-    const removeButton = document.createElement('button');
-    removeButton.innerText = 'Remove';
-    removeButton.type = 'button';
-    removeButton.onclick = function() {
-        removeImage(this);
-    };
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = "X";
+            deleteBtn.style.position = "absolute";
+            deleteBtn.style.top = "5px";
+            deleteBtn.style.right = "5px";
+            deleteBtn.style.backgroundColor = "red";
+            deleteBtn.style.color = "white";
+            deleteBtn.style.border = "none";
+            deleteBtn.style.borderRadius = "50%";
+            deleteBtn.style.width = "20px";
+            deleteBtn.style.height = "20px";
+            deleteBtn.style.fontSize = "12px";
+            deleteBtn.style.cursor = "pointer";
+            deleteBtn.style.display = "none";
+            deleteBtn.onclick = function() { imgContainer.remove(); };
 
-    // Inputu və sil düyməsini div-ə əlavə etmək
-    inputWrapper.appendChild(newInput);
-    inputWrapper.appendChild(removeButton);
-    container.appendChild(inputWrapper);
-}
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(deleteBtn);
+            imageContainer.appendChild(imgContainer);
 
-// Inputu silən funksiya (ilk inputu silməmək şərti ilə)
-function removeImage(button) {
-    const container = document.getElementById('imagesContainer');
-    if (container.children.length > 1) {
-        button.parentElement.remove(); // Inputu sil
-    } else {
-        alert("You cannot remove the last image input!");
-    }
-}
-
-// Form göndərilməzdən əvvəl boş inputları yoxlayıb silən və formu doğrulayan funksiya
-function validateAndSubmitForm() {
-    const container = document.getElementById('imagesContainer');
-    const inputs = container.querySelectorAll('input[name="images"]');
-
-    let isValid = true;
-
-    inputs.forEach(input => {
-        if (input.value.trim() === '') {
-            if (container.children.length > 1) {
-                input.parentElement.remove(); // Boş inputları sil
-            } else {
-                alert("The first image URL cannot be empty.");
-                isValid = false;
-            }
-        }
+            imgContainer.onmouseover = function() { deleteBtn.style.display = "block"; };
+            imgContainer.onmouseout = function() { deleteBtn.style.display = "none"; };
+        };
+        reader.readAsDataURL(file);
     });
+};
 
-    return isValid; // Əgər bütün inputlar keçərli olsa, form təsdiqlənəcək
+// Modal açma funksiyası
+function openModal(imageSrc) {
+    const modal = document.getElementById("imageModal");
+    const modalImage = document.getElementById("modalImage");
+    modalImage.src = imageSrc;
+    modal.style.display = "flex";
 }
+
+// Modalı bağlama funksiyası
+function closeModal() {
+    const modal = document.getElementById("imageModal");
+    modal.style.display = "none";
+}
+
+// Şəkil əlavə edilmədiyi halda formu təqdim etməyə mane olur
+function validateAndSubmitForm() {
+    const imageInput = document.getElementById('imageUpload');
+    const imageWarning = document.getElementById('imageWarning');
+    const imageCount = imageInput.files.length;
+
+    if (imageCount === 0) {
+        imageWarning.style.display = 'block'; // Xəbərdarlığı göstərir
+        return false; // Formun təqdim edilməsini dayandırır
+    }
+
+    imageWarning.style.display = 'none'; // Əgər şəkil əlavə edilibsə, xəbərdarlığı gizlədir
+    return true;
+}
+

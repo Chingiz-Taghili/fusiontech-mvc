@@ -25,14 +25,14 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(c -> c.disable()).authorizeHttpRequests(c -> c
+        httpSecurity.csrf(c -> c.disable()).authorizeHttpRequests(request -> request
                         .requestMatchers("/cart/**").authenticated()
                         .requestMatchers("/checkout/**").authenticated()
                         .requestMatchers("/favorites/**").authenticated()
                         .requestMatchers("/review/**").authenticated()
-//                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
-                .formLogin(f -> f.defaultSuccessUrl("/")
+                .formLogin(form -> form.defaultSuccessUrl("/")
                         .loginPage("/login").failureUrl("/login?access=false"))
                 .exceptionHandling(e -> e.accessDeniedPage("/login"));
         return httpSecurity.build();

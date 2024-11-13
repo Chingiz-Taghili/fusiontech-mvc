@@ -10,13 +10,13 @@ function addSubcategoryCreate() {
     const newInput = document.createElement('input');
     newInput.type = 'text';
     newInput.name = 'subcategoryNames';
-    newInput.placeholder = 'Additional subcategory';
-    newInput.style.width = '350px';
-    newInput.style.marginRight = '5px';
+    newInput.placeholder = 'Daha bir alt kateqoriya';
+    newInput.style.cssText = 'margin-right: 5px; width: 400px; height: 40px; padding: 10px; outline: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;';
 
     const removeButton = document.createElement('button');
-    removeButton.innerText = 'Remove';
+    removeButton.innerText = 'Ləğv et';
     removeButton.type = 'button';
+    removeButton.className = 'btn btn-primary py-1 px-2';
     removeButton.onclick = function () {
         removeSubcategoryCreate(this);
     };
@@ -32,7 +32,7 @@ function removeSubcategoryCreate(button) {
     if (container.children.length > 1) {
         button.parentElement.remove();
     } else {
-        alert("You cannot remove the last subcategory!");
+        alert("Ən azı bir alt kateqoriya olmalıdır!");
     }
 }
 
@@ -48,7 +48,7 @@ function validateAndSubmitFormCreate() {
             if (container.children.length > 1) {
                 input.parentElement.remove();
             } else {
-                alert("The first subcategory cannot be empty.");
+                alert("Birinci alt kateqoriya boş ola bilməz!");
                 isValid = false;
             }
         }

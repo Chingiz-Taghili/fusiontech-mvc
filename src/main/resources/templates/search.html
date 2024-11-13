@@ -100,8 +100,8 @@
                             <ul class="pagination justify-content-center">
                                 <!-- Previous düyməsi -->
                                 <li class="page-item" th:if="${products.currentPage > 1}">
-                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage - 1}, keyword=${keyword})}">&laquo;
-                                        Əvvəlki</span></a>
+                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage - 1}, keyword=${keyword})}">
+                                        &laquo;Əvvəlki</span></a>
                                 </li>
                                 <!-- Dinamik səhifə nömrələri -->
                                 <li class="page-item" th:each="page : ${#numbers.sequence(1, products.totalPage)}"
@@ -111,8 +111,8 @@
                                 </li>
                                 <!-- Next düyməsi -->
                                 <li class="page-item" th:if="${products.currentPage < products.totalPage}">
-                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage + 1}, keyword=${keyword})}">Növbəti
-                                        &raquo;</a>
+                                    <a class="page-link" th:href="@{/search(currentPage=${products.currentPage + 1}, keyword=${keyword})}">
+                                        Növbəti&raquo;</a>
                                 </li>
                             </ul>
                         </nav>

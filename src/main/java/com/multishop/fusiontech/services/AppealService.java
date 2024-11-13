@@ -13,4 +13,5 @@ public interface AppealService {
 
     PaginationPayload<AppealDto> getAllAppeals(Integer pageNumber);
 
+    Long getTotalCount();
 }

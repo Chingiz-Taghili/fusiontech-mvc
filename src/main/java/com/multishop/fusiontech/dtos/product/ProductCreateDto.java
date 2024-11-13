@@ -19,7 +19,7 @@ public class ProductCreateDto {
     private LocalDateTime discountDate;
     private boolean featured;
     private boolean offered;
-    private List<String> images;
+    private List<String> imageUrls;
     private Long brand;
     private Long category;
     private Long subcategory;

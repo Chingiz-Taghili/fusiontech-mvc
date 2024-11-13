@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kateqoriyalar - Əlavə et</title>
+    <title>Kateqoriya Əlavə et</title>
 </head>
 <body>
 
@@ -14,26 +14,36 @@
 
     <form method="post" onsubmit="return validateAndSubmitFormCreate();" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" placeholder="Write category name" style="width: 350px;" required>
+            <input type="text" name="name" placeholder="Kateqoriyanın adını yaz" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="image" placeholder="Enter image url" style="width: 350px;" required>
+            <input type="text" name="image" placeholder="Şəkil URL-ini daxil et" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
 
         <!-- Dinamik alt kateqoriya inputları -->
-        <div id="SubcategoriesContainer" style="margin: 10px 0;">
-            <label for="subcategories" style="display: block; margin-bottom: 1px;">Subcategories:</label>
+        <div id="SubcategoriesContainer" style="margin: 10px 0; margin-top: 20px;">
+            <label for="subcategories" style="display: block; margin-bottom: 1px;">Alt kateqoriyalar:</label>
             <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <input type="text" name="subcategoryNames" placeholder="Enter Subcategory" id="subcategories"
-                       style="width: 350px;" required>
-                <button type="button" onclick="removeImage(this)" style="margin-left: 5px; display: none;">Remove
+                <input type="text" name="subcategoryNames" placeholder="Alt kateqoriya yaz" id="subcategories" required
+                       style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                <button type="button" onclick="removeImage(this)" class="btn btn-primary py-1 px-2"
+                        style="margin-left: 5px; display: none;">Ləğv et
                 </button>
             </div>
         </div>
-        <button type="button" onclick="addSubcategoryCreate()" style="margin-bottom: 10px;">Add Another Subcategory</button>
+        <button type="button" onclick="addSubcategoryCreate()" class="btn btn-primary py-1 px-2"
+                style="margin-bottom: 10px;">+ Əlavə et</button>
 
-        <div style="margin: 10px 0;">
-            <button type="submit">Create</button>
+        <div style="margin: 10px 0; margin-top: 30px;">
+            <button type="submit" class="btn btn-primary py-2 px-4"
+                    style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                    onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
         </div>
     </form>
 

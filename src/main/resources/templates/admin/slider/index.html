@@ -15,28 +15,30 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Active</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Id</th>
+            <th scope="col">Başlıq</th>
+            <th scope="col">Mətn</th>
+            <th scope="col">Aktivdir</th>
+            <th scope="col">Seçimlər</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="slider : ${sliders}">
-            <th th:text="${slider.id}" scope="row">1</th>
-            <td th:text="${slider.title}">Mark</td>
-            <td th:text="${slider.description}">Mark</td>
-            <td th:text="${slider.active}">Mark</td>
-            <td>
-                <a th:href="'/admin/slider/update/' + ${slider.id}">Update</a>
-                <a th:href="'/admin/slider/delete/' + ${slider.id}">Delete</a>
+            <td th:text="${slider.id}" scope="row" style="vertical-align: middle;">1</td>
+            <td th:text="${slider.title}" style="vertical-align: middle;">Title</td>
+            <td th:text="${slider.description}" style="vertical-align: middle;">Description</td>
+            <td th:text="${slider.active}" style="vertical-align: middle;">Active</td>
+            <td style="vertical-align: middle;">
+                <a th:href="'/admin/slider/update/' + ${slider.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                <a th:href="'/admin/slider/delete/' + ${slider.id}" class="btn btn-primary py-1 px-2">Sil</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <a href="/admin/slider/create">Create new slider</a>
+    <a style="color: #228B22; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; margin-left: 40px; margin-top: 25px; transition: color 0.3s ease; font-size: 18px;"
+       href="/admin/slider/create" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#228B22'">
+        <i class="fa fa-plus" style="margin-right: 5px; font-size: 19px;"></i> Slayd əlavə et</a>
 
 </section>
 

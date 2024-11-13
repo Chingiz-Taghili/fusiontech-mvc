@@ -15,35 +15,35 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Email</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Id</th>
+            <th scope="col">Ad</th>
+            <th scope="col">Soyad</th>
+            <th scope="col">E-poçt</th>
+            <th scope="col">Cins</th>
+            <th scope="col">Seçimlər</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users.data}">
-            <th th:text="${user.id}" scope="row">1</th>
-            <td th:text="${user.name}">Name</td>
-            <td th:text="${user.surname}">Surname</td>
-            <td th:text="${user.email}">Email</td>
-            <td th:text="${user.gender}">Gender</td>
-            <td>
-                <a th:href="'/admin/user/update/' + ${user.id}">Update</a>
-                <a th:href="'/admin/user/delete/' + ${user.id}">Delete</a>
+            <td th:text="${user.id}" scope="row" style="vertical-align: middle;">1</td>
+            <td th:text="${user.name}" style="vertical-align: middle;">Name</td>
+            <td th:text="${user.surname}" style="vertical-align: middle;">Surname</td>
+            <td th:text="${user.email}" style="vertical-align: middle;">Email</td>
+            <td th:text="${user.gender}" style="vertical-align: middle;">Gender</td>
+            <td style="vertical-align: middle;">
+                <a th:href="'/admin/user/update/' + ${user.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                <a th:href="'/admin/user/delete/' + ${user.id}" class="btn btn-primary py-1 px-2">Sil</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Button for Pagination -->
-    <div class="pagination" style="display: flex; justify-content: center;">
+    <!-- Pagination Buttons for Index -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${users.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/user(currentPage=${users.currentPage - 1})}">Previous</a>
+                <a th:href="@{/admin/user(currentPage=${users.currentPage - 1})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, users.totalPage)}"
@@ -55,12 +55,36 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${users.currentPage < users.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/user(currentPage=${users.currentPage + 1})}">Next</a>
+                <a th:href="@{/admin/user(currentPage=${users.currentPage + 1})}">Növbəti</a>
             </li>
         </ul>
     </div>
 
-    <a href="/admin/user/create">Create new user</a>
+    <!-- Pagination Buttons for Search -->
+    <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'search'}">
+        <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
+            <!-- Previous düyməsi -->
+            <li th:if="${users.currentPage > 1}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/user(currentPage=${users.currentPage - 1}, keyword=${keyword})}">Əvvəlki</a>
+            </li>
+            <!-- Səhifə nömrələri -->
+            <li th:each="pageNumber : ${#numbers.sequence(1, users.totalPage)}"
+                style="margin-right: 10px;">
+                <a th:href="@{/admin/search/user(currentPage=${pageNumber}, keyword=${keyword})}" th:text="${pageNumber}"
+                   style="background-color: ${users.currentPage == pageNumber ? 'red' : 'transparent'};
+                      color: ${users.currentPage == pageNumber ? 'white' : 'black'};
+                      padding: 5px 10px; border-radius: 5px; text-decoration: none;">1</a>
+            </li>
+            <!-- Next düyməsi -->
+            <li th:if="${users.currentPage < users.totalPage}" style="margin-right: 10px;">
+                <a th:href="@{/admin/search/user(currentPage=${users.currentPage + 1}, keyword=${keyword})}">Növbəti</a>
+            </li>
+        </ul>
+    </div>
+
+    <a style="color: #228B22; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; margin-left: 40px; margin-top: 25px; transition: color 0.3s ease; font-size: 18px;"
+       href="/admin/user/create" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#228B22'">
+        <i class="fa fa-plus" style="margin-right: 5px; font-size: 19px;"></i> İstifadəçi əlavə et</a>
 
 </section>
 

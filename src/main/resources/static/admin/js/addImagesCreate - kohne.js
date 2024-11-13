@@ -1,25 +1,15 @@
-// Inputu silən funksiya (ilk inputu silməmək şərti ilə)
-function removeImage(button) {
-    const container = document.getElementById('imagesContainer');
-    if (container.children.length > 1) {
-        button.parentElement.remove(); // Inputu sil
-    } else {
-        alert("Ən azı bir şəkil qalmalıdır!");
-    }
-}
-
-// Yeni image URL inputu əlavə edən funksiya
-function addImageUrl() {
+// Dinamik şəkildə şəkil URL-i əlavə edən funksiya
+function addImage() {
     const container = document.getElementById('imagesContainer');
 
     const inputWrapper = document.createElement('div');
-    inputWrapper.style.marginBottom = '10px';
     inputWrapper.style.display = 'flex';
     inputWrapper.style.alignItems = 'center';
+    inputWrapper.style.marginBottom = '10px';
 
     const newInput = document.createElement('input');
     newInput.type = 'text';
-    newInput.name = 'imagesUrl'; // Eyni adla siyahı kimi qəbul edilir
+    newInput.name = 'images'; // Eyni adla siyahı kimi qəbul edilir
     newInput.placeholder = 'Daha bir şəkil';
     newInput.style.cssText = 'margin-right: 5px; width: 400px; height: 40px; padding: 10px; outline: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;';
 
@@ -38,10 +28,20 @@ function addImageUrl() {
     container.appendChild(inputWrapper);
 }
 
-// Form göndərilməzdən öncə inputları yoxlayan və formu doğrulayan funksiya
+// Inputu silən funksiya (ilk inputu silməmək şərti ilə)
+function removeImage(button) {
+    const container = document.getElementById('imagesContainer');
+    if (container.children.length > 1) {
+        button.parentElement.remove(); // Inputu sil
+    } else {
+        alert("Ən azı bir şəkil qalmalıdır!");
+    }
+}
+
+// Form göndərilməzdən əvvəl boş inputları yoxlayıb silən və formu doğrulayan funksiya
 function validateAndSubmitForm() {
     const container = document.getElementById('imagesContainer');
-    const inputs = container.querySelectorAll('input[name="imagesUrl"]');
+    const inputs = container.querySelectorAll('input[name="images"]');
 
     let isValid = true;
 
@@ -50,7 +50,7 @@ function validateAndSubmitForm() {
             if (container.children.length > 1) {
                 input.parentElement.remove(); // Boş inputları sil
             } else {
-                alert("Birinci şəkil URL-i boş ola bilməz!");
+                alert("Birinci şəkil URL-i boş ola bilməz");
                 isValid = false;
             }
         }
@@ -58,4 +58,3 @@ function validateAndSubmitForm() {
 
     return isValid; // Əgər bütün inputlar keçərli olsa, form təsdiqlənəcək
 }
-

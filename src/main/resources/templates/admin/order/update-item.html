@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sifariş Məhsulu - Yenilə</title>
+    <title>Sifariş Məhsulunu Yenilə</title>
 </head>
 <body>
 
@@ -18,30 +18,35 @@
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Product</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
+                <th scope="col">Məhsul</th>
+                <th scope="col">Qiymət</th>
+                <th scope="col">Miqdar</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <th th:text="${orderItem.id}" scope="row">Id</th>
-                <th th:text="${orderItem.product.name}">Product</th>
+                <td th:text="${orderItem.id}" scope="row" style="vertical-align: middle;">Id</td>
+                <td th:text="${orderItem.product.name}" style="vertical-align: middle;">Product</td>
                 <!-- Editable Price input field -->
-                <th>
-                    <input type="number" name="price" th:value="${orderItem.price}" placeholder="Enter price"
-                           style="width: 95px;" step="0.01" required> Manat
-                </th>
+                <td style="vertical-align: middle;">
+                    <input style="width: 115px; height: 40px; padding: 10px; outline: none; border-radius: 5px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;" step="0.01" type="number"
+                           name="price" th:value="${orderItem.price}" placeholder="Qiyməti yaz" required> Manat
+                </td>
                 <!-- Editable Quantity input field -->
-                <th>
-                    <input type="number" name="quantity" th:value="${orderItem.quantity}" placeholder="Enter quantity"
-                           style="width: 85px;" step="1" required> Ədəd
-                </th>
+                <td style="vertical-align: middle;">
+                    <input style="width: 90px; height: 40px; padding: 10px; outline: none; border-radius: 5px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;" step="1" type="number"
+                           name="quantity" th:value="${orderItem.quantity}" placeholder="Miqdarı yaz" required> Ədəd
+                </td>
             </tr>
             </tbody>
         </table>
         <div style="margin: 10px 0;">
-            <input type="submit" value="Update">
+            <input type="submit" value="Saxla" class="btn btn-primary py-2 px-4"
+                   style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                   onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                   onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">
         </div>
     </form>
 

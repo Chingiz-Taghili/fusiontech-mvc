@@ -12,12 +12,17 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
+    <form method="post" style="margin-left: 50px; margin-top: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" placeholder="Write brand name" style="width: 350px;" required>
+            <input type="text" name="name" placeholder="Brendin adını yaz" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
-        <div style="margin: 10px 0;">
-            <button type="submit">Create</button>
+        <div style="margin: 20px 0 10px 0;">
+            <button type="submit" class="btn btn-primary py-2 px-4"
+                    style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                    onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
         </div>
     </form>
 

@@ -1,6 +1,8 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.category.*;
+import com.multishop.fusiontech.dtos.category.CategoryCreateDto;
+import com.multishop.fusiontech.dtos.category.CategoryDto;
+import com.multishop.fusiontech.dtos.category.CategoryUpdateDto;
 import com.multishop.fusiontech.models.Category;
 import com.multishop.fusiontech.models.Subcategory;
 import com.multishop.fusiontech.models.SubcategoryName;
@@ -100,5 +102,10 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryById(Long id) {
         Category findCategory = categoryRepository.findById(id).orElseThrow();
         return findCategory;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return categoryRepository.count();
     }
 }

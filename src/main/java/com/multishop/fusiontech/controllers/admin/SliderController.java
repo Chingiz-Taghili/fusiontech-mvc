@@ -1,9 +1,7 @@
 package com.multishop.fusiontech.controllers.admin;
 
 import com.multishop.fusiontech.dtos.slider.SliderCreateDto;
-import com.multishop.fusiontech.dtos.slider.SliderDto;
 import com.multishop.fusiontech.dtos.slider.SliderUpdateDto;
-import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.services.SliderService;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class SliderController {
@@ -29,20 +26,27 @@ public class SliderController {
 
     @GetMapping("/admin/slider")
     public String showIndexPage(Model model, Principal principal) {
-        List<SliderDto> sliders = sliderService.getAllSliders();
-        model.addAttribute("sliders", sliders);
+        model.addAttribute("sliders", sliderService.getAllSliders());
         model.addAttribute("searchUrl", "/admin/search/slider");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        return "/admin/slider/index";
+    }
+
+    @GetMapping("/admin/search/slider")
+    public String showSearchPage(String keyword, Model model, Principal principal) {
+        model.addAttribute("sliders", sliderService.getSearchSliders(keyword));
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchUrl", "/admin/search/slider");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
 
         return "/admin/slider/index";
     }
 
     @GetMapping("/admin/slider/create")
     public String showCreatePage(Principal principal, Model model) {
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("searchUrl", "/admin/search/slider");
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
         return "/admin/slider/create";
     }
 
@@ -57,11 +61,9 @@ public class SliderController {
 
     @GetMapping("/admin/slider/update/{id}")
     public String showUpdatePage(@PathVariable Long id, Model model, Principal principal) {
-        SliderDto slider = sliderService.getSliderById(id);
-        model.addAttribute("slider", slider);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("slider", sliderService.getSliderById(id));
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("searchUrl", "/admin/search/slider");
 
         return "/admin/slider/update";
     }
@@ -72,16 +74,14 @@ public class SliderController {
         if (result) {
             return "redirect:/admin/slider";
         }
-        return "redirect:/admin/slider/update";
+        return "redirect:/admin/slider/update/" + id;
     }
 
     @GetMapping("admin/slider/delete/{id}")
     public String showDeletePage(@PathVariable Long id, Model model, Principal principal) {
-        SliderDto slider = sliderService.getSliderById(id);
-        model.addAttribute("slider", slider);
-
-        UserDto user = userService.getUserByEmail(principal.getName());
-        model.addAttribute("user", user);
+        model.addAttribute("slider", sliderService.getSliderById(id));
+        model.addAttribute("user", userService.getUserByEmail(principal.getName()));
+        model.addAttribute("searchUrl", "/admin/search/slider");
 
         return "/admin/slider/delete";
     }

@@ -22,7 +22,6 @@ public class SliderServiceImpl implements SliderService {
         this.modelMapper = modelMapper;
     }
 
-
     @Override
     public List<SliderDto> getSearchSliders(String keyword) {
         List<Slider> repoSliders = sliderRepository.findByKeywordInColumnsIgnoreCase(keyword);
@@ -76,5 +75,10 @@ public class SliderServiceImpl implements SliderService {
     @Override
     public void deleteSlider(Long id) {
         sliderRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return sliderRepository.count();
     }
 }

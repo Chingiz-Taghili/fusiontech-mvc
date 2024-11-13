@@ -43,6 +43,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public Long getTotalCount() {
+        return brandRepository.count();
+    }
+
+    @Override
     public boolean createBrand(BrandCreateDto brandCreateDto) {
         try {
             Brand brand = modelMapper.map(brandCreateDto, Brand.class);

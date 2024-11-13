@@ -4,6 +4,8 @@ import com.multishop.fusiontech.models.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -13,24 +15,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryId(Long categoryId);
 
     Page<Product> findBySubcategoryId(Long subcategoryId, Pageable pageable);
-    List<Product> findBySubcategoryId(Long subcategoryId);
 
-    Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
-    List<Product> findByNameContainingIgnoreCase(String keyword);
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR (CAST(p.price AS string) LIKE CONCAT('%', :keyword, '%')) " +
+            "OR (CAST(p.discountPrice AS string) LIKE CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(p.brand.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(p.category.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Product> findByKeywordInColumnsIgnoreCase(@Param("keyword") String keyword, Pageable pageable);
 
     Page<Product> findByPriceBetween(double minPrice, double maxPrice, Pageable pageable);
-    List<Product> findByPriceBetween(double minPrice, double maxPrice);
 
     Page<Product> findByPriceBetweenAndCategoryId(double minPrice, double maxPrice, Long categoryId, Pageable pageable);
-    List<Product> findByPriceBetweenAndCategoryId(double minPrice, double maxPrice, Long categoryId);
 
     Page<Product> findByPriceBetweenAndBrandId(double minPrice, double maxPrice, Long brandId, Pageable pageable);
-    List<Product> findByPriceBetweenAndBrandId(double minPrice, double maxPrice, Long brandId);
 
     Page<Product> findByPriceBetweenAndCategoryIdAndBrandId(
             double minPrice, double maxPrice, Long categoryId, Long brandId, Pageable pageable);
-    List<Product> findByPriceBetweenAndCategoryIdAndBrandId(
-            double minPrice, double maxPrice, Long categoryId, Long brandId);
 
     List<Product> findByFeaturedTrue();
 

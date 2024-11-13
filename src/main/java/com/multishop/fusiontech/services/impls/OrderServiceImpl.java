@@ -168,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PaginationPayload<OrderDto> getAllOrders(Integer pageNumber) {
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber -1, 10, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
         Page<Order> repoOrders = orderRepository.findAll(pageable);
 
         List<OrderDto> orders = repoOrders.getContent().stream().map(order -> modelMapper.map(order, OrderDto.class)).toList();
@@ -194,5 +194,10 @@ public class OrderServiceImpl implements OrderService {
         PaginationPayload<OrderDto> paginationOrders = new PaginationPayload<>(
                 repoOrders.getTotalPages(), pageNumber, orders);
         return paginationOrders;
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return orderRepository.count();
     }
 }

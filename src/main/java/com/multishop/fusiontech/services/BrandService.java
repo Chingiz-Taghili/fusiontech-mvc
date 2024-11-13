@@ -15,6 +15,8 @@ public interface BrandService {
 
     Brand getBrandById(Long id);
 
+    Long getTotalCount();
+
     boolean createBrand(BrandCreateDto brandCreateDto);
 
     boolean updateBrand(Long id, BrandUpdateDto brandUpdateDto);

@@ -8,8 +8,10 @@ import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.dtos.user.UserUpdateDto;
 import com.multishop.fusiontech.models.CartItem;
 import com.multishop.fusiontech.models.Product;
+import com.multishop.fusiontech.models.Role;
 import com.multishop.fusiontech.models.UserEntity;
 import com.multishop.fusiontech.payloads.PaginationPayload;
+import com.multishop.fusiontech.repositories.RoleRepository;
 import com.multishop.fusiontech.repositories.UserRepository;
 import com.multishop.fusiontech.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -37,10 +40,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getSearchUsers(String keyword) {
-        List<UserEntity> repoUsers = userRepository.findByKeywordInColumnsIgnoreCase(keyword);
-        List<UserDto> users = repoUsers.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
-        return users;
+    public PaginationPayload<UserDto> getSearchUsers(String keyword, Integer pageNumber) {
+        pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
+        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Page<UserEntity> repoUsers = userRepository.findByKeywordInColumnsIgnoreCase(keyword, pageable);
+
+        List<UserDto> users = repoUsers.getContent().stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
+        PaginationPayload<UserDto> paginationUsers = new PaginationPayload<>(repoUsers.getTotalPages(), pageNumber, users);
+        return paginationUsers;
     }
 
     @Override
@@ -66,6 +73,13 @@ public class UserServiceImpl implements UserService {
         UserEntity newUser = modelMapper.map(userCreateDto, UserEntity.class);
         String password = encoder.encode(userCreateDto.getPassword());
         newUser.setPassword(password);
+        if (userCreateDto.getImage() == null) {
+            newUser.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+        }
+
+        Role userRole = RoleRepository.findByName("ROLE_USER");
+        newUser.setRoles(Collections.singletonList(userRole));
+
         userRepository.save(newUser);
         return true;
     }
@@ -175,5 +189,10 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
         return getUserByEmail(userEmail).getFavorites().size();
+    }
+
+    @Override
+    public Long getTotalUserCount() {
+        return userRepository.count();
     }
 }

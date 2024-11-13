@@ -15,28 +15,28 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">City</th>
-            <th scope="col">Payment Method</th>
-            <th scope="col">Order Status</th>
-            <th scope="col">Payment Status</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Tarix</th>
+            <th scope="col">Ad</th>
+            <th scope="col">Soyad</th>
+            <th scope="col">Şəhər</th>
+            <th scope="col">Ödəniş Üsulu</th>
+            <th scope="col">Sifarişin Statusu</th>
+            <th scope="col">Ödənişin Statusu</th>
+            <th scope="col">Seçimlər</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="order : ${orders.data}">
-            <td th:text="${order.formattedOrderDate}" scope="row">Order Date</td>
-            <td th:text="${order.name}">Name</td>
-            <td th:text="${order.surname}">Surname</td>
-            <td th:text="${order.city}">City</td>
-            <td th:text="${order.paymentMethod}">Payment Method</td>
-            <td th:text="${order.orderStatus}">Order Status</td>
-            <td th:text="${order.paymentStatus}">Payment Status</td>
-            <td>
-                <a th:href="'/admin/order/update/' + ${order.id}">Update</a>
-                <a th:href="'/admin/order/delete/' + ${order.id}">Delete</a>
+            <td th:text="${order.formattedOrderDate}" scope="row" style="vertical-align: middle;">Order Date</td>
+            <td th:text="${order.name}" style="vertical-align: middle;">Name</td>
+            <td th:text="${order.surname}" style="vertical-align: middle;">Surname</td>
+            <td th:text="${order.city}" style="vertical-align: middle;">City</td>
+            <td th:text="${order.paymentMethod}" style="vertical-align: middle;">Payment Method</td>
+            <td th:text="${order.orderStatus}" style="vertical-align: middle;">Order Status</td>
+            <td th:text="${order.paymentStatus}" style="vertical-align: middle;">Payment Status</td>
+            <td style="vertical-align: middle;">
+                <a th:href="'/admin/order/update/' + ${order.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                <a th:href="'/admin/order/delete/' + ${order.id}" class="btn btn-primary py-1 px-2">Sil</a>
             </td>
         </tr>
         </tbody>
@@ -47,7 +47,7 @@
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${orders.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/order(currentPage=${orders.currentPage - 1})}">Previous</a>
+                <a th:href="@{/admin/order(currentPage=${orders.currentPage - 1})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, orders.totalPage)}"
@@ -59,7 +59,7 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${orders.currentPage < orders.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/order(currentPage=${orders.currentPage + 1})}">Next</a>
+                <a th:href="@{/admin/order(currentPage=${orders.currentPage + 1})}">Növbəti</a>
             </li>
         </ul>
     </div>
@@ -69,7 +69,7 @@
         <ul style="list-style-type: none; padding: 0; margin: 0; display: flex;">
             <!-- Previous düyməsi -->
             <li th:if="${orders.currentPage > 1}" style="margin-right: 10px;">
-                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage - 1}, keyword=${keyword})}">Previous</a>
+                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage - 1}, keyword=${keyword})}">Əvvəlki</a>
             </li>
             <!-- Səhifə nömrələri -->
             <li th:each="pageNumber : ${#numbers.sequence(1, orders.totalPage)}"
@@ -81,7 +81,7 @@
             </li>
             <!-- Next düyməsi -->
             <li th:if="${orders.currentPage < orders.totalPage}" style="margin-right: 10px;">
-                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage + 1}, keyword=${keyword})}">Next</a>
+                <a th:href="@{/admin/search/order(currentPage=${orders.currentPage + 1}, keyword=${keyword})}">Növbəti</a>
             </li>
         </ul>
     </div>

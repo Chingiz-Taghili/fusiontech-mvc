@@ -19,4 +19,6 @@ public interface SliderService {
     boolean updateSlider(Long id, SliderUpdateDto sliderUpdateDto);
 
     void deleteSlider(Long id);
+
+    Long getTotalCount();
 }

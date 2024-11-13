@@ -1,6 +1,5 @@
 package com.multishop.fusiontech.controllers;
 
-import com.multishop.fusiontech.dtos.brand.BrandDto;
 import com.multishop.fusiontech.dtos.cart.CartDto;
 import com.multishop.fusiontech.dtos.cart.CartItemCreateDto;
 import com.multishop.fusiontech.dtos.category.CategoryDto;

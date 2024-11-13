@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kateqoriyalar - Yenilə</title>
+    <title>Kateqoriyanı Yenilə</title>
 </head>
 <body>
 
@@ -14,29 +14,36 @@
 
     <form method="post" onsubmit="return validateAndSubmitFormUpdate()" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" th:value="${category.name}" placeholder="Category name"
-                   style="width: 350px;" required>
+            <input type="text" name="name" th:value="${category.name}" placeholder="Kateqoriyanın adı" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="image" th:value="${category.image}" placeholder="Category image"
-                   style="width: 350px;" required>
+            <input type="text" name="image" th:value="${category.image}" placeholder="Kateqoriyanın şəkli" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
 
         <!-- Dinamik alt kateqoriya inputları -->
-        <div id="subcategoriesContainer" style="margin: 10px 0;">
-            <label for="subcategories" style="display: block; margin-bottom: 1px;">Subcategories:</label>
+        <div id="subcategoriesContainer" style="margin: 10px 0; margin-top: 20px;">
+            <label for="subcategories" style="display: block; margin-bottom: 1px;">Alt kateqoriyalar:</label>
             <div th:each="subcategory, iterStat : ${category.subcategories}"
                  style="margin-bottom: 10px; display: flex; align-items: center;">
                 <input th:value="${subcategory.subcategoryName.name}" type="text" name="subcategoriesName"
-                       placeholder="Enter subcategory" style="width: 350px; display: block; margin-right: 5px;"
-                       id="subcategories" required>
-                <button type="button" onclick="removeSubcategoryUpdate(this)">Remove</button>
+                       placeholder="Alt kateqoriyanın adını yaz" id="subcategories" required
+                       style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                <button type="button" onclick="removeSubcategoryUpdate(this)" class="btn btn-primary py-1 px-2"
+                        style="margin-left: 5px;">Ləğv et</button>
             </div>
         </div>
-        <button type="button" onclick="addSubcategoryUpdate()">Add Another Subcategory</button>
+        <button type="button" onclick="addSubcategoryUpdate()" class="btn btn-primary py-1 px-2" style="margin-bottom: 10px;">+ Əlavə et</button>
 
-        <div style="margin: 10px 0;">
-            <input type="submit" value="Update">
+        <div style="margin: 10px 0; margin-top: 30px;">
+            <input type="submit" value="Saxla" class="btn btn-primary py-2 px-4"
+                   style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                   onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                   onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">
         </div>
     </form>
 

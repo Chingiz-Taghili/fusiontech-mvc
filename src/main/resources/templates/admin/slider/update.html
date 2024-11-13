@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Slaydlar - Yenilə</title>
+    <title>Slaydı Yenilə</title>
 </head>
 <body>
 
@@ -14,28 +14,37 @@
 
     <form method="post" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="title" th:value="${slider.title}" placeholder="Slide title"
-                   style="width: 350px;" required>
+            <input type="text" name="title" th:value="${slider.title}" placeholder="Slaydın başlığı" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="description" th:value="${slider.description}" placeholder="Slide description"
-                   style="width: 350px;" required>
+            <input type="text" name="description" th:value="${slider.description}" placeholder="Slaydın mətni" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="image" th:value="${slider.image}" placeholder="Slide image url"
-                   style="width: 350px;" required>
+            <input type="text" name="image" th:value="${slider.image}" placeholder="Şəkil URL-i" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="url" th:value="${slider.url}" placeholder="Url to click"
-                   style="width: 350px;" required>
+            <input type="text" name="url" th:value="${slider.url}" placeholder="Keçid URL-i" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="checkbox" id="active" name="active" th:checked="${slider.active}">
-            <label for="active">Is active?</label>
+            <input type="checkbox" id="active" name="active" th:checked="${slider.active}"
+                   style="width: 17px; height: 17px; margin-right: 10px; vertical-align: middle; transition: background-color 0.3s ease;
+                   border-radius: 5px; outline: none; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); cursor: pointer;">
+            <label for="active" style="font-size: 17px; color: #3D464D; cursor: pointer; line-height: 17px;">Aktivdir?</label>
         </div>
 
-        <div style="margin: 10px 0;">
-            <input type="submit" value="Update">
+        <div style="margin: 10px 0; margin-top: 40px;">
+            <input type="submit" value="Saxla" class="btn btn-primary py-2 px-4"
+                   style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                   onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                   onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">
         </div>
     </form>
 

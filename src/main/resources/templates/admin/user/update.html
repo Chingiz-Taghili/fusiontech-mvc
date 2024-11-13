@@ -6,7 +6,7 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>İstifadəçilər - Yenilə</title>
+    <title>İstifadəçini Yenilə</title>
 </head>
 <body>
 
@@ -14,35 +14,53 @@
 
     <form method="post" style="margin-left: 50px;">
         <div style="margin: 10px 0;">
-            <input type="text" name="name" th:value="${userById.name}" placeholder="User name"
-                   style="width: 350px;" required>
+            <input type="text" name="name" th:value="${userById.name}" placeholder="İstifadəçi adı" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="surname" th:value="${userById.surname}" placeholder="User surname"
-                   style="width: 350px;" required>
+            <input type="text" name="surname" th:value="${userById.surname}" placeholder="İstifadəçi soyadı" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="email" name="email" th:value="${userById.email}" placeholder="User email"
-                   style="width: 350px;" required>
+            <input type="email" name="email" th:value="${userById.email}" placeholder="İstifadəçi e-poçtu" required
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="radio" name="gender" value="MALE" id="genderMale"
-                   th:checked="${userById.gender == T(com.multishop.fusiontech.enums.Gender).MALE}"/>
-            <label class="form-label" for="genderMale">Male</label>
-            <input type="radio" name="gender" value="FEMALE" id="genderFemale"
-                   th:checked="${userById.gender == T(com.multishop.fusiontech.enums.Gender).FEMALE}"/>
-            <label class="form-label" for="genderFemale">Female</label>
+            <div style="margin-top: 10px; width: 400px; display: flex;
+                        align-items: center; justify-content: space-between;">
+                <label style="color: #3D464D; margin-right: 10px; flex: 1;">Cins:</label>
+                <div style="display: inline-block; margin-right: 15px; border: 1px solid #ccc;
+                            padding: 8px; cursor: pointer; flex: 1; border-radius: 5px;">
+                    <input type="radio" name="gender" value="MALE" id="genderMale"
+                           th:checked="${userById.gender == T(com.multishop.fusiontech.enums.Gender).MALE}"/>
+                    <label class="form-label" for="genderMale" style="margin: 0; cursor: pointer; color: #3D464D;">Kişi</label>
+                </div>
+                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px;
+                            cursor: pointer; flex: 1; border-radius: 5px;">
+                    <input type="radio" name="gender" value="FEMALE" id="genderFemale"
+                           th:checked="${userById.gender == T(com.multishop.fusiontech.enums.Gender).FEMALE}"/>
+                    <label class="form-label" for="genderFemale" style="margin: 0; cursor: pointer; color: #3D464D;">Qadın</label>
+                </div>
+            </div>
         </div>
         <div style="margin: 10px 0;">
-            <input type="text" name="image" th:value="${userById.image}" placeholder="User image url (optional)"
-                   style="width: 350px;">
+            <input type="text" name="image" th:value="${userById.image}" placeholder="Profil şəkli (istəyə görə)"
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
         <div style="margin: 10px 0;">
-            <input type="password" name="password" placeholder="Password (leave empty to keep current)"
-                   style="width: 350px;">
+            <input type="password" name="password" placeholder="Şifrə (əvvəlkini saxlamaq üçün boş qoyun)"
+                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
         </div>
-        <div style="margin: 10px 0;">
-            <input type="submit" value="Update">
+        <div style="margin: 10px 0; margin-top: 30px;">
+            <input type="submit" value="Saxla" class="btn btn-primary py-2 px-4"
+                   style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
+                   onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
+                   onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">
         </div>
     </form>
 
