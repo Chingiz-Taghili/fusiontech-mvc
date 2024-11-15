@@ -12,25 +12,30 @@
 
 <section layout:fragment="content">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Brend adı</th>
-            <th scope="col">Seçimlər</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="brand : ${brands}">
-            <td th:text="${brand.id}" scope="row" style="vertical-align: middle;">1</td>
-            <td th:text="${brand.name}" style="vertical-align: middle;">Name</td>
-            <td style="vertical-align: middle;">
-                <a th:href="'/admin/brand/update/' + ${brand.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
-                <a th:href="'/admin/brand/delete/' + ${brand.id}" class="btn btn-primary py-1 px-2">Sil</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="margin-right: 700px; margin-left: 40px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Brend adı</th>
+                <th scope="col">Seçimlər</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="brand : ${brands}">
+                <td th:text="${brand.id}" scope="row" style="vertical-align: middle;">1</td>
+                <td th:text="${brand.name}" style="vertical-align: middle;">Name</td>
+                <td style="vertical-align: middle; display: flex; gap: 4px;">
+                    <a th:href="'/admin/brand/update/' + ${brand.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                    <a th:href="'/admin/brand/delete/' + ${brand.id}" class="btn btn-primary py-1 px-2"
+                       style="background-color: #FF4D4D; border-color: #FF4D4D;"
+                       onmouseover="this.style.backgroundColor='#FF2929';"
+                       onmouseout="this.style.backgroundColor='#FF4D4D';">Sil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <a style="color: #228B22; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; margin-left: 40px; margin-top: 25px; transition: color 0.3s ease; font-size: 18px;"
        href="/admin/brand/create" onmouseover="this.style.color='#4CAF50'" onmouseout="this.style.color='#228B22'">

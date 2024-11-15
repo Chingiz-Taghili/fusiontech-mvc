@@ -12,32 +12,34 @@
 
 <section layout:fragment="content">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Ad</th>
-            <th scope="col">Soyad</th>
-            <th scope="col">E-poçt</th>
-            <th scope="col">Mövzu</th>
-            <th scope="col">Mesaj</th>
-            <th scope="col">Seçim</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="appeal : ${appeals.data}">
-            <td th:text="${appeal.id}" scope="row" style="vertical-align: middle;">1</td>
-            <td th:text="${appeal.name}" style="vertical-align: middle;">Name</td>
-            <td th:text="${appeal.surname}" style="vertical-align: middle;">Surname</td>
-            <td th:text="${appeal.email}" style="vertical-align: middle;">Email</td>
-            <td th:text="${appeal.subject}" style="vertical-align: middle;">Subject</td>
-            <td th:text="${appeal.message}" style="vertical-align: middle;">Message</td>
-            <td style="vertical-align: middle;">
-                <a href="https://mail.google.com/" class="btn btn-primary py-1 px-2">Cavabla</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="margin-right: 20px; margin-left: 20px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Ad</th>
+                <th scope="col">Soyad</th>
+                <th scope="col">E-poçt</th>
+                <th scope="col">Mövzu</th>
+                <th scope="col">Mesaj</th>
+                <th scope="col">Seçim</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="appeal : ${appeals.data}">
+                <td th:text="${appeal.id}" scope="row" style="vertical-align: middle;">1</td>
+                <td th:text="${appeal.name}" style="vertical-align: middle;">Name</td>
+                <td th:text="${appeal.surname}" style="vertical-align: middle;">Surname</td>
+                <td th:text="${appeal.email}" style="vertical-align: middle;">Email</td>
+                <td th:text="${appeal.subject}" style="vertical-align: middle;">Subject</td>
+                <td th:text="${appeal.message}" style="vertical-align: middle;">Message</td>
+                <td style="vertical-align: middle;">
+                    <a href="https://mail.google.com/" class="btn btn-primary py-1 px-2">Cavabla</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Buttons for Index -->
     <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">

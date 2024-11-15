@@ -48,8 +48,6 @@
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
-
-
             </div>
 
             <!-- Sağ tərəfdəki checkbox-lar və select-lər -->
@@ -123,9 +121,11 @@
             </div>
             <!-- Gizli fayl yükləmə inputu -->
             <div id="imagePreviewContainer">
-                <input type="file" name="images" multiple accept="image/*" style="display: none;"
+                <input type="file" name="imageInput" multiple accept="image/*" style="display: none;"
                        id="imageUpload">
             </div>
+            <!-- Gizli inputlar əlavə ediləcək yer -->
+            <div id="hiddenInputsContainer" style="display: none;"></div>
             <!-- Şəkil olmadıqda yazı görünür -->
             <div id="noImageTextContainer" style="display: flex; flex-wrap: wrap; margin-top: 10px;">
                 <span id="noImageText" class="no-image-text">Hələki şəkil yoxdur</span>

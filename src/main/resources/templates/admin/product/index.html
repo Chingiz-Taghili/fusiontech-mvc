@@ -12,33 +12,38 @@
 
 <section layout:fragment="content">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Məhsulun Adı</th>
-            <th scope="col">Qiymət</th>
-            <th scope="col">Endirim Qiyməti</th>
-            <th scope="col">Endirim Tarixi</th>
-            <th scope="col">Kateqoriya</th>
-            <th scope="col">Seçimlər</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products.data}">
-            <td th:text="${product.id}" scope="row" style="vertical-align: middle;">1</td>
-            <td th:text="${product.name}" style="vertical-align: middle;">Name</td>
-            <td th:text="${product.price} + ' ₼'" style="vertical-align: middle;">Price</td>
-            <td th:text="${product.discountPrice} + ' ₼'" style="vertical-align: middle;">Discount Price</td>
-            <td th:text="${product.formattedDiscountDate}" style="vertical-align: middle;">Discount Date</td>
-            <td th:text="${product.category.name}" style="vertical-align: middle;">Category</td>
-            <td style="vertical-align: middle;">
-                <a th:href="'/admin/product/update/' + ${product.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
-                <a th:href="'/admin/product/delete/' + ${product.id}" class="btn btn-primary py-1 px-2">Sil</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="margin-right: 20px; margin-left: 20px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Məhsulun Adı</th>
+                <th scope="col">Qiymət</th>
+                <th scope="col">Endirim Qiyməti</th>
+                <th scope="col">Endirim Tarixi</th>
+                <th scope="col">Kateqoriya</th>
+                <th scope="col">Seçimlər</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products.data}">
+                <td th:text="${product.id}" scope="row" style="vertical-align: middle;">1</td>
+                <td th:text="${product.name}" style="vertical-align: middle;">Name</td>
+                <td th:text="${product.price} + ' ₼'" style="vertical-align: middle;">Price</td>
+                <td th:text="${product.discountPrice} + ' ₼'" style="vertical-align: middle;">Discount Price</td>
+                <td th:text="${product.formattedDiscountDate}" style="vertical-align: middle;">Discount Date</td>
+                <td th:text="${product.category.name}" style="vertical-align: middle;">Category</td>
+                <td style="vertical-align: middle; display: flex; gap: 4px;">
+                    <a th:href="'/admin/product/update/' + ${product.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                    <a th:href="'/admin/product/delete/' + ${product.id}" class="btn btn-primary py-1 px-2"
+                       style="background-color: #FF4D4D; border-color: #FF4D4D;"
+                       onmouseover="this.style.backgroundColor='#FF2929';"
+                       onmouseout="this.style.backgroundColor='#FF4D4D';">Sil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Buttons for Index -->
     <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">

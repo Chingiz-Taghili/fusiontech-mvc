@@ -72,22 +72,16 @@ public class ProductController {
         return "/admin/product/create";
     }
 
-//    @PostMapping("dashboard/logo/create")
-//    public String create(LogoCreateDto lg, @RequestParam("image") MultipartFile file) throws IOException {
-//        Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-//        lg.setPhotoUrl((String) uploadResult.get("url"));
-//        logoService.createLogo(lg);
-//        return "redirect:/dashboard/logo";
-//    }
-
     @PostMapping("/admin/product/create")
     public String createNewProduct(ProductCreateDto productCreateDto, @RequestParam("images") List<MultipartFile> images) throws IOException {
-        List<String> imageUrls = new ArrayList<>();
-        for (MultipartFile image : images) {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-            imageUrls.add((String) uploadResult.get("url"));
+        if (images != null && !images.isEmpty() && !images.get(0).isEmpty()) {
+            List<String> imageUrls = new ArrayList<>();
+            for (MultipartFile image : images) {
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+                imageUrls.add((String) uploadResult.get("url"));
+            }
+            productCreateDto.setImageUrls(imageUrls);
         }
-        productCreateDto.setImageUrls(imageUrls);
 
         boolean result = productService.createProduct(productCreateDto);
         if (result) {
@@ -110,7 +104,14 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/update/{id}")
-    public String updateProduct(@PathVariable Long id, ProductUpdateDto productUpdateDto) {
+    public String updateProduct(@PathVariable Long id, ProductUpdateDto productUpdateDto, @RequestParam("newImages") List<MultipartFile> newImages) throws IOException {
+
+        if (newImages != null && !newImages.isEmpty() && !newImages.get(0).isEmpty()) {
+            for (MultipartFile image : newImages) {
+                Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+                productUpdateDto.getImageUrls().add((String) uploadResult.get("url"));
+            }
+        }
 
         boolean result = productService.updateProduct(id, productUpdateDto);
         if (result) {

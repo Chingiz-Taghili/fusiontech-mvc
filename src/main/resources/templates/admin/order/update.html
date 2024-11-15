@@ -12,7 +12,7 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
+    <form method="post" style="margin-left: 50px; margin-right: 50px;">
         <div style="display: flex;">
             <!-- Sol tərəfdəki input sahələri -->
             <div style="flex: 1; margin-right: 20px;">
@@ -171,7 +171,10 @@
                     <td th:text="${orderItem.quantity} + ' əd.'" style="vertical-align: middle;">Quantity</td>
                     <td style="vertical-align: middle;">
                         <a th:href="'/admin/order/update-item/' + ${orderItem.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
-                        <a th:href="'/admin/order/delete-item/' + ${orderItem.id}" class="btn btn-primary py-1 px-2">Sil</a>
+                        <a th:href="'/admin/order/delete-item/' + ${orderItem.id}" class="btn btn-primary py-1 px-2"
+                           style="background-color: #FF4D4D; border-color: #FF4D4D;"
+                           onmouseover="this.style.backgroundColor='#FF2929';"
+                           onmouseout="this.style.backgroundColor='#FF4D4D';">Sil</a>
                     </td>
                 </tr>
                 </tbody>

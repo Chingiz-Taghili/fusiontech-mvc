@@ -19,7 +19,7 @@ public class ProductUpdateDto {
     private LocalDateTime discountDate;
     private boolean featured;
     private boolean offered;
-    private List<String> imagesUrl;
+    private List<String> imageUrls;
     private Long brandId;
     private Long categoryId;
     private Long subcategoryId;

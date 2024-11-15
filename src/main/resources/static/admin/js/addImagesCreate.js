@@ -1,3 +1,7 @@
+// Yeni şəkilləri saxlayan array
+let images = [];
+
+// Şəkil əlavə edildikdə `images` array-ə şəkil fayllarını əlavə edirik
 document.getElementById("imageUpload").onchange = function() {
     const imageContainer = document.getElementById("imagePreviewContainer");
     const noImageText = document.getElementById("noImageText");
@@ -34,7 +38,19 @@ document.getElementById("imageUpload").onchange = function() {
             deleteBtn.style.fontSize = "12px";
             deleteBtn.style.cursor = "pointer";
             deleteBtn.style.display = "none";
-            deleteBtn.onclick = function() { imgContainer.remove(); };
+            deleteBtn.onclick = function() {
+                imgContainer.remove();
+                // Silinən şəkili images array-dən silirik
+                const index = images.indexOf(file);
+                if (index > -1) {
+                    images.splice(index, 1); // Array-dən silirik
+                }
+                // Gizli inputu da silirik
+                const hiddenInput = document.querySelector(`input[data-id="${file.name}"]`);
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                }
+            };
 
             imgContainer.appendChild(img);
             imgContainer.appendChild(deleteBtn);
@@ -42,6 +58,23 @@ document.getElementById("imageUpload").onchange = function() {
 
             imgContainer.onmouseover = function() { deleteBtn.style.display = "block"; };
             imgContainer.onmouseout = function() { deleteBtn.style.display = "none"; };
+
+            // Yeni inputu gizli div-ə əlavə edirik
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "file";
+            hiddenInput.name = "images"; // Controller-də "images" adında qəbul ediləcək
+            hiddenInput.style.display = "none";
+            hiddenInput.setAttribute("data-id", file.name); // Şəkilin adını atributda saxlayırıq
+
+            // Şəkil faylını gizli inputa mənimsədirik
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            hiddenInput.files = dataTransfer.files;
+
+            document.getElementById('hiddenInputsContainer').appendChild(hiddenInput);
+
+            // `images` array-ə əlavə edirik
+            images.push(file);
         };
         reader.readAsDataURL(file);
     });
@@ -67,7 +100,11 @@ function validateAndSubmitForm() {
     const imageWarning = document.getElementById('imageWarning');
     const imageCount = imageInput.files.length;
 
-    if (imageCount === 0) {
+    // Gizli input-larda şəkil olub-olmaması yoxlanılır
+    const hiddenInputs = document.querySelectorAll('input[name="images"]');
+    const hiddenInputCount = hiddenInputs.length;
+
+    if (imageCount === 0 && hiddenInputCount === 0) { // `images` array də boşdursa xəbərdarlıq göstərir
         imageWarning.style.display = 'block'; // Xəbərdarlığı göstərir
         return false; // Formun təqdim edilməsini dayandırır
     }
@@ -75,4 +112,3 @@ function validateAndSubmitForm() {
     imageWarning.style.display = 'none'; // Əgər şəkil əlavə edilibsə, xəbərdarlığı gizlədir
     return true;
 }
-

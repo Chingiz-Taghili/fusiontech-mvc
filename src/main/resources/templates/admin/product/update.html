@@ -12,7 +12,8 @@
 
 <section layout:fragment="content">
 
-    <form method="post" onsubmit="return validateAndSubmitForm()" style="margin-left: 50px;">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateAndSubmitForm()"
+          style="margin-left: 70px; margin-right: 70px;" th:action="@{/admin/product/update/{id}(id=${product.id})}">
         <div style="display: flex; justify-content: space-between;">
             <!-- Sol tərəfdəki inputlar -->
             <div style="flex: 1; margin-right: 20px;">
@@ -49,20 +50,6 @@
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
-                <!-- Dinamik şəkil URL inputları -->
-                <div id="imagesContainer" style="margin: 10px 0;">
-                    <label for="images" style="display: block; margin-bottom: 1px;">Məhsulun Şəkilləri:</label>
-                    <div th:each="image, iterStat : ${product.images}"
-                         style="margin-bottom: 10px; display: flex; align-items: center;">
-                        <input th:value="${image.url}" type="text" name="imagesUrl" placeholder="Şəkil URL-i daxil edin"
-                               id="images" required
-                               style="display: block; margin-right: 5px; width: 400px; height: 40px; padding: 10px; outline: none;
-                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-                        <button type="button" th:if="${!iterStat.first}" onclick="removeImage(this)" class="btn btn-primary py-1 px-2">Ləğv et</button>
-                    </div>
-                </div>
-                <button type="button" onclick="addImageUrl()" class="btn btn-primary py-1 px-2"
-                        style="margin-bottom: 10px;">+ Əlavə et</button>
             </div>
             <!-- Sağ tərəfdəki checkbox-lar və select-lər -->
             <div style="flex: 1;">
@@ -79,7 +66,7 @@
                 <div style="margin: 10px 0;">
                     <label for="brand" style="display: block; margin-bottom: 2px; font-size: 16px;">Brend:</label>
                     <select name="brandId" id="brand" required
-                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                             transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
                         <option value="">Brend seç</option>
@@ -92,7 +79,7 @@
                 <div style="margin: 10px 0;">
                     <label for="category" style="display: block; margin-bottom: 2px; font-size: 16px;">Kateqoriya:</label>
                     <select name="categoryId" id="category" required
-                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                             transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
                         <option value="">Kateqoriya seç</option>
@@ -105,7 +92,7 @@
                 <div style="margin: 10px 0;">
                     <label for="subcategory" style="display: block; margin-bottom: 2px; font-size: 16px;">Alt Kateqoriya:</label>
                     <select name="subcategoryId" id="subcategory" required
-                            style="width: 250px; height: 35px; padding: 5px 10px; font-size: 15px; color: #3D464D;
+                            style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                             transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
                         <option value="">Alt kateqoriya seç</option>
@@ -118,6 +105,42 @@
             </div>
         </div>
 
+
+        <!-- Şəkil faylını yükləmək üçün input -->
+        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; width: 100%; max-width: 825px;
+                    margin: 10px 0; margin-top: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label style="font-size: 16px; font-weight: bold;">
+                    Məhsulun Şəkilləri:
+                </label>
+                <button type="button" onclick="document.getElementById('imageUploadUpdate').click();"
+                        class="btn btn-primary py-1 px-3" style="background-color: #28a745; border: none;"
+                        onmouseover="this.style.backgroundColor='#218838';"
+                        onmouseout="this.style.backgroundColor='#28a745';">Əlavə et
+                </button>
+            </div>
+            <!-- Gizli fayl yükləmə inputu və şəkil siyahısı -->
+            <div id="imagePreviewContainerUpdate">
+                <div class="img-container" th:each="image, iterStat : ${product.images}">
+                    <img th:src="${image.url}" class="preview-img" alt="" onclick="openModal(this.src)">
+                    <input type="hidden" name="imageUrls" th:value="${image.url}" class="hidden-image">
+                    <button class="delete-btn" onclick="removeImage(this, '${image.url}'); return false;">X</button>
+                </div>
+                <input type="file" name="newImageInput" multiple accept="image/*" style="display: none;"
+                       id="imageUploadUpdate">
+                <!-- Dinamik yeni şəkillərin əlavə olunacağı input -->
+                <div id="newImagesContainer" style="display: none;"><input type="file" name="newImages" style="display: none;"></div>
+            </div>
+            <!-- Şəkil olmadıqda yazı görünür -->
+            <div id="noImageTextContainerUpdate" style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                <span id="noImageTextUpdate" class="no-image-text" style="display: none;">Hələki şəkil yoxdur</span>
+            </div>
+            <!-- Xəbərdarlıq mesajı -->
+            <div id="imageWarningUpdate" style="display: none; color: red; font-size: 14px; margin-top: 5px;">
+                Şəkil əlavə edin!
+            </div>
+        </div>
+
         <!-- Saxla düyməsi -->
         <div style="margin: 10px 0; margin-top: 40px;">
             <button type="submit" class="btn btn-primary py-2 px-4"
@@ -126,6 +149,12 @@
                     onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
         </div>
     </form>
+
+    <!-- Modal pəncərə -->
+    <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">
+        <span onclick="closeModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 30px; cursor: pointer;">&times;</span>
+        <img id="modalImage" style="max-width: 90%; max-height: 90%; border-radius: 10px;">
+    </div>
 
 
 </section>

@@ -12,35 +12,40 @@
 
 <section layout:fragment="content">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Tarix</th>
-            <th scope="col">Ad</th>
-            <th scope="col">Soyad</th>
-            <th scope="col">Şəhər</th>
-            <th scope="col">Ödəniş Üsulu</th>
-            <th scope="col">Sifarişin Statusu</th>
-            <th scope="col">Ödənişin Statusu</th>
-            <th scope="col">Seçimlər</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${orders.data}">
-            <td th:text="${order.formattedOrderDate}" scope="row" style="vertical-align: middle;">Order Date</td>
-            <td th:text="${order.name}" style="vertical-align: middle;">Name</td>
-            <td th:text="${order.surname}" style="vertical-align: middle;">Surname</td>
-            <td th:text="${order.city}" style="vertical-align: middle;">City</td>
-            <td th:text="${order.paymentMethod}" style="vertical-align: middle;">Payment Method</td>
-            <td th:text="${order.orderStatus}" style="vertical-align: middle;">Order Status</td>
-            <td th:text="${order.paymentStatus}" style="vertical-align: middle;">Payment Status</td>
-            <td style="vertical-align: middle;">
-                <a th:href="'/admin/order/update/' + ${order.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
-                <a th:href="'/admin/order/delete/' + ${order.id}" class="btn btn-primary py-1 px-2">Sil</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="margin-right: 20px; margin-left: 20px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Tarix</th>
+                <th scope="col">Ad</th>
+                <th scope="col">Soyad</th>
+                <th scope="col">Şəhər</th>
+                <th scope="col">Ödəniş Üsulu</th>
+                <th scope="col">Sifarişin Statusu</th>
+                <th scope="col">Ödənişin Statusu</th>
+                <th scope="col">Seçimlər</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders.data}">
+                <td th:text="${order.formattedOrderDate}" scope="row" style="vertical-align: middle;">Order Date</td>
+                <td th:text="${order.name}" style="vertical-align: middle;">Name</td>
+                <td th:text="${order.surname}" style="vertical-align: middle;">Surname</td>
+                <td th:text="${order.city}" style="vertical-align: middle;">City</td>
+                <td th:text="${order.paymentMethod}" style="vertical-align: middle;">Payment Method</td>
+                <td th:text="${order.orderStatus}" style="vertical-align: middle;">Order Status</td>
+                <td th:text="${order.paymentStatus}" style="vertical-align: middle;">Payment Status</td>
+                <td style="vertical-align: middle; display: flex; gap: 4px;">
+                    <a th:href="'/admin/order/update/' + ${order.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                    <a th:href="'/admin/order/delete/' + ${order.id}" class="btn btn-primary py-1 px-2"
+                       style="background-color: #FF4D4D; border-color: #FF4D4D;"
+                       onmouseover="this.style.backgroundColor='#FF2929';"
+                       onmouseout="this.style.backgroundColor='#FF4D4D';">Sil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Buttons for Index -->
     <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">

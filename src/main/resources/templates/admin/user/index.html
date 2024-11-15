@@ -12,31 +12,36 @@
 
 <section layout:fragment="content">
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Ad</th>
-            <th scope="col">Soyad</th>
-            <th scope="col">E-poçt</th>
-            <th scope="col">Cins</th>
-            <th scope="col">Seçimlər</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${users.data}">
-            <td th:text="${user.id}" scope="row" style="vertical-align: middle;">1</td>
-            <td th:text="${user.name}" style="vertical-align: middle;">Name</td>
-            <td th:text="${user.surname}" style="vertical-align: middle;">Surname</td>
-            <td th:text="${user.email}" style="vertical-align: middle;">Email</td>
-            <td th:text="${user.gender}" style="vertical-align: middle;">Gender</td>
-            <td style="vertical-align: middle;">
-                <a th:href="'/admin/user/update/' + ${user.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
-                <a th:href="'/admin/user/delete/' + ${user.id}" class="btn btn-primary py-1 px-2">Sil</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="margin-right: 20px; margin-left: 20px;">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Ad</th>
+                <th scope="col">Soyad</th>
+                <th scope="col">E-poçt</th>
+                <th scope="col">Cins</th>
+                <th scope="col">Seçimlər</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users.data}">
+                <td th:text="${user.id}" scope="row" style="vertical-align: middle;">1</td>
+                <td th:text="${user.name}" style="vertical-align: middle;">Name</td>
+                <td th:text="${user.surname}" style="vertical-align: middle;">Surname</td>
+                <td th:text="${user.email}" style="vertical-align: middle;">Email</td>
+                <td th:text="${user.gender}" style="vertical-align: middle;">Gender</td>
+                <td style="vertical-align: middle; display: flex; gap: 4px;">
+                    <a th:href="'/admin/user/update/' + ${user.id}" class="btn btn-primary py-1 px-2">Yenilə</a>
+                    <a th:href="'/admin/user/delete/' + ${user.id}" class="btn btn-primary py-1 px-2"
+                       style="background-color: #FF4D4D; border-color: #FF4D4D;"
+                       onmouseover="this.style.backgroundColor='#FF2929';"
+                       onmouseout="this.style.backgroundColor='#FF4D4D';">Sil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Pagination Buttons for Index -->
     <div class="pagination" style="display: flex; justify-content: center;" th:if="${urlType == 'index'}">

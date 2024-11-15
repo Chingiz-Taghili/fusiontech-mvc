@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
             findProduct.setOffered(productUpdateDto.isOffered());
 
             List<Image> updatedImages = new ArrayList<>();
-            for (String imageUrl : productUpdateDto.getImagesUrl()) {
+            for (String imageUrl : productUpdateDto.getImageUrls()) {
                 Image image = new Image();
                 image.setProduct(findProduct);
                 image.setUrl(imageUrl);
