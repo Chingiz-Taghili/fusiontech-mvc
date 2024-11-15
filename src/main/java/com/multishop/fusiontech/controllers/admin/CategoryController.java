@@ -1,5 +1,7 @@
 package com.multishop.fusiontech.controllers.admin;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.multishop.fusiontech.dtos.category.CategoryCreateDto;
 import com.multishop.fusiontech.dtos.category.CategoryUpdateDto;
 import com.multishop.fusiontech.services.CategoryService;
@@ -10,18 +12,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class CategoryController {
 
     private final CategoryService categoryService;
     private final UserService userService;
+    private final Cloudinary cloudinary;
 
-    public CategoryController(CategoryService categoryService, UserService userService) {
+    public CategoryController(CategoryService categoryService, UserService userService, Cloudinary cloudinary) {
         this.categoryService = categoryService;
         this.userService = userService;
+        this.cloudinary = cloudinary;
     }
 
     @GetMapping("/admin/category")
@@ -51,7 +58,11 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/category/create")
-    public String createCategory(CategoryCreateDto categoryCreateDto) {
+    public String createCategory(CategoryCreateDto categoryCreateDto, @RequestParam MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            categoryCreateDto.setImageUrl((String) uploadResult.get("url"));
+        }
         boolean result = categoryService.createCategory(categoryCreateDto);
         if (result) {
             return "redirect:/admin/category";

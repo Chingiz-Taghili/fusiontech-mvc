@@ -70,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             Category findCategory = categoryRepository.findById(id).orElseThrow();
             findCategory.setName(categoryUpdateDto.getName());
-            findCategory.setImage(categoryUpdateDto.getImage());
+            findCategory.setImageUrl(categoryUpdateDto.getImage());
 
             List<Subcategory> newSubcategories = new ArrayList<>();
             for (String name : categoryUpdateDto.getSubcategoriesName()) {
