@@ -11,7 +11,7 @@ public class SliderDto {
     private Long id;
     private String title;
     private String description;
-    private String image;
+    private String imageUrl;
     private String url;
     private boolean active;
 }

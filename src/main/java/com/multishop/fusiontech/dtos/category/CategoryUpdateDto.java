@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryUpdateDto {
     private String name;
-    private String image;
+    private String imageUrl;
     private List<String> subcategoriesName;
 }

@@ -61,7 +61,7 @@ public class SliderServiceImpl implements SliderService {
             Slider findSlider = sliderRepository.findById(id).orElseThrow();
             findSlider.setTitle(sliderUpdateDto.getTitle());
             findSlider.setDescription(sliderUpdateDto.getDescription());
-            findSlider.setImage(sliderUpdateDto.getImage());
+            findSlider.setImageUrl(sliderUpdateDto.getImageUrl());
             findSlider.setUrl(sliderUpdateDto.getUrl());
             findSlider.setActive(sliderUpdateDto.isActive());
             sliderRepository.save(findSlider);

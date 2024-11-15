@@ -24,40 +24,63 @@
                 </div>
 
                 <!-- Dinamik alt kateqoriya inputları -->
-                <div id="SubcategoriesContainer" style="margin: 10px 0; margin-top: 20px;">
+                <div id="SubcategoriesContainer" style="margin: 10px 0; margin-top: 20px; margin-bottom: 10px;">
                     <label for="subcategories" style="display: block; margin-bottom: 1px;">Alt kateqoriyalar:</label>
                     <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <input type="text" name="subcategoryNames" placeholder="Alt kateqoriya yaz" id="subcategories" required
+                        <input type="text" name="subcategoryNames" placeholder="Alt kateqoriya yaz" id="subcategories"
+                               required
                                style="width: 100%; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                         <button type="button" onclick="removeImage(this)" class="btn btn-primary py-1 px-2"
-                                style="margin-left: 5px; display: none;">Ləğv et
+                                style="margin-left: 5px; display: none;">Sil
                         </button>
                     </div>
                 </div>
                 <button type="button" onclick="addSubcategoryCreate()" class="btn btn-primary py-1 px-2"
-                        style="margin-bottom: 10px;">+ Əlavə et</button>
+                        style="margin-bottom: 10px;">+ Əlavə et
+                </button>
             </div>
 
             <!-- Sağ sütun -->
             <div style="flex: 1;">
                 <div style="margin: 10px 0;">
-                    <input type="text" name="image" placeholder="Şəkil URL-ini daxil et" required
-                           style="width: 100%; height: 40px; padding: 10px; outline: none;
-                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-                </div>
-                <div style="margin: 10px 0;">
-                    <input type="file" name="image" required>
+                    <!-- Şəkil önizləmə qutusu -->
+                    <div id="imagePreviewContainerCatCr"
+                         style="border: 1px dashed #ccc; border-radius: 5px; width: 250px; height: 250px;
+                     display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <img id="imagePreviewCatCr" src="" alt="Preview"
+                             style="display: none; width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">
+                        <button type="button" id="uploadImageButtonCatCr" onclick="document.getElementById('imageInputCatCr').click()"
+                                style="width: 80px; height: 80px; border: none; cursor: pointer; font-size: 14px;
+                        color: #007bff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+                        transition: color 0.3s; outline: none; background: none; gap: 0px;"
+                                onmouseover="this.style.color='#0056b3';"
+                                onmouseout="this.style.color='#007bff';">
+                            <span style="font-size: 70px; line-height: 0.8; vertical-align: middle; margin-top: -9px;">+</span>
+                            <span>Şəkil Yüklə</span>
+                        </button>
+                        <button type="button" id="removeImageButtonCatCr" onclick="removeImageCatCr()"
+                                style="display: none; position: absolute; top: 10px; right: 10px; background-color: #f00;
+                            color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">
+                            ×
+                        </button>
+                    </div>
+                    <input type="file" id="imageInputCatCr" name="image" accept="image/*" style="display: none;"
+                           onchange="handleImageUploadCatCr(this)">
+                    <div id="imageErrorCatCr" style="color: red; font-size: 14px; margin-top: 5px; display: none;">Şəkil
+                        yükləyin!
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Saxla düyməsi -->
-        <div style="margin: 10px 0; margin-top: 30px; text-align: center;">
+        <div style="margin: 10px 0; margin-top: 40px; margin-right: 40px; text-align: center;">
             <button type="submit" class="btn btn-primary py-2 px-4"
                     style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
                     onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
-                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
+                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla
+            </button>
         </div>
     </form>
 

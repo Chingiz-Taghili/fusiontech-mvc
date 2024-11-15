@@ -1,5 +1,7 @@
 package com.multishop.fusiontech.controllers.admin;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.multishop.fusiontech.dtos.slider.SliderCreateDto;
 import com.multishop.fusiontech.dtos.slider.SliderUpdateDto;
 import com.multishop.fusiontech.services.SliderService;
@@ -10,18 +12,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class SliderController {
 
     private final SliderService sliderService;
     private final UserService userService;
+    private final Cloudinary cloudinary;
 
-    public SliderController(SliderService sliderService, UserService userService) {
+    public SliderController(SliderService sliderService, UserService userService, Cloudinary cloudinary) {
         this.sliderService = sliderService;
         this.userService = userService;
+        this.cloudinary = cloudinary;
     }
 
     @GetMapping("/admin/slider")
@@ -51,7 +58,11 @@ public class SliderController {
     }
 
     @PostMapping("/admin/slider/create")
-    public String createSlider(SliderCreateDto sliderCreateDto) {
+    public String createSlider(SliderCreateDto sliderCreateDto, @RequestParam MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            sliderCreateDto.setImageUrl((String) uploadResult.get("url"));
+        }
         boolean result = sliderService.createSlider(sliderCreateDto);
         if (result) {
             return "redirect:/admin/slider";
@@ -69,7 +80,11 @@ public class SliderController {
     }
 
     @PostMapping("/admin/slider/update/{id}")
-    public String updateSlider(@PathVariable Long id, SliderUpdateDto sliderUpdateDto) {
+    public String updateSlider(@PathVariable Long id, SliderUpdateDto sliderUpdateDto, @RequestParam MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            sliderUpdateDto.setImageUrl((String) uploadResult.get("url"));
+        }
         boolean result = sliderService.updateSlider(id, sliderUpdateDto);
         if (result) {
             return "redirect:/admin/slider";

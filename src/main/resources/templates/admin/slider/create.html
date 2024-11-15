@@ -12,32 +12,64 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
-        <div style="margin: 10px 0;">
-            <input type="text" name="title" placeholder="Slaydın başlığını yaz" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+    <form method="post" onsubmit="return validateFormSliderCreate();"
+          style="margin-left: 70px; margin-right: 70px;" enctype="multipart/form-data">
+        <div style="display: flex; justify-content: space-between;">
+
+            <!-- Sol sütun -->
+            <div style="flex: 1; margin-right: 60px;">
+                <div style="margin: 10px 0;">
+                    <input type="text" name="title" placeholder="Slaydın başlığını yaz" required
+                           style="width: 100%; height: 40px; padding: 10px; outline: none;
                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="description" placeholder="Slaydın mətnini yaz" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+                </div>
+                <div style="margin: 10px 0;">
+                    <textarea name="description" placeholder="Slaydın mətnini yaz" required
+                           style="width: 100%; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;"></textarea>
+                </div>
+                <div style="margin: 10px 0;">
+                    <input type="text" name="url" placeholder="Keçid URL-i daxil et" required
+                           style="width: 100%; height: 40px; padding: 10px; outline: none;
                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="image" placeholder="Şəkil URL-i daxil et" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
-                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="url" placeholder="Keçid URL-i daxil et" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
-                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="checkbox" id="active" name="active"
-                   style="width: 17px; height: 17px; margin-right: 10px; vertical-align: middle; transition: background-color 0.3s ease;
+                </div>
+                <div style="margin: 10px 0; margin-top: 20px;">
+                    <input type="checkbox" id="active" name="active"
+                           style="width: 17px; height: 17px; margin-right: 10px; vertical-align: middle; transition: background-color 0.3s ease;
                    border-radius: 5px; outline: none; border: 1px solid #ccc; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); cursor: pointer;">
-            <label for="active" style="font-size: 17px; color: #3D464D; cursor: pointer; line-height: 17px;">Aktivdir?</label>
+                    <label for="active" style="font-size: 17px; color: #3D464D; cursor: pointer; line-height: 17px;">Aktivdir?</label>
+                </div>
+            </div>
+
+            <!-- Sağ sütun -->
+            <div style="flex: 1; margin-top: 10px;">
+                <!-- Şəkil önizləmə qutusu -->
+                <div id="sliderImageContainerCr"
+                     style="border: 1px dashed #ccc; border-radius: 5px; width: 350px; height: 250px;
+                     display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    <img id="sliderImagePreviewCr" src="" alt="Preview"
+                         style="display: none; width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">
+                    <button type="button" id="addSliderImageButtonCr" onclick="document.getElementById('sliderImageInputCr').click()"
+                            style="width: 80px; height: 80px; border: none; cursor: pointer; font-size: 14px;
+                        color: #007bff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+                        transition: color 0.3s; outline: none; background: none; gap: 0px;"
+                            onmouseover="this.style.color='#0056b3';"
+                            onmouseout="this.style.color='#007bff';">
+                        <span style="font-size: 70px; line-height: 0.8; vertical-align: middle; margin-top: -9px;">+</span>
+                        <span>Şəkil Yüklə</span>
+                    </button>
+                    <button type="button" id="removeSliderImageButtonCr" onclick="removeSliderImageCr()"
+                            style="display: none; position: absolute; top: 10px; right: 10px; background-color: #f00;
+                            color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">
+                        ×
+                    </button>
+                </div>
+                <input type="file" id="sliderImageInputCr" name="image" accept="image/*" style="display: none;"
+                       onchange="handleSliderImageAddCr(this)">
+                <div id="sliderImageErrorCr" style="color: red; font-size: 14px; margin-top: 5px; display: none;">Şəkil
+                    yükləyin!
+                </div>
+            </div>
         </div>
 
         <div style="margin: 10px 0; margin-top: 40px;">

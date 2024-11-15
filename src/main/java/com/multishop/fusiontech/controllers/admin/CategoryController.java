@@ -80,7 +80,11 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/category/update/{id}")
-    public String updateCategory(CategoryUpdateDto categoryUpdateDto, @PathVariable Long id) {
+    public String updateCategory(CategoryUpdateDto categoryUpdateDto, @PathVariable Long id, @RequestParam MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            categoryUpdateDto.setImageUrl((String) uploadResult.get("url"));
+        }
         boolean result = categoryService.updateCategory(id, categoryUpdateDto);
         if (result) {
             return "redirect:/admin/category";
