@@ -95,12 +95,10 @@ public class OrderServiceImpl implements OrderService {
                 orderItem.setOrder(order);
                 orderItemRepository.save(orderItem);
             }
-
             cartItemRepository.deleteCartByUserId(findUser.getId());
 
             return true;
         } catch (Exception e) {
-            System.out.println("Silinmə əməliyyatı icra olunmadı");
             System.out.println(e.getMessage());
             return false;
         }

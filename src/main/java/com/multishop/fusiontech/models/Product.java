@@ -18,6 +18,7 @@ public class Product {
     private String name;
     private Double price;
     private String description;
+    @Column(length = 1500)
     private String moreDetail;
     private Double discountPrice;
     private LocalDateTime discountDate;

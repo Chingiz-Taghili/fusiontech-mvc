@@ -23,23 +23,26 @@
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
                 <div style="margin: 10px 0;">
-                    <input type="number" name="price" placeholder="Qiymət" th:value="${product.price}" required
+                    <input type="number" name="price" placeholder="Qiymət" th:value="${product.price}" step="0.01"
+                           required
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
                 <div style="margin: 10px 0;">
-                    <input type="text" name="description" placeholder="Haqqında" th:value="${product.description}" required
+                    <input type="text" name="description" placeholder="Haqqında" th:value="${product.description}"
+                           required
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
                 <div style="margin: 10px 0;">
-                    <input type="text" name="moreDetail" placeholder="Ətraflı məlumat" th:value="${product.moreDetail}" required
+                    <input type="text" name="moreDetail" placeholder="Ətraflı məlumat" th:value="${product.moreDetail}"
+                           required
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
                 <div style="margin: 10px 0;">
                     <input type="number" name="discountPrice" placeholder="Endirim qiyməti"
-                           th:value="${product.discountPrice}" required
+                           th:value="${product.discountPrice}" step="0.01" required
                            style="width: 400px; height: 40px; padding: 10px; outline: none;
                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
@@ -65,19 +68,23 @@
                 </div>
                 <div style="margin: 10px 0;">
                     <label for="brand" style="display: block; margin-bottom: 2px; font-size: 16px;">Brend:</label>
-                    <select name="brandId" id="brand" required
+                    <select name="brandId" id="brand"
                             style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                             transition: border-color 0.3s ease, box-shadow 0.3s ease; outline: none; cursor: pointer;">
                         <option value="">Brend seç</option>
                         <th:block th:each="brand : ${brands}">
                             <option th:value="${brand.id}" th:text="${brand.name}"
+                                    th:if="${product.brand != null}"
                                     th:selected="${brand.id} == ${product.brand.id}"></option>
+                            <option th:value="${brand.id}" th:text="${brand.name}"
+                                    th:if="${product.brand == null}"></option>
                         </th:block>
                     </select>
                 </div>
                 <div style="margin: 10px 0;">
-                    <label for="category" style="display: block; margin-bottom: 2px; font-size: 16px;">Kateqoriya:</label>
+                    <label for="category"
+                           style="display: block; margin-bottom: 2px; font-size: 16px;">Kateqoriya:</label>
                     <select name="categoryId" id="category" required
                             style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -90,7 +97,8 @@
                     </select>
                 </div>
                 <div style="margin: 10px 0;">
-                    <label for="subcategory" style="display: block; margin-bottom: 2px; font-size: 16px;">Alt Kateqoriya:</label>
+                    <label for="subcategory" style="display: block; margin-bottom: 2px; font-size: 16px;">Alt
+                        Kateqoriya:</label>
                     <select name="subcategoryId" id="subcategory" required
                             style="width: 320px; height: 40px; padding: 5px 10px; font-size: 15px; color: #3D464D;
                             border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -129,7 +137,8 @@
                 <input type="file" name="newImageInput" multiple accept="image/*" style="display: none;"
                        id="imageUploadUpdate">
                 <!-- Dinamik yeni şəkillərin əlavə olunacağı input -->
-                <div id="newImagesContainer" style="display: none;"><input type="file" name="newImages" style="display: none;"></div>
+                <div id="newImagesContainer" style="display: none;"><input type="file" name="newImages"
+                                                                           style="display: none;"></div>
             </div>
             <!-- Şəkil olmadıqda yazı görünür -->
             <div id="noImageTextContainerUpdate" style="display: flex; flex-wrap: wrap; margin-top: 10px;">
@@ -146,13 +155,16 @@
             <button type="submit" class="btn btn-primary py-2 px-4"
                     style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"
                     onmouseover="this.style.backgroundColor='#FFC107'; this.style.borderColor='#FFC107';"
-                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla</button>
+                    onmouseout="this.style.backgroundColor='#FFD333'; this.style.borderColor='#FFD333';">Saxla
+            </button>
         </div>
     </form>
 
     <!-- Modal pəncərə -->
-    <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">
-        <span onclick="closeModal()" style="position: absolute; top: 20px; right: 40px; color: white; font-size: 30px; cursor: pointer;">&times;</span>
+    <div id="imageModal"
+         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 1000;">
+        <span onclick="closeModal()"
+              style="position: absolute; top: 20px; right: 40px; color: white; font-size: 30px; cursor: pointer;">&times;</span>
         <img id="modalImage" style="max-width: 90%; max-height: 90%; border-radius: 10px;">
     </div>
 

@@ -45,10 +45,12 @@ public class ProductServiceImpl implements ProductService {
 
         Product newProduct = modelMapper.map(productCreateDto, Product.class);
 
-        Brand brand = brandRepository.findById(productCreateDto.getBrand()).orElseThrow();
+        if (productCreateDto.getBrand() != null) {
+            Brand brand = brandRepository.findById(productCreateDto.getBrand()).orElseThrow();
+            newProduct.setBrand(brand);
+        }
         Category category = categoryRepository.findById(productCreateDto.getCategory()).orElseThrow();
         Subcategory subcategory = subcategoryRepository.findById(productCreateDto.getSubcategory()).orElseThrow();
-        newProduct.setBrand(brand);
         newProduct.setCategory(category);
         newProduct.setSubcategory(subcategory);
 
@@ -91,7 +93,9 @@ public class ProductServiceImpl implements ProductService {
             findProduct.getImages().clear(); // Köhnə şəkilləri silmək
             findProduct.getImages().addAll(updatedImages); // Yeni şəkilləri əlavə etmək
 
-            findProduct.setBrand(brandRepository.findById(productUpdateDto.getBrandId()).orElseThrow());
+            if (productUpdateDto.getBrandId() != null) {
+                findProduct.setBrand(brandRepository.findById(productUpdateDto.getBrandId()).orElseThrow());
+            }
             findProduct.setCategory(categoryRepository.findById(productUpdateDto.getCategoryId()).orElseThrow());
             findProduct.setSubcategory(subcategoryRepository.findById(productUpdateDto.getSubcategoryId()).orElseThrow());
 
@@ -243,7 +247,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         PaginationPayload<ProductDto> paginationProducts = new PaginationPayload<>(
-                        repoProducts.getTotalPages(), pageNumber, searchProducts);
+                repoProducts.getTotalPages(), pageNumber, searchProducts);
 
         return paginationProducts;
     }
