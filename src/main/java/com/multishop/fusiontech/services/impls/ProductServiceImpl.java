@@ -125,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
     public PaginationPayload<ProductDto> getAllProducts(Integer pageNumber) {
 
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNumber - 1, 12, Sort.by("id"));
         Page<Product> repoProducts = productRepository.findAll(pageable);
 
         List<ProductDto> products = repoProducts.getContent().stream().map(product -> modelMapper.map(product, ProductDto.class)).toList();
@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginationPayload<ProductDto> getFilteredProducts(int price, int category, int brand, Integer pageNumber) {
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNumber - 1, 12, Sort.by("id"));
 
         Page<Product> repoProducts;
         int priceMin = 0;
@@ -202,7 +202,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginationPayload<ProductDto> getCatalogProducts(Long categoryId, Long subcategoryId, Integer pageNumber) {
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNumber - 1, 12, Sort.by("id"));
 
         Page<Product> repoProducts;
 
@@ -226,7 +226,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PaginationPayload<ProductDto> getSearchProducts(String keyword, Integer pageNumber) {
         pageNumber = (pageNumber == null || pageNumber < 1) ? 1 : pageNumber;
-        Pageable pageable = PageRequest.of(pageNumber - 1, 10, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNumber - 1, 12, Sort.by("id"));
 
         Page<Product> repoProducts = productRepository.findByKeywordInColumnsIgnoreCase(keyword, pageable);
 

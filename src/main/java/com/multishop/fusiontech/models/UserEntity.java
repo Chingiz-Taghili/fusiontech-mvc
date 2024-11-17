@@ -2,12 +2,15 @@ package com.multishop.fusiontech.models;
 
 import com.multishop.fusiontech.enums.Gender;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -16,6 +19,7 @@ public class UserEntity {
     private Long id;
     private String name;
     private String surname;
+    private LocalDate birthdate;
     private String image;
     private String email;
     private String password;

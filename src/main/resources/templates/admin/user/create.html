@@ -12,49 +12,90 @@
 
 <section layout:fragment="content">
 
-    <form method="post" style="margin-left: 50px;">
-        <div style="margin: 10px 0;">
-            <input type="text" name="name" placeholder="Adını yazın" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+    <form method="post" enctype="multipart/form-data" style="margin-left: 70px; margin-right: 70px;">
+        <!-- İki sütunlu bölmə -->
+        <div style="display: flex; justify-content: space-between; width: 480px;">
+            <!-- Sol sütun -->
+            <div style="width: 65%; margin-right: 15px;">
+                <div style="margin: 10px 0; margin-bottom: 10px;">
+                    <input type="text" name="name" placeholder="Adını yazın" required
+                           style="width: 100%; height: 40px; padding: 10px; outline: none;
                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="surname" placeholder="Soyadını yazın" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
-                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="email" name="email" placeholder="E-poçtu daxil edin" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
-                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <div style="margin-top: 10px; width: 400px; display: flex;
-                        align-items: center; justify-content: space-between;">
-                <label style="color: #3D464D; margin-right: 10px; flex: 1;">Cins:</label>
-                <div style="display: inline-block; margin-right: 15px; border: 1px solid #ccc;
-                            padding: 8px; cursor: pointer; flex: 1; border-radius: 5px;">
-                    <input type="radio" name="gender" value="MALE" id="genderMale" checked/>
-                    <label class="form-label" for="genderMale"
-                           style="margin: 0; cursor: pointer; color: #3D464D;">Kişi</label>
                 </div>
-                <div style="display: inline-block; border: 1px solid #ccc; padding: 8px;
-                            cursor: pointer; flex: 1; border-radius: 5px;">
-                    <input type="radio" name="gender" value="FEMALE" id="genderFemale"/>
-                    <label class="form-label" for="genderFemale" style="margin: 0; cursor: pointer; color: #3D464D;">Qadın</label>
+                <div style="margin: 15px 0;">
+                    <input type="text" name="surname" placeholder="Soyadını yazın" required
+                           style="width: 100%; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+                </div>
+                <div style="margin: 15px 0;">
+                    <label for="birthdate" style="display: block; margin-bottom: 1px; color: #3D464D; font-size: 14px;">Doğum
+                        Tarixi:</label>
+                    <input type="date" name="birthdate" id="birthdate" required
+                           style="width: 100%; height: 40px; padding: 10px; outline: none;
+                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
                 </div>
             </div>
+
+            <!-- Sağ sütun -->
+            <div style="width: 35%; display: flex; flex-direction: column; align-items: center; overflow: hidden;">
+                <!-- Şəkil önizləmə qutusu -->
+                <div id="imageContainerUsCr"
+                     style="border: 1px dashed #ccc; border-radius: 5px; width: 100%; height: 180px; margin: 10px 0;
+                     display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    <img id="imagePreviewUsCr" src="" alt="Preview"
+                         style="display: none; width: 100%; height: 100%; border-radius: 5px; object-fit: cover;">
+                    <button type="button" id="uploadImageButtonUsCr" onclick="document.getElementById('imageInputUsCr').click()"
+                            style="width: 80px; height: 80px; border: none; cursor: pointer; font-size: 14px;
+                        color: #007bff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+                        transition: color 0.3s; outline: none; background: none; gap: 0px;"
+                            onmouseover="this.style.color='#0056b3';"
+                            onmouseout="this.style.color='#007bff';">
+                        <span style="font-size: 50px; line-height: 0.8; vertical-align: middle; margin-top: -1px;">+</span>
+                        <span>Şəkil Yüklə</span>
+                    </button>
+                    <button type="button" id="delImageButtonUsCr" onclick="removeImageUsCr()"
+                            style="display: none; position: absolute; top: 10px; right: 10px; background-color: #f00;
+                            color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer;">
+                        ×
+                    </button>
+                </div>
+                <input type="file" id="imageInputUsCr" name="imageFile" accept="image/*" style="display: none;"
+                       onchange="imageUploadUsCr(this)">
+            </div>
         </div>
-        <div style="margin: 10px 0;">
-            <input type="text" name="image" placeholder="Profil şəkli (istəyə görə)"
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+
+        <!-- Alt bölmə -->
+        <div style="margin-top: 5px; width: 480px;">
+            <div style="margin: 10px 0;">
+                <div style="margin-top: 10px; width: 100%; display: flex;
+                        align-items: center; justify-content: space-between;">
+                    <label style="color: #3D464D; margin-right: 10px; flex: 1;">Cins:</label>
+                    <div style="display: inline-block; margin-right: 15px; border: 1px solid #ccc;
+                            padding: 8px; cursor: pointer; flex: 1; border-radius: 5px;">
+                        <input type="radio" name="gender" value="MALE" id="genderMale" checked/>
+                        <label class="form-label" for="genderMale"
+                               style="margin: 0; cursor: pointer; color: #3D464D;">Kişi</label>
+                    </div>
+                    <div style="display: inline-block; border: 1px solid #ccc; padding: 8px;
+                            cursor: pointer; flex: 1; border-radius: 5px;">
+                        <input type="radio" name="gender" value="FEMALE" id="genderFemale"/>
+                        <label class="form-label" for="genderFemale"
+                               style="margin: 0; cursor: pointer; color: #3D464D;">Qadın</label>
+                    </div>
+                </div>
+            </div>
+            <div style="margin: 15px 0;">
+                <input type="email" name="email" placeholder="E-poçtu daxil edin" required
+                       style="width: 100%; height: 40px; padding: 10px; outline: none;
                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
-        </div>
-        <div style="margin: 10px 0;">
-            <input type="password" name="password" placeholder="Şifrə təyin edin" required
-                   style="width: 400px; height: 40px; padding: 10px; outline: none;
+            </div>
+            <div style="margin: 15px 0;">
+                <input type="password" name="password" placeholder="Şifrə təyin edin" required
+                       style="width: 100%; height: 40px; padding: 10px; outline: none;
                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border: 1px solid #ccc; border-radius: 5px;">
+            </div>
         </div>
+
         <div style="margin: 10px 0; margin-top: 30px;">
             <button type="submit" class="btn btn-primary py-2 px-4"
                     style="color: #3D464D; background-color: #FFD333; border-color: #FFD333;"

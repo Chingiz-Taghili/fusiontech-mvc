@@ -21,10 +21,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -47,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
     public boolean createOrder(String userEmail, OrderCreateDto orderCreateDto) {
         try {
             UserEntity findUser = userRepository.findByEmail(userEmail);
+            List<CartItem> findUserItems = findUser.getCartItems();
 
             Order order = new Order();
             order.setUser(findUser);
@@ -84,7 +87,6 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentStatus(PaymentStatus.PENDING);
             orderRepository.save(order);
 
-            List<CartItem> findUserItems = findUser.getCartItems();
             for (CartItem findItem : findUserItems) {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setProduct(findItem.getProduct());
@@ -94,9 +96,12 @@ public class OrderServiceImpl implements OrderService {
                 orderItemRepository.save(orderItem);
             }
 
-            cartItemRepository.deleteAll(findUserItems);
+            cartItemRepository.deleteCartByUserId(findUser.getId());
+
             return true;
         } catch (Exception e) {
+            System.out.println("Silinmə əməliyyatı icra olunmadı");
+            System.out.println(e.getMessage());
             return false;
         }
     }

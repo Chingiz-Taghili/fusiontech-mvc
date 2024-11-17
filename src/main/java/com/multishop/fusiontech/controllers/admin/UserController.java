@@ -1,5 +1,7 @@
 package com.multishop.fusiontech.controllers.admin;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.multishop.fusiontech.dtos.user.UserCreateDto;
 import com.multishop.fusiontech.dtos.user.UserUpdateDto;
 import com.multishop.fusiontech.services.UserService;
@@ -9,16 +11,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final Cloudinary cloudinary;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Cloudinary cloudinary) {
         this.userService = userService;
+        this.cloudinary = cloudinary;
     }
 
     @GetMapping("/admin/user")
@@ -52,7 +59,11 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/create")
-    public String createUser(UserCreateDto userCreateDto) {
+    public String createUser(UserCreateDto userCreateDto, @RequestParam MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
+            userCreateDto.setImage((String) uploadResult.get("url"));
+        }
         boolean result = userService.createUser(userCreateDto);
         if (result) {
             return "redirect:/admin/user";
@@ -70,7 +81,11 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update/{id}")
-    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto) {
+    public String updateUser(@PathVariable Long id, UserUpdateDto userUpdateDto, @RequestParam MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(imageFile.getBytes(), ObjectUtils.emptyMap());
+            userUpdateDto.setImage((String) uploadResult.get("url"));
+        }
         boolean result = userService.updateUser(id, userUpdateDto);
         if (result) {
             return "redirect:/admin/user";

@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         UserEntity newUser = modelMapper.map(userCreateDto, UserEntity.class);
         String password = encoder.encode(userCreateDto.getPassword());
         newUser.setPassword(password);
-        if (userCreateDto.getImage() == null) {
+        if (userCreateDto.getImage() == null || userCreateDto.getImage().isEmpty()) {
             newUser.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
         }
 
@@ -90,9 +90,14 @@ public class UserServiceImpl implements UserService {
             UserEntity findUser = userRepository.findById(id).orElseThrow();
             findUser.setName(userUpdateDto.getName());
             findUser.setSurname(userUpdateDto.getSurname());
+            findUser.setBirthdate(userUpdateDto.getBirthdate());
             findUser.setEmail(userUpdateDto.getEmail());
             findUser.setGender(userUpdateDto.getGender());
-            findUser.setImage(userUpdateDto.getImage());
+            if (userUpdateDto.getImage() != null && !userUpdateDto.getImage().isEmpty()) {
+                findUser.setImage(userUpdateDto.getImage());
+            } else {
+                findUser.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
+            }
             if (userUpdateDto.getPassword() != null && !userUpdateDto.getPassword().isEmpty()) {
                 String password = encoder.encode(userUpdateDto.getPassword());
                 findUser.setPassword(password);
