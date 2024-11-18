@@ -1,5 +1,6 @@
 package com.multishop.fusiontech.security;
 
+import com.multishop.fusiontech.exceptions.AdminAccessException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,7 +35,12 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .formLogin(form -> form.defaultSuccessUrl("/")
                         .loginPage("/login").failureUrl("/login?access=false"))
-                .exceptionHandling(e -> e.accessDeniedPage("/login"));
+                .exceptionHandling(e -> e.accessDeniedHandler((request, response, accessDeniedException) -> {
+                    if (request.getRequestURI().startsWith("/admin")) {
+                        throw new AdminAccessException(); // Yalnız /admin/** üçün 404
+                    }
+                    response.sendRedirect("/login"); // Digər səhifələr üçün login
+                }));
         return httpSecurity.build();
     }
 
