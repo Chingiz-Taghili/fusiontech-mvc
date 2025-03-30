@@ -5,8 +5,6 @@ import com.multishop.fusiontech.dtos.order.OrderDto;
 import com.multishop.fusiontech.dtos.order.OrderUpdateDto;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 
-import java.util.List;
-
 public interface OrderService {
 
     boolean createOrder(String userEmail, OrderCreateDto orderCreateDto);

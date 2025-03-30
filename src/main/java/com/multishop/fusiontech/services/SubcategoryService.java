@@ -1,7 +1,6 @@
 package com.multishop.fusiontech.services;
 
-import com.multishop.fusiontech.dtos.singledtos.SubcategoryDto;
-import com.multishop.fusiontech.models.Subcategory;
+import com.multishop.fusiontech.dtos.common.SubcategoryDto;
 
 import java.util.List;
 

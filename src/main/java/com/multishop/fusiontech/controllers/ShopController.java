@@ -7,7 +7,7 @@ import com.multishop.fusiontech.dtos.order.OrderCreateDto;
 import com.multishop.fusiontech.dtos.product.ProductDto;
 import com.multishop.fusiontech.dtos.review.ReviewCreateDto;
 import com.multishop.fusiontech.dtos.review.ReviewDto;
-import com.multishop.fusiontech.dtos.singledtos.ShopFilterDto;
+import com.multishop.fusiontech.dtos.common.ShopFilterDto;
 import com.multishop.fusiontech.dtos.user.UserDto;
 import com.multishop.fusiontech.enums.PaymentMethod;
 import com.multishop.fusiontech.models.Region;

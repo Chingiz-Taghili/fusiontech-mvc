@@ -1,14 +1,10 @@
 package com.multishop.fusiontech.controllers.admin;
 
-import com.multishop.fusiontech.dtos.singledtos.AppealDto;
-import com.multishop.fusiontech.dtos.user.UserDto;
-import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.AppealService;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 

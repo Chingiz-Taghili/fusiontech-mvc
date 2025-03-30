@@ -1,10 +1,7 @@
 package com.multishop.fusiontech.controllers.admin;
 
 import com.multishop.fusiontech.dtos.brand.BrandCreateDto;
-import com.multishop.fusiontech.dtos.brand.BrandDto;
 import com.multishop.fusiontech.dtos.brand.BrandUpdateDto;
-import com.multishop.fusiontech.dtos.user.UserDto;
-import com.multishop.fusiontech.models.Brand;
 import com.multishop.fusiontech.services.BrandService;
 import com.multishop.fusiontech.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class BrandController {

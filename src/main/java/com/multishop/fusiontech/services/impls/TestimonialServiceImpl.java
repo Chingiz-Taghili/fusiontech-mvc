@@ -1,6 +1,6 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.singledtos.TestimonialDto;
+import com.multishop.fusiontech.dtos.common.TestimonialDto;
 import com.multishop.fusiontech.models.Testimonial;
 import com.multishop.fusiontech.repositories.TestimonialRepository;
 import com.multishop.fusiontech.services.TestimonialService;

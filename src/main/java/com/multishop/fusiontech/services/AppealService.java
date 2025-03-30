@@ -1,9 +1,7 @@
 package com.multishop.fusiontech.services;
 
-import com.multishop.fusiontech.dtos.singledtos.AppealDto;
+import com.multishop.fusiontech.dtos.common.AppealDto;
 import com.multishop.fusiontech.payloads.PaginationPayload;
-
-import java.util.List;
 
 public interface AppealService {
 

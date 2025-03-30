@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.multishop</groupId>
-	<artifactId>fusiontech</artifactId>
+	<artifactId>fusiontech-mvc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fusiontech</name>
+	<name>Fusiontech MVC</name>
 	<description>Spring Boot project for electronics sales</description>
 	<url/>
 	<licenses>

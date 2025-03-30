@@ -1,6 +1,6 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.singledtos.SubcategoryDto;
+import com.multishop.fusiontech.dtos.common.SubcategoryDto;
 import com.multishop.fusiontech.models.Subcategory;
 import com.multishop.fusiontech.repositories.SubcategoryRepository;
 import com.multishop.fusiontech.services.SubcategoryService;

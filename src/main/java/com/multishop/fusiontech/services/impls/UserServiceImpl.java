@@ -30,11 +30,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder encoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, BCryptPasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
         this.encoder = encoder;
     }
@@ -77,7 +79,12 @@ public class UserServiceImpl implements UserService {
             newUser.setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
         }
 
-        Role userRole = RoleRepository.findByName("ROLE_USER");
+        Role userRole = roleRepository.findByName("ROLE_USER").orElseGet(() ->
+        {
+            Role role = new Role();
+            role.setName("ROLE_USER");
+            return roleRepository.save(role);
+        });
         newUser.setRoles(Collections.singletonList(userRole));
 
         userRepository.save(newUser);

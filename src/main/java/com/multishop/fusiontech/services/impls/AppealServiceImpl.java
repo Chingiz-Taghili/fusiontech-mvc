@@ -1,6 +1,6 @@
 package com.multishop.fusiontech.services.impls;
 
-import com.multishop.fusiontech.dtos.singledtos.AppealDto;
+import com.multishop.fusiontech.dtos.common.AppealDto;
 import com.multishop.fusiontech.models.Appeal;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.repositories.AppealRepository;

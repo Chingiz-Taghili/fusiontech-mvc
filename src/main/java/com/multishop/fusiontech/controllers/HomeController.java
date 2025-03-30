@@ -2,8 +2,8 @@ package com.multishop.fusiontech.controllers;
 
 import com.multishop.fusiontech.dtos.category.CategoryDto;
 import com.multishop.fusiontech.dtos.product.ProductDto;
-import com.multishop.fusiontech.dtos.singledtos.AppealDto;
-import com.multishop.fusiontech.dtos.singledtos.TestimonialDto;
+import com.multishop.fusiontech.dtos.common.AppealDto;
+import com.multishop.fusiontech.dtos.common.TestimonialDto;
 import com.multishop.fusiontech.dtos.slider.SliderDto;
 import com.multishop.fusiontech.payloads.PaginationPayload;
 import com.multishop.fusiontech.services.*;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.multishop.fusiontech.dtos.singledtos;
+package com.multishop.fusiontech.dtos.common;
 
-import com.multishop.fusiontech.models.SubcategoryName;
 import com.multishop.fusiontech.models.Category;
+import com.multishop.fusiontech.models.SubcategoryName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
