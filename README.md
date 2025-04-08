@@ -1,4 +1,4 @@
-# FusionTech API
+# FusionTech MVC
 FusionTech MVC is a full-stack e-commerce web application built with Java and Spring Boot using the MVC (Model-View-Controller) 
 architecture. It integrates dynamic frontend features using Thymeleaf, HTML, CSS, and JavaScript.The project provides user-facing 
 features such as product browsing, admin panel management, shopping cart, order placement, customer reviews, and product ratings.
